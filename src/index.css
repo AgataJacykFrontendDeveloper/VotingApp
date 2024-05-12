@@ -1,3 +1,7 @@
+ {
+  /* The following line can be included in your src/index.js or App.js file */
+}
+@import "bootstrap/dist/css/bootstrap.min.css";
 :root {
   /* 
     One-stop magic hue shift
@@ -33,20 +37,20 @@ button {
 
   /* Text */
   color: var(--text-base);
-  font: 700 1.125rem/1.2 Raleway, sans-serif;
+  font: 700 14px Raleway, sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
 
   /* Button sizing */
-  padding: 0.85em;
+  padding: 0.85em 1.5em;
   max-width: 100%;
-  width: 12em;
+  width: fit-content;
 
   /* Button styling */
   background-color: var(--button-background);
   background-clip: padding-box;
-  border: 2px solid var(--text-base);
+  border: 1px solid var(--text-base);
   border-radius: 2em;
   cursor: pointer;
 
