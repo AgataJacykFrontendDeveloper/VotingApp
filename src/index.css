@@ -22,6 +22,13 @@ body {
   background-size: cover;
   color: #faecff;
 }
+a {
+  text-decoration: none;
+  color: #faecff;
+}
+a:hover {
+  color: var(--text-hover);
+}
 button {
   --button-background: #00000000;
   --text-base: oklch(70.98% 0.135 var(--hue));
@@ -39,7 +46,7 @@ button {
   color: var(--text-base);
   font: 700 14px Raleway, sans-serif;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-variant-caps: small-caps;
   text-align: center;
 
   /* Button sizing */
@@ -98,7 +105,9 @@ button {
   }
 
   &:hover,
-  &:focus {
+  &:focus,
+  button a:hover,
+  button a:focus {
     color: var(--text-hover);
 
     /*  Lighten border */

@@ -1,22 +1,25 @@
 import "./Header.css";
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
-    <div class="nav">
+    <div className="nav">
       <input type="checkbox" id="nav-check" />
-      <div class="nav-header"></div>
-      <div class="nav-btn">
+      <div className="nav-header"></div>
+      <div className="nav-btn">
         <label for="nav-check">
           <span></span>
           <span></span>
           <span></span>
         </label>
       </div>
-      <div class="nav-links">
-        <a>Strona główna</a>
-        <a>Głosowanie tygodnia</a>
-        <a>Głosowanie miesiąca</a>
-        <div id="indicator"></div>
-        <button>Logowanie</button>
+      <div className="nav-links">
+        <Link to="/">Strona główna</Link>
+        <Link to="/">Głosowanie tygodnia</Link>
+        <Link to="/">Głosowanie miesiąca</Link>
+
+        <button>
+          <Link to="/login">Logowanie</Link>
+        </button>
       </div>
     </div>
   );
