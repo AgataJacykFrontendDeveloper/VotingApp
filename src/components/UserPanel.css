@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  margin-top: 100px;
+}
+.left-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  height: 600px;
+  width: 30%;
+}
+
+.votes, .user-info, .settings {
+    width: 250px;
+    text-align: left;
+    margin-bottom: 50px;
+}
+.right-menu {
+  background: linear-gradient(#364360, #36325f);
+  
+  border-radius: 30px;
+  height: 600px;
+  width: 70%;
+}
+
