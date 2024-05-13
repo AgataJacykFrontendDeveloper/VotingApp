@@ -18,7 +18,7 @@ const Header = () => {
         <Link to="/">Głosowanie miesiąca</Link>
 
         <button>
-          <Link to="/login">Logowanie</Link>
+          <Link to="/login">Logowanie </Link>
         </button>
       </div>
     </div>

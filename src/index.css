@@ -136,3 +136,64 @@ h3,
 h4 {
   color: #4fd89f;
 }
+
+.btn {
+  background-color: #faecff;
+  color: #1b1919;
+  cursor: pointer;
+  border: 1px solid #ffff;
+  border-radius: 30px;
+  letter-spacing: 0.1rem;
+  overflow: hidden;
+  padding: 10px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn.v2 {
+  padding: 10px 100px 10px 20px;
+  transition: color 0.2s ease;
+
+  &::before {
+    background-color: #faecff;
+    color: #1b1919;
+    content: "";
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.2s ease;
+    width: 200%;
+    z-index: -1;
+  }
+
+  &::after {
+    background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0xMiAwYzYuNjIzIDAgMTIgNS4zNzcgMTIgMTJzLTUuMzc3IDEyLTEyIDEyLTEyLTUuMzc3LTEyLTEyIDUuMzc3LTEyIDEyLTEyem0wIDFjNi4wNzEgMCAxMSA0LjkyOSAxMSAxMXMtNC45MjkgMTEtMTEgMTEtMTEtNC45MjktMTEtMTEgNC45MjktMTEgMTEtMTF6bS0zIDUuNzUzbDYuNDQgNS4yNDctNi40NCA1LjI2My42NzguNzM3IDcuMzIyLTYtNy4zMzUtNi0uNjY1Ljc1M3oiLz48L3N2Zz4=")
+      no-repeat;
+    content: "";
+    display: block;
+    height: 60px;
+    position: absolute;
+    top: 90%;
+    transform: translateY(-50%);
+    width: 60px;
+    z-index: 1;
+  }
+
+  &::after {
+    right: 5px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    color: #1b1919
+
+    &::before {
+      transform: translateX(50%);
+    }
+
+    &::after {
+      transform: translate(10px, -50%);
+    }
+  }
+}
