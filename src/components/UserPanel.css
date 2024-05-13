@@ -12,7 +12,8 @@
   height: 600px;
   width: 30%;
 }
-button {
+
+.votes, .user-info, .settings {
     width: 250px;
     text-align: left;
     margin-bottom: 50px;
