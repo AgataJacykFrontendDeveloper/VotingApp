@@ -2,27 +2,79 @@
   display: flex;
   height: 100%;
   width: 100%;
-  margin-top: 100px;
+  /*margin: 100px;*/
 }
 .left-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  height: 600px;
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  width: 40%;
 }
 
-.votes, .user-info, .settings {
-    width: 250px;
-    text-align: left;
-    margin-bottom: 50px;
+.votes,
+.user-info,
+.settings {
+  width: 250px;
+  text-align: left;
+  margin-bottom: 50px;
 }
 .right-menu {
   background: linear-gradient(#364360, #36325f);
-  
   border-radius: 30px;
-  height: 600px;
-  width: 70%;
+  height: 500px;
+  width: 60%;
 }
 
+.user-name {
+  font-size: 30px;
+  text-align: center;
+  margin: 40px 0 0 50px;
+}
+.user-data {
+  font-size: 20px;
+}
+.user-data-name {
+  margin: 30px 0 20px 70px;
+}
+.user-data-password {
+  margin-left: 70px;
+}
+.input-name {
+  margin-left: 30px;
+}
+.input-password {
+  margin-left: 36px;
+}
+input:focus {
+  outline: none;
+  padding-left: 10px;
+  color: white;
+}
+.input-name,
+.input-password {
+  width: 300px;
+  height: 35px;
+  background-color: rgba(75, 161, 114, 0);
+  border: 1px solid rgb(36, 140, 83);
+  border-radius: 30px;
+}
+.check-box-1 {
+  margin: 100px 0 0 70px;
+  cursor: pointer;
+}
+
+span {
+  margin-left: 10px;
+}
+
+.delete-account {
+  margin: 50px 0 0 70px;
+  color: rgb(83, 3, 3);
+  cursor: pointer;
+}
+.x {
+  background-color: red;
+  margin: 70px 0 0 70px;
+}
