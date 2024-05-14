@@ -1,0 +1,31 @@
+.provider {
+  width: 56px;
+  height: 56px;
+}
+
+.provider-button:hover,
+.provider-button:focus,
+.provider-button {
+  all: unset;
+
+  &::after,
+  &::before {
+    all: unset;
+  }
+
+  img {
+    filter: invert(67%) sepia(34%) saturate(402%) hue-rotate(103deg)
+      brightness(96%) contrast(92%);
+    -webkit-filter: invert(67%) sepia(34%) saturate(402%) hue-rotate(103deg)
+      brightness(96%) contrast(92%);
+  }
+}
+.provider-button:hover {
+  cursor: pointer;
+  filter: brightness(0) invert(1);
+}
+
+.provider-group {
+  width: 100%;
+  max-width: 384px;
+}
