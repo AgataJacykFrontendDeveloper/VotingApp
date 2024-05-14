@@ -5,12 +5,23 @@ import {
   GoogleAuthProvider,
   TwitterAuthProvider,
   FacebookAuthProvider,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  // Error codes with displayed message
+  const errorMessages = {
+    "auth/invalid-credential": "Niepoprawne hasło. Proszę spróbuj ponownie",
+    "auth/invalid-email": "Proszę wpisać prawidłowy adres e-mail",
+    "auth/user-disabled":
+      "To konto zostało wyłączone. Skontaktuj się z administratorem",
+    "auth/too-many-requests": "Zbyt wiele prób. Spróbuj ponownie później",
+    "auth/unexpected-error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie",
+  };
 
   useEffect(() => {
     const currentUser = auth.onAuthStateChanged((authUser) => {
@@ -36,9 +47,31 @@ export const AuthProvider = ({ children }) => {
     signInWithRedirect(auth, provider);
   };
 
+  const signIn = async (email, password) => {
+    const result = await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // User successfully signed in
+        return "Zalogowano się pomyślnie";
+      })
+      .catch((error) => {
+        // Check type of error message and display according text
+        const errorCode = error.code;
+        const errorMessage =
+          errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
+        return errorMessage;
+      });
+    return result;
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, signInWithGoogle, signInWithTwitter, signInWithFacebook }}
+      value={{
+        user,
+        signInWithGoogle,
+        signInWithTwitter,
+        signInWithFacebook,
+        signIn,
+      }}
     >
       {children}
     </AuthContext.Provider>
