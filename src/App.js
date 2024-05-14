@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import HomePage from "./components/HomePage";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
+import UserPanel from "./components/UserPanel";
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="settings" element={<UserPanel />} />
             {/* Must be always last route */}
             <Route path="*" element={<>404 page not found</>} />
           </Route>
