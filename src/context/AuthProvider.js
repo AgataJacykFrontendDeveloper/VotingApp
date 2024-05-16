@@ -8,6 +8,7 @@ import {
   TwitterAuthProvider,
   FacebookAuthProvider,
   signInWithEmailAndPassword,
+  signOut as signOutUser,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useRef(useNavigate());
   const LOGIN_REDIRECT = "/";
+  const SIGNOUT_REDIRECT = "/login";
 
   // Error codes with displayed message
   const errorMessages = {
@@ -73,6 +75,12 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const signOut = async () => {
+    signOutUser(auth).then(() => {
+      navigate.current(SIGNOUT_REDIRECT);
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -81,6 +89,7 @@ export const AuthProvider = ({ children }) => {
         signInWithTwitter,
         signInWithFacebook,
         signIn,
+        signOut,
       }}
     >
       {children}
