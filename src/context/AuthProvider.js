@@ -1,7 +1,9 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.js";
 import {
   signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   TwitterAuthProvider,
   FacebookAuthProvider,
@@ -12,6 +14,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const navigate = useRef(useNavigate());
+  const LOGIN_REDIRECT = "/";
 
   // Error codes with displayed message
   const errorMessages = {
@@ -24,6 +28,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // Check if request was redirected from OAuth provider
+    getRedirectResult(auth).then((userCredential) => {
+      if (userCredential) {
+        navigate.current(LOGIN_REDIRECT);
+      }
+    });
+
     const currentUser = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
     });
@@ -48,19 +59,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signIn = async (email, password) => {
-    const result = await signInWithEmailAndPassword(auth, email, password)
+    await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // User successfully signed in
-        return "Zalogowano się pomyślnie";
+        navigate.current(LOGIN_REDIRECT);
       })
       .catch((error) => {
         // Check type of error message and display according text
         const errorCode = error.code;
         const errorMessage =
           errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
-        return errorMessage;
+        throw new Error(errorMessage);
       });
-    return result;
   };
 
   return (

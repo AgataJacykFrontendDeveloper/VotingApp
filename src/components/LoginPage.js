@@ -8,12 +8,18 @@ const LoginPage = () => {
   const user = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
   // Sign in user with email and password
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let result = await user.signIn(email, password);
-    // Display message for result message
+    setError(null);
+    try {
+      await user.signIn(email, password);
+    } catch (error) {
+      // Display error message
+      setError(error.message);
+    }
   };
 
   return (
@@ -50,6 +56,7 @@ const LoginPage = () => {
           <Link to="/forgot-password" className="login-link">
             Nie pamiętasz hasła?
           </Link>
+          {error && <span className="ms-3 error-message">{error}</span>}
           <div className="d-flex justify-content-center mt-3">
             <button type="submit" className="btn v2 mx-5">
               Zaloguj się
@@ -57,7 +64,7 @@ const LoginPage = () => {
           </div>
         </form>
         <Link to="/register">
-          Nie masz jeszcze konta?{" "}
+          Nie masz jeszcze konta?
           <span className="login-subtext">Zarejestruj się</span>
         </Link>
       </div>
