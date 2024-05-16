@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useRef } from "react";
+import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/firebase.js";
 import {
@@ -15,7 +15,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const navigate = useRef(useNavigate());
+  const navigate = useNavigate();
   const LOGIN_REDIRECT = "/";
   const SIGNOUT_REDIRECT = "/login";
 
@@ -31,18 +31,27 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check if request was redirected from OAuth provider
-    getRedirectResult(auth).then((userCredential) => {
-      if (userCredential) {
-        navigate.current(LOGIN_REDIRECT);
-      }
-    });
-
     const currentUser = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
     });
 
     return currentUser;
   }, []);
+
+  const getOAuthResult = async () => {
+    try {
+      const userCredential = await getRedirectResult(auth);
+      if (userCredential) {
+        // TODO: Disallow login redirect if user already changed page
+        navigate(LOGIN_REDIRECT);
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage =
+        errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
+      throw new Error(errorMessage);
+    }
+  };
 
   // Authentication related functions
   const signInWithGoogle = async () => {
@@ -64,7 +73,7 @@ export const AuthProvider = ({ children }) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // User successfully signed in
-        navigate.current(LOGIN_REDIRECT);
+        navigate(LOGIN_REDIRECT);
       })
       .catch((error) => {
         // Check type of error message and display according text
@@ -77,7 +86,7 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     signOutUser(auth).then(() => {
-      navigate.current(SIGNOUT_REDIRECT);
+      navigate(SIGNOUT_REDIRECT);
     });
   };
 
@@ -90,6 +99,7 @@ export const AuthProvider = ({ children }) => {
         signInWithFacebook,
         signIn,
         signOut,
+        getOAuthResult,
       }}
     >
       {children}

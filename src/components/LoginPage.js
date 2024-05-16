@@ -1,6 +1,6 @@
 import "./LoginPage.css";
 import { SocialAuth } from "./auth/SocialAuth";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 
@@ -21,6 +21,19 @@ const LoginPage = () => {
       setError(error.message);
     }
   };
+
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        await user.getOAuthResult();
+      } catch (error) {
+        // Display error message for OAuth login
+        setError(error.message);
+      }
+    };
+    handleRedirectResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="auth-container container d-flex justify-content-center">
