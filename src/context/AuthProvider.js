@@ -6,6 +6,7 @@ import {
   TwitterAuthProvider,
   FacebookAuthProvider,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -62,6 +63,9 @@ export const AuthProvider = ({ children }) => {
       });
     return result;
   };
+  const signupUser = async (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  }
 
   return (
     <AuthContext.Provider
@@ -71,6 +75,7 @@ export const AuthProvider = ({ children }) => {
         signInWithTwitter,
         signInWithFacebook,
         signIn,
+        signupUser,
       }}
     >
       {children}
