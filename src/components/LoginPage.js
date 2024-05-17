@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 
 const LoginPage = () => {
-  const user = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const LoginPage = () => {
     e.preventDefault();
     setError(null);
     try {
-      await user.signIn(email, password);
+      await auth.signIn(email, password);
     } catch (error) {
       // Display error message
       setError(error.message);
@@ -25,7 +25,7 @@ const LoginPage = () => {
   useEffect(() => {
     const handleRedirectResult = async () => {
       try {
-        await user.getOAuthResult();
+        await auth.getOAuthResult();
       } catch (error) {
         // Display error message for OAuth login
         setError(error.message);
@@ -71,7 +71,11 @@ const LoginPage = () => {
           </Link>
           {error && <span className="ms-3 error-message">{error}</span>}
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" className="btn v2 mx-5">
+            <button
+              type="submit"
+              className="btn v2 mx-5"
+              disabled={auth.isLoading}
+            >
               Zaloguj się
             </button>
           </div>

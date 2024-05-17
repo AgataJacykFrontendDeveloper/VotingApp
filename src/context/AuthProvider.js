@@ -15,6 +15,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const LOGIN_REDIRECT = "/";
   const SIGNOUT_REDIRECT = "/login";
@@ -30,7 +31,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Check if request was redirected from OAuth provider
     const currentUser = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
     });
@@ -39,37 +39,47 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const getOAuthResult = async () => {
-    try {
-      const userCredential = await getRedirectResult(auth);
-      if (userCredential) {
-        // TODO: Disallow login redirect if user already changed page
-        navigate(LOGIN_REDIRECT);
+    if (sessionStorage.getItem("oauthRedirect") === "true") {
+      setIsLoading(true);
+      try {
+        const userCredential = await getRedirectResult(auth);
+        if (userCredential) {
+          // TODO: Disallow login redirect if user already changed page
+          navigate(LOGIN_REDIRECT);
+        }
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage =
+          errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
+        throw new Error(errorMessage);
+      } finally {
+        sessionStorage.removeItem("oauthRedirect");
+        setIsLoading(false);
       }
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage =
-        errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
-      throw new Error(errorMessage);
     }
   };
 
   // Authentication related functions
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
+    sessionStorage.setItem("oauthRedirect", "true");
     signInWithRedirect(auth, provider);
   };
 
   const signInWithTwitter = async () => {
     const provider = new TwitterAuthProvider();
+    sessionStorage.setItem("oauthRedirect", "true");
     signInWithRedirect(auth, provider);
   };
 
   const signInWithFacebook = async () => {
     const provider = new FacebookAuthProvider();
+    sessionStorage.setItem("oauthRedirect", "true");
     signInWithRedirect(auth, provider);
   };
 
   const signIn = async (email, password) => {
+    setIsLoading(true);
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // User successfully signed in
@@ -81,6 +91,9 @@ export const AuthProvider = ({ children }) => {
         const errorMessage =
           errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
         throw new Error(errorMessage);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -94,6 +107,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        isLoading,
         signInWithGoogle,
         signInWithTwitter,
         signInWithFacebook,
