@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <div className="auth-container container d-flex justify-content-center">
       <div className="auth-panel">
-        <h1 className="auth-panel-h1">Zaloguj się</h1>
+        <h1 className="auth-panel-title">Zaloguj się</h1>
         <SocialAuth />
         <form
           onSubmit={handleSubmit}
@@ -66,10 +66,10 @@ const LoginPage = () => {
               required
             ></input>
           </div>
-          <Link to="/forgot-password" className="login-link">
-            Nie pamiętasz hasła?
-          </Link>
-          {error && <span className="ms-3 error-message">{error}</span>}
+          <div className="auth form-footer">
+            <Link to="/forgot-password">Nie pamiętasz hasła?</Link>
+            {error && <span className="error-message">{error}</span>}
+          </div>
           <div className="d-flex justify-content-center mt-3">
             <button
               type="submit"
@@ -82,7 +82,7 @@ const LoginPage = () => {
         </form>
         <Link to="/register">
           Nie masz jeszcze konta?
-          <span className="login-subtext">Zarejestruj się</span>
+          <span className="register-link-subtext">Zarejestruj się</span>
         </Link>
       </div>
     </div>

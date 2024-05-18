@@ -30,6 +30,11 @@ export const AuthProvider = ({ children }) => {
     "auth/unexpected-error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie",
   };
 
+  function checkErrorMessage(e) {
+    const errorCode = e.code;
+    return errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
+  }
+
   useEffect(() => {
     const currentUser = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
@@ -48,10 +53,7 @@ export const AuthProvider = ({ children }) => {
           navigate(LOGIN_REDIRECT);
         }
       } catch (error) {
-        const errorCode = error.code;
-        const errorMessage =
-          errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
-        throw new Error(errorMessage);
+        throw new Error(checkErrorMessage(error));
       } finally {
         sessionStorage.removeItem("oauthRedirect");
         setIsLoading(false);
@@ -87,10 +89,7 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         // Check type of error message and display according text
-        const errorCode = error.code;
-        const errorMessage =
-          errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
-        throw new Error(errorMessage);
+        throw new Error(checkErrorMessage(error));
       })
       .finally(() => {
         setIsLoading(false);
