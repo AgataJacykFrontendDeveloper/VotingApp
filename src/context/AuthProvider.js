@@ -8,6 +8,7 @@ import {
   TwitterAuthProvider,
   FacebookAuthProvider,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut as signOutUser,
 } from "firebase/auth";
 
@@ -96,6 +97,10 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const signupUser = async (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
   const signOut = async () => {
     signOutUser(auth).then(() => {
       navigate(SIGNOUT_REDIRECT);
@@ -111,6 +116,7 @@ export const AuthProvider = ({ children }) => {
         signInWithTwitter,
         signInWithFacebook,
         signIn,
+        signupUser,
         signOut,
         getOAuthResult,
       }}
