@@ -3,21 +3,21 @@ import AuthContext from "../../context/AuthProvider";
 import { useContext } from "react";
 
 export const SocialAuth = () => {
-  const user = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   const GoogleSignIn = (e) => {
     e.preventDefault();
-    user.signInWithGoogle();
+    auth.signInWithGoogle();
   };
 
   const TwitterSignIn = (e) => {
     e.preventDefault();
-    user.signInWithTwitter();
+    auth.signInWithTwitter();
   };
 
   const FacebookSignIn = (e) => {
     e.preventDefault();
-    user.signInWithFacebook();
+    auth.signInWithFacebook();
   };
 
   return (

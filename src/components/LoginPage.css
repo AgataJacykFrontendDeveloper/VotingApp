@@ -27,7 +27,7 @@
   }
 }
 
-.auth-panel-h1 {
+.auth-panel-title {
   color: white;
   width: fit-content;
   font-weight: 400;
@@ -43,13 +43,7 @@
   }
 }
 
-.login-link {
-  margin-left: 1rem;
-  font-weight: 400;
-  color: #faecff;
-}
-
-.login-subtext {
+.register-link-subtext {
   color: #75ebb9;
   font-weight: 700;
 }
@@ -58,10 +52,12 @@
   width: 100%;
   max-width: 518px;
 }
-
-.auth.form-group {
+.auth {
   display: flex;
   flex-direction: column;
+}
+
+.auth.form-group {
   gap: 0.5rem;
   font-weight: 600;
   font-size: 1rem;
@@ -86,4 +82,14 @@
       outline: none;
     }
   }
+}
+
+.auth.form-footer {
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.error-message {
+  color: red;
+  font-weight: 600;
 }
