@@ -136,3 +136,69 @@ h3,
 h4 {
   color: #4fd89f;
 }
+
+.btn {
+  color: #3dbb87;
+  cursor: pointer;
+  border: 2px solid #3dbb87;
+  border-radius: 30px;
+  letter-spacing: 0.1rem;
+  overflow: hidden;
+  padding: 10px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn.v2 {
+  padding: 10px 100px 10px 20px;
+  transition: color 0.2s ease;
+
+  &::before {
+    color: #3dbb87;
+    content: "";
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    transition: transform 0.2s ease;
+    width: 200%;
+    z-index: -1;
+  }
+
+  &::after {
+    content: "";
+    -webkit-mask: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0xMiAwYzYuNjIzIDAgMTIgNS4zNzcgMTIgMTJzLTUuMzc3IDEyLTEyIDEyLTEyLTUuMzc3LTEyLTEyIDUuMzc3LTEyIDEyLTEyem0wIDFjNi4wNzEgMCAxMSA0LjkyOSAxMSAxMXMtNC45MjkgMTEtMTEgMTEtMTEtNC45MjktMTEtMTEgNC45MjktMTEgMTEtMTF6bS0zIDUuNzUzbDYuNDQgNS4yNDctNi40NCA1LjI2My42NzguNzM3IDcuMzIyLTYtNy4zMzUtNi0uNjY1Ljc1M3oiLz48L3N2Zz4=")
+      30% 30%;
+    mask: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0xMiAwYzYuNjIzIDAgMTIgNS4zNzcgMTIgMTJzLTUuMzc3IDEyLTEyIDEyLTEyLTUuMzc3LTEyLTEyIDUuMzc3LTEyIDEyLTEyem0wIDFjNi4wNzEgMCAxMSA0LjkyOSAxMSAxMXMtNC45MjkgMTEtMTEgMTEtMTEtNC45MjktMTEtMTEgNC45MjktMTEgMTEtMTF6bS0zIDUuNzUzbDYuNDQgNS4yNDctNi40NCA1LjI2My42NzguNzM3IDcuMzIyLTYtNy4zMzUtNi0uNjY1Ljc1M3oiLz48L3N2Zz4=")
+      no-repeat 30% 30%;
+    -webkit-mask-size: 60%;
+    mask-size: 60%;
+    background-color: #4fd89f;
+    height: 60px;
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    width: 60px;
+    z-index: 1;
+  }
+
+  &::after {
+    right: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    color: #faecff;
+    border: 2px solid #faecff;
+    border-radius: 30px;
+
+    &::before {
+      transform: translateX(50%);
+    }
+
+    &::after {
+      background-color: #faecff;
+      transform: translate(10px, -50%);
+    }
+  }
+}
