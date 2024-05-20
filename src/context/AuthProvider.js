@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const LOGIN_REDIRECT = "/";
+  const REGISTER_REDIRECT = "/";
   const SIGNOUT_REDIRECT = "/login";
 
   // Error codes with displayed message
@@ -29,6 +30,13 @@ export const AuthProvider = ({ children }) => {
       "To konto zostało wyłączone. Skontaktuj się z administratorem",
     "auth/too-many-requests": "Zbyt wiele prób. Spróbuj ponownie później",
     "auth/unexpected-error": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie",
+    "auth/claims-too-large": "Nieprawidłowe żądanie. Spróbuj ponownie",
+    "auth/email-already-exists": "Na ten adres e-mail jest już założone konto",
+    "auth/email-already-in-use": "Na ten adres e-mail jest już założone konto",
+    "auth/internal-error": "Błąd po stronie serwera. Spróbuj ponownie później",
+    "auth/invalid-password": "Za słabe hasło. Musi być bardziej złożone",
+    "auth/maximum-user-count-exceeded": "Osiągnieto maksymalną liczbę użytkowników. Poinformuj administratora",
+    "auth/uid-already-exists": "UID użytkownika już istnieje"
   };
 
   function checkErrorMessage(e) {
@@ -98,7 +106,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signupUser = async (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+    setIsLoading(true);
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+      navigate(REGISTER_REDIRECT);
+    })
+      .catch((error) => {
+        throw new Error(checkErrorMessage(error));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const signOut = async () => {
