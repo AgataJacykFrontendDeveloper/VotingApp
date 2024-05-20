@@ -1,35 +1,50 @@
 import AuthContext from "../context/AuthProvider";
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./LoginPage.css";
 import { SocialAuth } from "./auth/SocialAuth";
 
 const RegisterPage = () => {
-  const user = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
+  const [error, setError] = useState(null);
   const onSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       if (password !== confirmPassword) {
         throw new Error("Hasła muszą być takie same");
       }
-      const userCredential = await user.signupUser(
+      const userCredential = await auth.signupUser(
         email,
         password
       );
-      console.log("Poprawnie zarejestrowano użytkownika:", userCredential.user);
     } catch (error) {
-      console.log(error);
+      setError(error.message);
     }
   };
+
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        await auth.getOAuthResult();
+      } catch (error) {
+        // Display error message for OAuth login
+        setError(error.message);
+      }
+    };
+    handleRedirectResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="auth-container container d-flex justify-content-center">
       <div className="auth-panel">
-        <h1 className="auth-panel-h1">Zarejestruj się</h1>
+        <h1 className="auth-panel-title">Zarejestruj się</h1>
         {/* Przyciski Google, FB, Twitter */}
-        <SocialAuth />
+        <SocialAuth/>
 
         <form onSubmit={onSubmit} className="auth-form d-flex flex-column gap-3">
           <div className="auth form-group">
@@ -70,8 +85,11 @@ const RegisterPage = () => {
             <input required type="checkbox"/>
             <label htmlFor="terms">Akceptuj warunki użytkowania</label>
           </div>
+          <div className="auth form-footer">
+            {error && <span className="error-message">{error}</span>}
+          </div>
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" className="btn v2 mx-5">Załóż konto</button>
+            <button type="submit" className="btn v2 mx-5" disabled={auth.isLoading}>Załóż konto</button>
           </div>
         </form>
         <Link to="/login">
@@ -81,6 +99,6 @@ const RegisterPage = () => {
     </div>
   );
 
-      };
+};
 
 export default RegisterPage;
