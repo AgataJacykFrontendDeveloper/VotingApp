@@ -15,10 +15,7 @@ const RegisterPage = () => {
       if (password !== confirmPassword) {
         throw new Error("Hasła muszą być takie same");
       }
-      const userCredential = await user.signupUser(
-        email,
-        password
-      );
+      const userCredential = await user.signupUser(email, password);
       console.log("Poprawnie zarejestrowano użytkownika:", userCredential.user);
     } catch (error) {
       console.log(error);
@@ -31,7 +28,10 @@ const RegisterPage = () => {
         {/* Przyciski Google, FB, Twitter */}
         <SocialAuth />
 
-        <form onSubmit={onSubmit} className="auth-form d-flex flex-column gap-3">
+        <form
+          onSubmit={onSubmit}
+          className="auth-form d-flex flex-column gap-3"
+        >
           <div className="auth form-group">
             <label htmlFor="email">e-mail</label>
             <input
@@ -63,15 +63,17 @@ const RegisterPage = () => {
             />
           </div>
           <div>
-            <input type="checkbox"/>
+            <input type="checkbox" />
             <label htmlFor="newsletter">Zapisz się do newslettera</label>
           </div>
           <div>
-            <input required type="checkbox"/>
+            <input required type="checkbox" />
             <label htmlFor="terms">Akceptuj warunki użytkowania</label>
           </div>
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" className="btn v2 mx-5">Załóż konto</button>
+            <button type="submit" className="mx-5">
+              Załóż konto
+            </button>
           </div>
         </form>
         <Link to="/login">
@@ -80,7 +82,6 @@ const RegisterPage = () => {
       </div>
     </div>
   );
-
-      };
+};
 
 export default RegisterPage;

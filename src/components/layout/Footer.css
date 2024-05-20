@@ -1,7 +1,17 @@
 footer {
-  position: absolute;
-  bottom: 0;
+  margin-top: 25px;
+  position: relative;
   width: 100%;
+}
+input {
+  margin: auto 10px;
+}
+p {
+  color: #020106;
+}
+span {
+  color: #d9d9d981;
+  font-size: small;
 }
 .footer-box {
   background: linear-gradient(0.9turn, #17023f, #311c59);
@@ -10,9 +20,8 @@ footer {
   grid-template-rows: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 0px;
-  padding: 20px 0;
+  padding-top: 30px;
 }
-
 .div1 {
   grid-area: 1 / 1 / 2 / 2;
 }
@@ -25,7 +34,18 @@ footer {
 .div4 {
   grid-area: 1 / 4 / 2 / 5;
 }
-
+#copy {
+  width: 100%;
+  margin-top: 30px;
+  padding-bottom: 5px;
+}
 #newsletter-box {
   background: #6dbf9d;
+  height: fit-content;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 60px;
 }

@@ -71,11 +71,7 @@ const LoginPage = () => {
             {error && <span className="error-message">{error}</span>}
           </div>
           <div className="d-flex justify-content-center mt-3">
-            <button
-              type="submit"
-              className="btn v2 mx-5"
-              disabled={auth.isLoading}
-            >
+            <button type="submit" className="mx-5" disabled={auth.isLoading}>
               Zaloguj się
             </button>
           </div>

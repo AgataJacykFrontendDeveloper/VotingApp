@@ -47,7 +47,7 @@ button:focus {
 .nav > .nav-links > a:hover {
   background-image: -webkit-linear-gradient(90deg, #75ebb9 0%, #faecff 100%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: #faecff;
   -webkit-animation: hue 60s infinite linear;
 }
 

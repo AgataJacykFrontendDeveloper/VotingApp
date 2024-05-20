@@ -17,9 +17,9 @@ const Header = () => {
         <Link to="/">Głosowanie tygodnia</Link>
         <Link to="/">Głosowanie miesiąca</Link>
 
-        <button>
-          <Link to="/login">Logowanie </Link>
-        </button>
+        <Link to="/login">
+          <button>Logowanie</button>{" "}
+        </Link>
       </div>
     </div>
   );
