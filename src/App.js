@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import UserPanel from "./components/UserPanel";
+import ForgotPassword from "./components/ForgotPassword";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="settings" element={<UserPanel />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
             {/* Must be always last route */}
             <Route path="*" element={<>404 page not found</>} />
           </Route>
