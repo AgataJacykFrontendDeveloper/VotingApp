@@ -126,7 +126,8 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
         await sendPasswordResetEmail(auth, email)
-        return { message: "Link do resetowania hasła został wysłany. Sprawdź swoją pocztę e-mail" };
+      // Jeżeli w konsoli Firebase jest włączony email enumeration protection to zawsze zwracany jest taki sam request więc odpowiedź zawsze będzie taka sama
+        return { message: "Jeżeli w bazie danych znajduje się ten e-mail, została na niego wysłana wiadomość z linkiem do resetowania hasła" };
       }
       catch (error) {
         throw new Error(checkErrorMessage(error));

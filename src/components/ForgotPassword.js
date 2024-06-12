@@ -39,9 +39,9 @@ const ForgotPassword = () => {
           </div>
           <div className="auth form-footer">
             {error && <span className="error-message">{error}</span>}
+            {/* Jeżeli w konsoli Firebase jest włączony email enumeration protection to zawsze zwracany jest taki sam request więc odpowiedź zawsze będzie taka sama */}
             {success && <span className="success-message">{success}</span>}
           </div>
-          {/* TODO: Captcha or other anti-bot protection */}
           <div className="d-flex justify-content-center mt-3">
             <button type="submit" className="mx-5" disabled={auth.isLoading}>
               Zresetuj hasło
