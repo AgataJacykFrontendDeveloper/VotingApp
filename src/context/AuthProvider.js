@@ -40,7 +40,9 @@ export const AuthProvider = ({ children }) => {
     "auth/invalid-password": "Za słabe hasło. Musi być bardziej złożone",
     "auth/maximum-user-count-exceeded": "Osiągnieto maksymalną liczbę użytkowników. Poinformuj administratora",
     "auth/uid-already-exists": "UID użytkownika już istnieje",
-    "auth/user-not-found": "Nie znaleziono użytkownika o takim adresie e-mail. Sprawdź poprawność wpisanego e-maila"
+    "auth/user-not-found": "Nie znaleziono użytkownika o takim adresie e-mail. Sprawdź poprawność wpisanego e-maila",
+    "auth/invalid-action-code": "Kod weryfikacyjny jest nieprawidłowy lub wygaśnięty. Użyj funkcji ponownie",
+    "auth/password-does-not-meet-requirements": "Hasło jest za słabe. Musi zawierać przynajmniej 8 znaków, wielką literę, cyfrę oraz znak specjalny"
   };
 
   function checkErrorMessage(e) {
