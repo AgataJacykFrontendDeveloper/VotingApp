@@ -11,6 +11,7 @@ import {
   createUserWithEmailAndPassword,
   signOut as signOutUser,
   sendPasswordResetEmail,
+  confirmPasswordReset,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -137,6 +138,20 @@ export const AuthProvider = ({ children }) => {
       }
   };
 
+  const resetPassword = async (oobCode, newPassword) => {
+    setIsLoading(true);
+    try {
+      await confirmPasswordReset(auth, oobCode, newPassword);
+      return { message: "Hasło zostało pomyślnie zresetowane. Możesz przejść do logowania" };
+    }
+    catch (error) {
+      throw new Error(checkErrorMessage(error));
+    }
+    finally {
+      setIsLoading(false);
+    }
+  };
+
   const signOut = async () => {
     signOutUser(auth).then(() => {
       navigate(SIGNOUT_REDIRECT);
@@ -156,6 +171,7 @@ export const AuthProvider = ({ children }) => {
         signOut,
         getOAuthResult,
         forgotPassword,
+        resetPassword,
       }}
     >
       {children}
