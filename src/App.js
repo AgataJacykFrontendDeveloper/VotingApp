@@ -7,6 +7,7 @@ import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import UserPanel from "./components/UserPanel";
 import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
             <Route path="login" element={<LoginPage />} />
             <Route path="settings" element={<UserPanel />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             {/* Must be always last route */}
             <Route path="*" element={<>404 page not found</>} />
           </Route>

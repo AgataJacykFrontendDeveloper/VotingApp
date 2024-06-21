@@ -12,6 +12,7 @@ import {
   createUserWithEmailAndPassword,
   signOut as signOutUser,
   sendPasswordResetEmail,
+  confirmPasswordReset,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -43,6 +44,10 @@ export const AuthProvider = ({ children }) => {
     "auth/uid-already-exists": "UID użytkownika już istnieje",
     "auth/user-not-found":
       "Nie znaleziono użytkownika o takim adresie e-mail. Sprawdź poprawność wpisanego e-maila",
+    "auth/invalid-action-code":
+      "Kod weryfikacyjny jest nieprawidłowy lub wygaśnięty. Użyj funkcji ponownie",
+    "auth/password-does-not-meet-requirements":
+      "Hasło jest za słabe. Musi zawierać przynajmniej 8 znaków, wielką literę, cyfrę oraz znak specjalny",
   };
 
   function checkErrorMessage(e) {
@@ -155,6 +160,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const resetPassword = async (oobCode, newPassword) => {
+    setIsLoading(true);
+    try {
+      await confirmPasswordReset(auth, oobCode, newPassword);
+      return {
+        message:
+          "Hasło zostało pomyślnie zresetowane. Możesz przejść do logowania",
+      };
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const signOut = async () => {
     signOutUser(auth).then(() => {
       navigate(SIGNOUT_REDIRECT);
@@ -174,6 +194,7 @@ export const AuthProvider = ({ children }) => {
         signOut,
         getOAuthResult,
         forgotPassword,
+        resetPassword,
       }}
     >
       {children}
