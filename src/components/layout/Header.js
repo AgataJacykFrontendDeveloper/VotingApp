@@ -14,8 +14,8 @@ const Header = () => {
       </div>
       <div className="nav-links">
         <Link to="/">Strona główna</Link>
-        <Link to="/">Głosowanie tygodnia</Link>
-        <Link to="/">Głosowanie miesiąca</Link>
+        <Link to="/vote-weekly">Głosowanie tygodnia</Link>
+        <Link to="/vote-monthly">Głosowanie miesiąca</Link>
 
         <Link to="/login">
           <button>Logowanie</button>{" "}
