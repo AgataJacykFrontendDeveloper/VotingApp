@@ -12,7 +12,7 @@ const Header = () => {
             <input type="checkbox" id="nav-check" />
             <div className="nav-header"></div>
             <div className="nav-btn">
-              <label for="nav-check">
+              <label htmlFor="nav-check">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -20,8 +20,8 @@ const Header = () => {
             </div>
             <div className="nav-links">
               <Link to="/">Strona główna</Link>
-              <Link to="/">Głosowanie tygodnia</Link>
-              <Link to="/">Głosowanie miesiąca</Link>
+              <Link to="/vote-weekly">Głosowanie tygodnia</Link>
+              <Link to="/vote-monthly">Głosowanie miesiąca</Link>
 
               <Link to="/login">
                 <button>Logowanie</button>{" "}
@@ -35,7 +35,7 @@ const Header = () => {
             <input type="checkbox" id="nav-check" />
             <div className="nav-header"></div>
             <div className="nav-btn">
-              <label for="nav-check">
+              <label htmlFor="nav-check">
                 <span></span>
                 <span></span>
                 <span></span>
