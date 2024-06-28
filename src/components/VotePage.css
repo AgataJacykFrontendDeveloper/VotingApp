@@ -1,0 +1,7 @@
+.stars {
+  position: absolute;
+  right: -30px;
+  top: -20px;
+  filter: invert(87%) sepia(25%) saturate(742%) hue-rotate(89deg)
+    brightness(97%) contrast(90%);
+}
