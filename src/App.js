@@ -8,6 +8,8 @@ import LoginPage from "./components/LoginPage";
 import UserPanel from "./components/UserPanel";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
+import VotePage from "./components/VotePage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +20,8 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="settings" element={<UserPanel />} />
+            <Route path="/vote-weekly" element={<VotePage type="weekly" />} />
+            <Route path="/vote-monthly" element={<VotePage type="monthly" />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
             {/* Must be always last route */}
