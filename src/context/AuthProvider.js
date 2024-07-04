@@ -15,7 +15,7 @@ import {
 } from "firebase/auth";
 
 export const AuthContext = createContext();
-auth.languageCode = 'pl';
+auth.languageCode = "pl";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -38,11 +38,15 @@ export const AuthProvider = ({ children }) => {
     "auth/email-already-in-use": "Na ten adres e-mail jest już założone konto",
     "auth/internal-error": "Błąd po stronie serwera. Spróbuj ponownie później",
     "auth/invalid-password": "Za słabe hasło. Musi być bardziej złożone",
-    "auth/maximum-user-count-exceeded": "Osiągnieto maksymalną liczbę użytkowników. Poinformuj administratora",
+    "auth/maximum-user-count-exceeded":
+      "Osiągnieto maksymalną liczbę użytkowników. Poinformuj administratora",
     "auth/uid-already-exists": "UID użytkownika już istnieje",
-    "auth/user-not-found": "Nie znaleziono użytkownika o takim adresie e-mail. Sprawdź poprawność wpisanego e-maila",
-    "auth/invalid-action-code": "Kod weryfikacyjny jest nieprawidłowy lub wygaśnięty. Użyj funkcji ponownie",
-    "auth/password-does-not-meet-requirements": "Hasło jest za słabe. Musi zawierać przynajmniej 8 znaków, wielką literę, cyfrę oraz znak specjalny"
+    "auth/user-not-found":
+      "Nie znaleziono użytkownika o takim adresie e-mail. Sprawdź poprawność wpisanego e-maila",
+    "auth/invalid-action-code":
+      "Kod weryfikacyjny jest nieprawidłowy lub wygaśnięty. Użyj funkcji ponownie",
+    "auth/password-does-not-meet-requirements":
+      "Hasło jest za słabe. Musi zawierać przynajmniej 8 znaków, wielką literę, cyfrę oraz znak specjalny",
   };
 
   function checkErrorMessage(e) {
@@ -51,11 +55,13 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    const currentUser = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
     });
 
-    return currentUser;
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const getOAuthResult = async () => {
@@ -128,28 +134,30 @@ export const AuthProvider = ({ children }) => {
   const forgotPassword = async (email) => {
     setIsLoading(true);
     try {
-        await sendPasswordResetEmail(auth, email)
+      await sendPasswordResetEmail(auth, email);
       // Jeżeli w konsoli Firebase jest włączony email enumeration protection to zawsze zwracany jest taki sam request więc odpowiedź zawsze będzie taka sama
-        return { message: "Jeżeli w bazie danych znajduje się ten e-mail, została na niego wysłana wiadomość z linkiem do resetowania hasła" };
-      }
-      catch (error) {
-        throw new Error(checkErrorMessage(error));
-      }
-      finally {
-        setIsLoading(false);
-      }
+      return {
+        message:
+          "Jeżeli w bazie danych znajduje się ten e-mail, została na niego wysłana wiadomość z linkiem do resetowania hasła",
+      };
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetPassword = async (oobCode, newPassword) => {
     setIsLoading(true);
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
-      return { message: "Hasło zostało pomyślnie zresetowane. Możesz przejść do logowania" };
-    }
-    catch (error) {
+      return {
+        message:
+          "Hasło zostało pomyślnie zresetowane. Możesz przejść do logowania",
+      };
+    } catch (error) {
       throw new Error(checkErrorMessage(error));
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
   };
