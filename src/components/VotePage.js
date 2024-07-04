@@ -1,9 +1,10 @@
 import "./VotePage.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   collection,
   getDocs,
   getDoc,
+  setDoc,
   doc,
   increment,
   updateDoc,
@@ -11,13 +12,18 @@ import {
   limit,
   query,
   where,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import AuthContext from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const VotePage = ({ type }) => {
+  const auth = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [songs, setSongs] = useState([]);
   const [currentPollId, setCurrentPollId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -47,7 +53,6 @@ const VotePage = ({ type }) => {
             allSongs.push(songData);
           });
           setSongs(allSongs);
-          setIsLoading(false);
         } else {
           setSongs([]);
           console.error("No polls were found!");
@@ -56,22 +61,45 @@ const VotePage = ({ type }) => {
         setSongs([]);
         console.error("Error fetching poll data: ", error);
       }
+      setIsLoading(false);
     };
 
     fetchSongs();
   }, [type]);
 
   const voteSong = async (songId) => {
-    const songDocRef = doc(db, "polls", currentPollId, "songs", songId);
+    if (!auth.user) {
+      return navigate("/login");
+    }
+    const userId = auth.user.uid;
+    const userVoteRef = doc(db, "users", userId, "votes", currentPollId);
+    const userVoteDoc = await getDoc(userVoteRef);
+    // Users can vote only once a day
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    if (userVoteDoc.exists()) {
+      const lastVoteTime = userVoteDoc.data().timestamp.toDate();
+
+      if (lastVoteTime >= today) {
+        // TODO: Display notification for user to know that he voted already
+        return console.log("You have already voted today");
+      }
+    }
+
+    const songDocRef = doc(db, "polls", currentPollId, "songs", songId);
     const songDoc = await getDoc(songDocRef);
+
     if (songDoc.exists()) {
       updateDoc(songDocRef, { votes: increment(1) });
+      // Update local votes state
       setSongs((prevSongs) =>
         prevSongs.map((song) =>
-          song.id === songId ? { ...song, votes: song.votes++ } : song
+          song.id === songId ? { ...song, votes: song.votes + 1 } : song
         )
       );
+
+      await setDoc(userVoteRef, { timestamp: Timestamp.now() });
     }
   };
 
@@ -91,7 +119,10 @@ const VotePage = ({ type }) => {
           songs
             .sort((a, b) => b.votes - a.votes)
             .map((song, i) => (
-              <div className="d-flex align-items-center gap-4 position-relative">
+              <div
+                className="d-flex align-items-center gap-4 position-relative"
+                key={song.id}
+              >
                 {i === 0 && (
                   <img
                     src="/assets/images/stars.png"
@@ -101,10 +132,7 @@ const VotePage = ({ type }) => {
                   ></img>
                 )}
                 <p className="text-white fs-3 m-0">{i + 1}.</p>
-                <li
-                  key={song.id}
-                  className="border border-success rounded-5 w-100 fs-6 row align-items-center"
-                >
+                <li className="border border-success rounded-5 w-100 fs-6 row align-items-center">
                   <button
                     className="p-3"
                     style={{ width: "80px" }}
