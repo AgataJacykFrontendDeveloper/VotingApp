@@ -11,6 +11,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import AdministratorPanel from "./components/AdministratorPanel";
 import VotingMonth from "./components/MonthVotingList";
+import VotingWeek from "./components/WeekVotingList";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +26,7 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route path="vote-monthly" element={<VotingMonth />} />
+            <Route path="vote-weekly" element={<VotingWeek />} />
             {/* Must be always last route */}
             <Route path="*" element={<>404 page not found</>} />
           </Route>
