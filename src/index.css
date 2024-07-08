@@ -1,36 +1,23 @@
- {
-  /* The following line can be included in your src/index.js or App.js file */
-}
-@import "bootstrap/dist/css/bootstrap.min.css";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 :root {
-  /* 
-    One-stop magic hue shift
-    We're using oklch(), so these might not be the hue values you are familiar with 
-  See: https://oklch.com/
-  */
-  --hue: 161.84;
-  --hue-adjust: 135;
-
-  --hue-2: calc(var(--hue) + var(--hue-adjust));
-
-  --page-background: oklch(10% 0.0666 var(--hue));
+  --bs-body-bg: #1c2331 !important;
+  --bs-body-color: #faecff !important;
+  --bs-emphasis-color-rgb: #75ebb9 !important;
+  --bs-navbar-hover-color: #2ef5a2 !important;
 }
 body {
-  background: url("../public/assets/images/background-image.png"),
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Montserrat", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: url("./images/background.png"),
     linear-gradient(0.25turn, #231048, #2e1c50);
   background-repeat: repeat-y;
   background-size: cover;
   color: #faecff;
 }
-a {
-  text-decoration: none;
-  color: #faecff;
-}
-a:hover {
-  color: #3dbb87;
-}
 
-button {
+.btn-cyan {
   background-color: #faecff00;
   color: #3dbb87;
   cursor: pointer;
@@ -96,32 +83,4 @@ button {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-h1,
-h2,
-h3,
-h4 {
-  color: #4fd89f;
-}
-input {
-  width: 250px;
-  height: 40px;
-  background: transparent;
-  border: 3px solid #75ebb9;
-  border-radius: 30px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  color: #faecff;
-
-  &:focus {
-    outline: none;
-  }
-}
-.white-btn {
-  color: #faecff;
-  border: 2px solid #faecff;
-
-  &::after {
-    background-color: #faecff;
-  }
 }

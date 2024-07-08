@@ -89,7 +89,7 @@ const RegisterPage = () => {
             {error && <span className="error-message">{error}</span>}
           </div>
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" className="mx-5" disabled={auth.isLoading}>
+            <button type="submit" className="mx-5 btn-cyan" disabled={auth.isLoading}>
               Załóż konto
             </button>
           </div>
