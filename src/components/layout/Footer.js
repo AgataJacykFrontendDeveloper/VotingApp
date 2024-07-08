@@ -56,10 +56,9 @@
 
 // export default Footer;
 
-
- import React from "react";
- import useNewsletterSignup from "../NewsletterSignup"; // Upewnij się, że ścieżka jest poprawna
- import "./Footer.css";
+import React from "react";
+import useNewsletterSignup from "../NewsletterSignup"; // Upewnij się, że ścieżka jest poprawna
+import "./Footer.css";
 import Logo from "../../images/VotingAppLogo.png";
 const Footer = () => {
   const { handleSubmit, setEmail, email, message } = useNewsletterSignup();
@@ -81,16 +80,18 @@ const Footer = () => {
           <div>
             {" "}
             <form onSubmit={handleSubmit}>
-           <input
-             type="email"
-             value={email}
-             onChange={(e) => setEmail(e.target.value)}
-             placeholder="Wpisz swój e-mail"
-             required
-           />
-            <button type="submit" className="btn-cyan">Zapisz się!</button>
-                     </form>
-         {message && <p>{message}</p>}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Wpisz swój e-mail"
+                required
+              />
+              <button type="submit" className="btn-cyan">
+                Zapisz się!
+              </button>
+            </form>
+            {message && <p>{message}</p>}
           </div>
         </section>
 

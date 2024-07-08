@@ -21,7 +21,7 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="settings" element={<UserPanel />} />
-            <Route path="admin" element={<AdministratorPanel />} /> 
+            <Route path="admin" element={<AdministratorPanel />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route path="vote-monthly" element={<VotingMonth />} />
