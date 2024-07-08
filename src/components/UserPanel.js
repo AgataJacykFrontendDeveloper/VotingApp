@@ -8,6 +8,11 @@ const UserPanel = () => {
   const [showModal, setShowModal] = useState(false);
   const [activeCollapse, setActiveCollapse] = useState(null);
   const auth = useContext(AuthContext);
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const toggleCollapse = (collapseId) => {
     setActiveCollapse(activeCollapse === collapseId ? null : collapseId);
   };
@@ -38,6 +43,38 @@ const UserPanel = () => {
   useEffect(() => {
     ustawZakladke();
   }, []);
+
+  const resetErrors = () => {
+    setError(null);
+    setSuccess(null);
+  };
+
+  const changeEmail = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    try {
+      const tryToChangeEmail = await auth.changeMail(newEmail);
+      setSuccess(tryToChangeEmail.message);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const changePasswd = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    try {
+      if (newPassword !== confirmNewPassword) {
+        throw new Error("Hasła muszą być takie same");
+      }
+      const tryToChangePassword = await auth.changePassword(newPassword);
+      setSuccess(tryToChangePassword.message);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   if (auth.user === null) {
     /* TODO: Komunikat o tym, że użytkownik musi być zalogowany */
@@ -92,9 +129,12 @@ const UserPanel = () => {
                 <div className="user-content d-flex flex-column h-100">
                   <h1 className="user-name text-center py-4">Użytkownik</h1>
 
-                  <p className="user-data user-data-name">E-mail: </p>
-                  <p className="user-data user-data-password">Hasło: </p>
-
+                  <p className="user-data user-data-name">
+                    E-mail: {auth.userEmail}
+                  </p>
+                  <p className="user-data user-data-name">
+                    Sposób logowania: {auth.idProvidera}
+                  </p>
                   <div className="newsletter-form mt-auto">
                     <div className="form-check custom-form-check">
                       <input
@@ -155,7 +195,11 @@ const UserPanel = () => {
                           >
                             Nie, zatrzymaj usuwanie
                           </button>
-                          <button type="button" class="btn btn-primary">
+                          <button
+                            type="button"
+                            onClick={auth.removeAccount}
+                            class="btn btn-primary"
+                          >
                             Tak, usuń moje konto
                           </button>
                         </div>
@@ -182,15 +226,21 @@ const UserPanel = () => {
                       <p className="d-inline-flex gap-1">
                         <button
                           className="btn btn-primary"
-                          onClick={() => toggleCollapse("collapse1")}
+                          onClick={() => {
+                            toggleCollapse("collapse1");
+                            resetErrors();
+                          }}
                           aria-expanded={activeCollapse === "collapse1"}
                           aria-controls="multiCollapseExample1"
                         >
-                          Zmiana nazwy użytkownika
+                          Zmiana e-maila
                         </button>
                         <button
                           className="btn btn-primary"
-                          onClick={() => toggleCollapse("collapse2")}
+                          onClick={() => {
+                            toggleCollapse("collapse2");
+                            resetErrors();
+                          }}
                           aria-expanded={activeCollapse === "collapse2"}
                           aria-controls="multiCollapseExample2"
                         >
@@ -206,11 +256,28 @@ const UserPanel = () => {
                         >
                           <div className="card card-body">
                             <p>
-                              Nowa nazwa użytkownika <input></input>
+                              Nowy adres e-mail
+                              <input
+                                type="email"
+                                value={newEmail}
+                                onChange={(event) =>
+                                  setNewEmail(event.target.value)
+                                }
+                              />
                             </p>
-                            <button type="button" class="btn btn-primary">
+                            <button
+                              type="button"
+                              onClick={changeEmail}
+                              class="btn btn-primary"
+                            >
                               Zapisz
                             </button>
+                            {error && (
+                              <span className="error-message">{error}</span>
+                            )}
+                            {success && (
+                              <span className="success-message">{success}</span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -223,17 +290,38 @@ const UserPanel = () => {
                         >
                           <div className="card card-body">
                             <p>
-                              Stare hasło <input></input>
+                              Nowe hasło
+                              <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(event) =>
+                                  setNewPassword(event.target.value)
+                                }
+                              />
                             </p>
                             <p>
-                              Nowe hasło <input></input>
+                              Powtórz nowe hasło
+                              <input
+                                type="password"
+                                value={confirmNewPassword}
+                                onChange={(event) =>
+                                  setConfirmNewPassword(event.target.value)
+                                }
+                              />
                             </p>
-                            <p>
-                              Powtórz nowe hasło <input></input>
-                            </p>
-                            <button type="button" class="btn btn-primary">
+                            <button
+                              type="button"
+                              onClick={changePasswd}
+                              class="btn btn-primary"
+                            >
                               Zapisz
                             </button>
+                            {error && (
+                              <span className="error-message">{error}</span>
+                            )}
+                            {success && (
+                              <span className="success-message">{success}</span>
+                            )}
                           </div>
                         </div>
                       </div>
