@@ -1,7 +1,31 @@
 .stars {
   position: absolute;
-  right: -30px;
+  right: -4px;
   top: -20px;
   filter: invert(87%) sepia(25%) saturate(742%) hue-rotate(89deg)
     brightness(97%) contrast(90%);
+}
+
+.border-success {
+  border-color: #4fd89f !important;
+}
+
+.border-bottom-2 {
+  border-bottom-width: 4px !important;
+}
+
+.bg-top-vote-opaque {
+  background: linear-gradient(
+    90deg,
+    rgba(117, 235, 185, 0.2) 0%,
+    rgba(105, 64, 182, 0.2) 100%
+  );
+}
+
+.bg-vote-opaque {
+  background: linear-gradient(
+    90deg,
+    rgba(124, 84, 131, 0.2) 0%,
+    rgba(105, 64, 182, 0.2) 100%
+  );
 }
