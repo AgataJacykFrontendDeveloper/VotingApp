@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
 import { Spinner } from "react-bootstrap";
-import { useContext } from "react";
 
-function Layout() {
+function ProtectedLayout() {
   const auth = useContext(AuthContext);
-  // Wait for Auth to set correct Header
   if (auth.isLoading) {
     return (
       <div className="d-flex align-items-center justify-content-center vh-100">
@@ -16,6 +16,9 @@ function Layout() {
         </Spinner>
       </div>
     );
+  }
+  if (!auth.isLoggedIn) {
+    return <Navigate to="/" replace />;
   }
   return (
     <>
@@ -28,4 +31,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default ProtectedLayout;

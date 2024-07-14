@@ -25,7 +25,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [idProvidera, setIdProvidera] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const LOGIN_REDIRECT = "/";
   const REGISTER_REDIRECT = "/";
@@ -78,11 +79,19 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      setUser(authUser);
-      setUserEmail(authUser.providerData[0].email);
-      /* TODO: Ustawienie ID Providera na nazwy zrozumiałe dla użytkownika */
-      setIdProvidera(authUser.providerData[0].providerId);
-      checkIsAdmin(authUser);
+      if (authUser) {
+        setUser(authUser);
+        setUserEmail(authUser.providerData[0].email);
+        /* TODO: Ustawienie ID Providera na nazwy zrozumiałe dla użytkownika */
+        setIdProvidera(authUser.providerData[0].providerId);
+        checkIsAdmin(authUser);
+        setIsLoggedIn(true);
+        setIsLoading(false);
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+        setIsLoading(false);
+      }
     });
 
     return () => {
@@ -232,6 +241,7 @@ export const AuthProvider = ({ children }) => {
         userEmail,
         idProvidera,
         isLoading,
+        isLoggedIn,
         signInWithGoogle,
         signInWithTwitter,
         signInWithFacebook,
