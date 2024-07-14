@@ -1,56 +1,174 @@
+// const Header = () => {
+//   const auth = useContext(AuthContext);
+//   return (
+//     <>
+//       {auth.user === null ? (
+//         <>
+//           <div className="nav">
+//             <input type="checkbox" id="nav-check" />
+//             <div className="nav-header"></div>
+//             <div className="nav-btn">
+//               <label htmlFor="nav-check">
+//                 <span></span>
+//                 <span></span>
+//                 <span></span>
+//               </label>
+//             </div>
+//             <div className="nav-links">
+//               <Link to="/">Strona główna</Link>
+//               <Link to="/vote-weekly">Głosowanie tygodnia</Link>
+//               <Link to="/vote-monthly">Głosowanie miesiąca</Link>
+
+//               <Link to="/login">
+//                 <button>Logowanie</button>{" "}
+//               </Link>
+//             </div>
+//           </div>
+//         </>
+//       ) : (
+//         <>
+//           <div className="nav">
+//             <input type="checkbox" id="nav-check" />
+//             <div className="nav-header"></div>
+//             <div className="nav-btn">
+//               <label htmlFor="nav-check">
+//                 <span></span>
+//                 <span></span>
+//                 <span></span>
+//               </label>
+//             </div>
+//             <div className="nav-links">
+//               <Link to="/">Strona główna</Link>
+//               <Link to="/">Głosowanie tygodnia</Link>
+//               <Link to="/">Głosowanie miesiąca</Link>
+//               <Link to="/settings">Panel użytkownika</Link>
+//               <Link to="/" onClick={auth.signOut}>
+//                 <button>Wyloguj</button>{" "}
+//               </Link>
+//             </div>
+//           </div>
+//         </>
+//       )}
+//     </>
+//   );
+// };
+
+// export default Header;
 import "./Header.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+import logo from "../../images/HeaderLogo.png";
+
 const Header = () => {
   const auth = useContext(AuthContext);
   return (
     <>
       {auth.user === null ? (
         <>
-          <div className="nav">
-            <input type="checkbox" id="nav-check" />
-            <div className="nav-header"></div>
-            <div className="nav-btn">
-              <label htmlFor="nav-check">
-                <span></span>
-                <span></span>
-                <span></span>
-              </label>
+          <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
+            <div className="container-fluid ">
+              <a className="navbar-brand" href="/">
+                <img src={logo} id="HeaderLogo" alt="Voting App Logo" />
+              </a>
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+              <div
+                className="collapse navbar-collapse"
+                id="navbarTogglerDemo02"
+              >
+                <ul className="navbar-nav mb-2 mb-lg-0">
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link active"
+                      aria-current="page"
+                      to="/"
+                    >
+                      Strona główna
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    {" "}
+                    <Link className="nav-link" to="/vote-weekly">
+                      Głosowanie tygodnia
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/vote-monthly">
+                      Głosowanie miesiąca
+                    </Link>
+                  </li>{" "}
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login">
+                      <button className="btn-cyan">Logowanie</button>
+                    </Link>
+                  </li>{" "}
+                </ul>
+              </div>
             </div>
-            <div className="nav-links">
-              <Link to="/">Strona główna</Link>
-              <Link to="/vote-weekly">Głosowanie tygodnia</Link>
-              <Link to="/vote-monthly">Głosowanie miesiąca</Link>
-
-              <Link to="/login">
-                <button>Logowanie</button>{" "}
-              </Link>
-            </div>
-          </div>
+          </nav>
         </>
       ) : (
         <>
-          <div className="nav">
-            <input type="checkbox" id="nav-check" />
-            <div className="nav-header"></div>
-            <div className="nav-btn">
-              <label htmlFor="nav-check">
-                <span></span>
-                <span></span>
-                <span></span>
-              </label>
+          {" "}
+          <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
+            <div className="container-fluid ">
+              <a className="navbar-brand" href="/">
+                <img src={logo} id="HeaderLogo" alt="Voting App Logo" />
+              </a>
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+              <div
+                className="collapse navbar-collapse"
+                id="navbarTogglerDemo02"
+              >
+                <ul className="navbar-nav mb-2 mb-lg-0">
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link active"
+                      aria-current="page"
+                      to="/"
+                    >
+                      Strona główna
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/vote-weekly">
+                      Głosowanie tygodnia
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/vote-monthly">
+                      Głosowanie miesiąca
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/" onClick={auth.signOut}>
+                      <button className="btn-cyan">Wyloguj</button>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div className="nav-links">
-              <Link to="/">Strona główna</Link>
-              <Link to="/">Głosowanie tygodnia</Link>
-              <Link to="/">Głosowanie miesiąca</Link>
-              <Link to="/settings">Panel użytkownika</Link>
-              <Link to="/" onClick={auth.signOut}>
-                <button>Wyloguj</button>{" "}
-              </Link>
-            </div>
-          </div>
+          </nav>
         </>
       )}
     </>

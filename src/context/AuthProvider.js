@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const currentUser = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
       setUserEmail(authUser.providerData[0].email);
       /* TODO: Ustawienie ID Providera na nazwy zrozumiałe dla użytkownika */
@@ -85,7 +85,9 @@ export const AuthProvider = ({ children }) => {
       checkIsAdmin(authUser);
     });
 
-    return currentUser;
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const getOAuthResult = async () => {
