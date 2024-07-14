@@ -82,14 +82,25 @@ export const AuthProvider = ({ children }) => {
       if (authUser) {
         setUser(authUser);
         setUserEmail(authUser.providerData[0].email);
-        /* TODO: Ustawienie ID Providera na nazwy zrozumiałe dla użytkownika */
-        setIdProvidera(authUser.providerData[0].providerId);
+        if (authUser.providerData[0].providerId === "password") {
+          setIdProvidera("E-Mail + hasło");
+        } else if (authUser.providerData[0].providerId === "google.com") {
+          setIdProvidera("Konto Google");
+        } else if (authUser.providerData[0].providerId === "twitter.com") {
+          setIdProvidera("Konto platformy X");
+        } else if (authUser.providerData[0].providerId === "facebook.com") {
+          setIdProvidera("Konto Facebook");
+        } else {
+          setIdProvidera(authUser.providerData[0].providerId);
+        }
         checkIsAdmin(authUser);
         setIsLoggedIn(true);
         setIsLoading(false);
       } else {
         setIsLoggedIn(false);
         setUser(null);
+        setUserEmail(null);
+        setIdProvidera(null);
         setIsLoading(false);
       }
     });

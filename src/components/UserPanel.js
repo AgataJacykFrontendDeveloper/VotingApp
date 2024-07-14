@@ -138,6 +138,7 @@ const UserPanel = () => {
                       value=""
                       id="flexCheckDefault"
                     />
+                    {/* TODO: Obsługa checkboxa */}
                     <label
                       className="form-check-label"
                       htmlFor="flexCheckDefault"
