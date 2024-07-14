@@ -81,7 +81,7 @@ const LoginPage = () => {
           </div>
         </form>
         <Link to="/register">
-          Nie masz jeszcze konta?
+          Nie masz jeszcze konta?&nbsp;
           <span className="register-link-subtext">Zarejestruj się</span>
         </Link>
       </div>

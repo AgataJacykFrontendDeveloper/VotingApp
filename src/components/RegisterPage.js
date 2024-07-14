@@ -17,7 +17,7 @@ const RegisterPage = () => {
       if (password !== confirmPassword) {
         throw new Error("Hasła muszą być takie same");
       }
-      const userCredential = await auth.signupUser(email, password);
+      await auth.signupUser(email, password);
     } catch (error) {
       setError(error.message);
     }
@@ -77,13 +77,15 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div>
-            <input className="inputReset" type="checkbox" />
-            <label htmlFor="newsletter">Zapisz się do newslettera</label>
-          </div>
-          <div>
-            <input className="inputReset" required type="checkbox" />
-            <label htmlFor="terms">Akceptuj warunki użytkowania</label>
+          <div className="d-flex flex-column gap-2 ms-3">
+            <div className="d-flex align-items-center gap-2">
+              <input className="rounded-checkbox" type="checkbox" />
+              <label htmlFor="newsletter">Zapisz się do newslettera</label>
+            </div>
+            <div className="d-flex align-items-center gap-2">
+              <input className="rounded-checkbox" required type="checkbox" />
+              <label htmlFor="terms">Akceptuj warunki użytkowania</label>
+            </div>
           </div>
           <div className="auth form-footer">
             {error && <span className="error-message">{error}</span>}

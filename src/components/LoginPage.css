@@ -19,6 +19,8 @@
   a {
     font-weight: 400;
     font-size: 16px;
+    color: white;
+    text-decoration: none;
     width: fit-content;
 
     &:hover {
@@ -84,13 +86,43 @@
   }
 }
 
-.inputReset {
-  all: revert;
-}
-
 .auth.form-footer {
   gap: 0.5rem;
   margin-left: 1rem;
+}
+
+.rounded-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 2px solid #75ebb9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  appearance: none;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    color: transparent;
+    display: block;
+    width: inherit;
+    height: inherit;
+    background-color: transparent;
+    background-size: contain;
+    flex-shrink: 0;
+  }
+
+  &:checked {
+    background-color: #75ebb9;
+
+    &::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
+    }
+  }
 }
 
 .error-message {
