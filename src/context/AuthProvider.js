@@ -69,12 +69,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const currentUser = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
       checkIsAdmin(authUser);
     });
 
-    return currentUser;
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const getOAuthResult = async () => {

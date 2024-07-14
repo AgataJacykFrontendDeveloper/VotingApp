@@ -68,7 +68,7 @@ const Header = () => {
         <>
           <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
             <div className="container-fluid ">
-              <a className="navbar-brand" href="#">
+              <a className="navbar-brand" href="/">
                 <img src={logo} id="HeaderLogo" alt="Voting App Logo" />
               </a>
               <button
@@ -122,7 +122,7 @@ const Header = () => {
           {" "}
           <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
             <div className="container-fluid ">
-              <a className="navbar-brand" href="#">
+              <a className="navbar-brand" href="/">
                 <img src={logo} id="HeaderLogo" alt="Voting App Logo" />
               </a>
               <button
@@ -151,7 +151,9 @@ const Header = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/vote-weekly">Głosowanie tygodnia</Link>
+                    <Link className="nav-link" to="/vote-weekly">
+                      Głosowanie tygodnia
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" to="/vote-monthly">
