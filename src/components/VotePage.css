@@ -29,3 +29,18 @@
     rgba(105, 64, 182, 0.2) 100%
   );
 }
+
+.btn-heart {
+  background-color: #faecff00;
+  color: #4fd89f;
+  cursor: pointer;
+  border: 2px solid #4fd89f;
+  border-radius: 30px;
+  font-size: 40px;
+  line-height: 40px;
+
+  &:hover {
+    color: #faecff;
+    border: 2px solid #faecff;
+  }
+}

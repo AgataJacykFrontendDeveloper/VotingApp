@@ -1,4 +1,5 @@
-import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import { AuthProvider } from "./context/AuthProvider";
@@ -10,6 +11,7 @@ import UserPanel from "./components/UserPanel";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import VotePage from "./components/VotePage";
+import AdministratorPanel from "./components/AdministratorPanel";
 
 function App() {
   return (
@@ -22,14 +24,14 @@ function App() {
               <Route path="register" element={<RegisterPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="settings" element={<UserPanel />} />
-              <Route path="/vote-weekly" element={<VotePage type="weekly" />} />
-              <Route
-                path="/vote-monthly"
-                element={<VotePage type="monthly" />}
-              />
+              <Route path="admin" element={<AdministratorPanel />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password" element={<ResetPassword />} />
-              {/* Must be always last route */}
+              <Route path="vote-weekly" element={<VotePage type="weekly" />} />
+              <Route
+                path="vote-monthly"
+                element={<VotePage type="monthly" />}
+              />
               <Route path="*" element={<>404 page not found</>} />
             </Route>
           </Routes>

@@ -1,80 +1,60 @@
-.container {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  /*margin: 100px;*/
-}
-.left-menu {
+.first-column {
+  height: 300px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  justify-content: center;
+}
+.second-column {
   height: 500px;
-  width: 40%;
-}
-
-.votes,
-.user-info,
-.settings {
-  width: 250px;
-  text-align: left;
-  margin-bottom: 50px;
-}
-.right-menu {
-  background: linear-gradient(#364360, #36325f);
-  border-radius: 30px;
-  height: 500px;
-  width: 60%;
-}
-
-.user-name {
-  font-size: 30px;
-  text-align: center;
-  margin: 40px 0 0 50px;
-}
-.user-data {
-  font-size: 20px;
-}
-.user-data-name {
-  margin: 30px 0 20px 70px;
-}
-.user-data-password {
-  margin-left: 70px;
-}
-.input-name {
-  margin-left: 30px;
-}
-.input-password {
-  margin-left: 36px;
-}
-input:focus {
-  outline: none;
-  padding-left: 10px;
-  color: white;
-}
-.input-name,
-.input-password {
-  width: 300px;
-  height: 35px;
-  background-color: rgba(75, 161, 114, 0);
-  border: 1px solid rgb(36, 140, 83);
+  background: linear-gradient(
+    123.55deg,
+    rgba(109, 191, 157, 0.48) 0%,
+    rgba(109, 191, 157, 0.14) 100%
+  );
   border-radius: 30px;
 }
-.check-box-1 {
-  margin: 100px 0 0 70px;
-  cursor: pointer;
-}
 
-span {
-  margin-left: 10px;
+.btn-width {
+  width: 14rem;
 }
 
 .delete-account {
-  margin: 50px 0 0 70px;
-  color: rgb(83, 3, 3);
   cursor: pointer;
+  color: #ec9898;
 }
-.x {
-  background-color: red;
-  margin: 70px 0 0 70px;
+
+
+
+@media (max-width: 575px) {
+  .btn-width {
+    font-size: 1rem;
+    width: 12rem;
+    white-space: nowrap;
+  }
+  .user-name, .votes-heading, .settings-heading {
+    font-size: 1.5rem;
+  }
+  .user-data{
+    font-size: 1rem;
+  }
+  .second-column {
+    height: 400px;
+  }
+}
+@media (min-width:576px) {
+  .user-name, .votes-heading, .settings-heading {
+    font-size: 1.6rem;
+  }
+  .user-data {
+    font-size: 1.2rem;
+  }
+  .second-column {
+    height: 450px;
+  }
+}
+@media (min-width: 768px) {
+  .user-data, .newsletter-form, .delete-account  {
+    margin-left: 2.5rem;
+  }
 }

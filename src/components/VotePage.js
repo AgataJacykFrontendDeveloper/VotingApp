@@ -34,9 +34,10 @@ const VotePage = ({ type }) => {
                   className={`w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 overflow-hidden flex-wrap-reverse ${i === 0 ? "border-bottom-2 bg-top-vote-opaque" : "bg-vote-opaque"}`}
                 >
                   <button
-                    className="py-3 px-4 w-auto col-12 col-sm-auto"
+                    className="btn-heart py-1 px-3 w-auto col-12 col-sm-auto"
                     onClick={() => voteSong(song.id)}
                   >
+                    {/*TODO: Change liked song to be &#9829 and not liked &#9825 */}
                     &#9829;
                   </button>
                   <div className="row col-12 col-sm justify-content-center m-0">

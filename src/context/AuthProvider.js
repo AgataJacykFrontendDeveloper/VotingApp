@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase/firebase.js";
+import { auth, db } from "../firebase/firebase.js";
+import { getDoc, doc } from "firebase/firestore";
 import {
   signInWithRedirect,
   getRedirectResult,
@@ -54,9 +55,23 @@ export const AuthProvider = ({ children }) => {
     return errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
   }
 
+  const checkIsAdmin = async (user) => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        setUser({ ...user, isAdmin: userDoc.data().isAdmin });
+      } else {
+        setUser({ ...user, isAdmin: false });
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
+      checkIsAdmin(authUser);
     });
 
     return () => {
