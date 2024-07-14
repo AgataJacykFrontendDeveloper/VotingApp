@@ -13,6 +13,9 @@ import {
   signOut as signOutUser,
   sendPasswordResetEmail,
   confirmPasswordReset,
+  deleteUser,
+  verifyBeforeUpdateEmail,
+  updatePassword,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -20,7 +23,10 @@ auth.languageCode = "pl";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
+  const [idProvidera, setIdProvidera] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const LOGIN_REDIRECT = "/";
   const REGISTER_REDIRECT = "/";
@@ -48,6 +54,9 @@ export const AuthProvider = ({ children }) => {
       "Kod weryfikacyjny jest nieprawidłowy lub wygaśnięty. Użyj funkcji ponownie",
     "auth/password-does-not-meet-requirements":
       "Hasło jest za słabe. Musi zawierać przynajmniej 8 znaków, wielką literę, cyfrę oraz znak specjalny",
+    "auth/invalid-new-email":
+      "Podany adres e-mail jest niepoprawny. Zweryfikuj go.",
+    "auth/requires-recent-login": "Wymagana reautentykacja.",
   };
 
   function checkErrorMessage(e) {
@@ -70,8 +79,30 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      setUser(authUser);
-      checkIsAdmin(authUser);
+      if (authUser) {
+        setUser(authUser);
+        setUserEmail(authUser.providerData[0].email);
+        if (authUser.providerData[0].providerId === "password") {
+          setIdProvidera("E-Mail + hasło");
+        } else if (authUser.providerData[0].providerId === "google.com") {
+          setIdProvidera("Konto Google");
+        } else if (authUser.providerData[0].providerId === "twitter.com") {
+          setIdProvidera("Konto platformy X");
+        } else if (authUser.providerData[0].providerId === "facebook.com") {
+          setIdProvidera("Konto Facebook");
+        } else {
+          setIdProvidera(authUser.providerData[0].providerId);
+        }
+        checkIsAdmin(authUser);
+        setIsLoggedIn(true);
+        setIsLoading(false);
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+        setUserEmail(null);
+        setIdProvidera(null);
+        setIsLoading(false);
+      }
     });
 
     return () => {
@@ -183,11 +214,45 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  const removeAccount = async () => {
+    deleteUser(auth.currentUser).then(() => {
+      navigate(SIGNOUT_REDIRECT);
+    });
+  };
+
+  const changeMail = async (newEmail) => {
+    try {
+      /* TODO: Wiadomość potwierdzająca zmianę maila + Reautentykacja (Firebase wymaga reautentykacji gdy użytkownik logował się dawno) */
+      await verifyBeforeUpdateEmail(auth.currentUser, newEmail);
+      return {
+        message:
+          "Na nowy adres e-mail została wysłana wiadomość do potwierdzenia zmiany.",
+      };
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    }
+  };
+
+  const changePassword = async (newPassword) => {
+    try {
+      /* TODO: Reautentykacja (Firebase wymaga reautentykacji gdy użytkownik logował się dawno) */
+      await updatePassword(auth.currentUser, newPassword);
+      return {
+        message: "Twoje hasło zostało pomyślnie zmienione.",
+      };
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        userEmail,
+        idProvidera,
         isLoading,
+        isLoggedIn,
         signInWithGoogle,
         signInWithTwitter,
         signInWithFacebook,
@@ -197,6 +262,9 @@ export const AuthProvider = ({ children }) => {
         getOAuthResult,
         forgotPassword,
         resetPassword,
+        removeAccount,
+        changeMail,
+        changePassword,
       }}
     >
       {children}

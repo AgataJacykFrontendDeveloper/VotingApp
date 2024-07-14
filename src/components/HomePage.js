@@ -5,7 +5,7 @@ import musicPalyer from "../images/MusicOfTheMonth.png";
 const HomePage = () => {
   return (
     <>
-      <section id="hero" class="container-fluid">
+      <section id="hero" className="container-fluid">
         <div id="hero-text">
           <img src={Logo} className="hero-logo" />
           <h4>Głosuj na ulubione utwory co tydzień i co miesiąc</h4>
@@ -74,7 +74,10 @@ const HomePage = () => {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-      <section id="counting" class="d-flex flex-column justify-content-center">
+      <section
+        id="counting"
+        className="d-flex flex-column justify-content-center"
+      >
         <h3>Do następnego głosowania pozostało</h3>
         <h1>3 dni 19 h 35 min 54 s </h1>
         <button className="btn-cyan">Głosuj w najbliższym głosowaniu</button>
