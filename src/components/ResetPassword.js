@@ -15,7 +15,7 @@ const ResetPassword = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const query = useQuery();
-  const codeFromMail = query.get('oobCode');
+  const codeFromMail = query.get("oobCode");
   const onSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -23,8 +23,8 @@ const ResetPassword = () => {
       if (password !== confirmPassword) {
         throw new Error("Hasła muszą być takie same");
       }
-      if (codeFromMail === null){
-        throw new Error("Ta strona może być użyta tylko z linku z maila")
+      if (codeFromMail === null) {
+        throw new Error("Ta strona może być użyta tylko z linku z maila");
       }
       const reset = await auth.resetPassword(codeFromMail, password);
       setSuccess(reset.message);
@@ -67,7 +67,11 @@ const ResetPassword = () => {
             {success && <span className="success-message">{success}</span>}
           </div>
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" className="mx-5" disabled={auth.isLoading}>
+            <button
+              type="submit"
+              className="mx-5"
+              disabled={auth.isButtonLoading}
+            >
               Zresetuj hasło
             </button>
           </div>

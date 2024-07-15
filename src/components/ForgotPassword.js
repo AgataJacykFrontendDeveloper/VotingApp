@@ -43,18 +43,19 @@ const ForgotPassword = () => {
             {success && <span className="success-message">{success}</span>}
           </div>
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" className="mx-5" disabled={auth.isLoading}>
+            <button
+              type="submit"
+              className="mx-5"
+              disabled={auth.isButtonLoading}
+            >
               Zresetuj hasło
             </button>
           </div>
         </form>
-        <Link to="/login">
-          « Powrót do logowania
-        </Link>
+        <Link to="/login">« Powrót do logowania</Link>
       </div>
     </div>
   );
-
 };
 
 export default ForgotPassword;

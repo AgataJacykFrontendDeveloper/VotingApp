@@ -94,7 +94,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               className="mx-5 btn-cyan"
-              disabled={auth.isLoading}
+              disabled={auth.isButtonLoading}
             >
               Załóż konto
             </button>
