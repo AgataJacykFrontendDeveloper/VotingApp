@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) => {
   const [userEmail, setUserEmail] = useState(null);
   const [idProvidera, setIdProvidera] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const LOGIN_REDIRECT = "/";
@@ -148,7 +149,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signIn = async (email, password) => {
-    setIsLoading(true);
+    setIsButtonLoading(true);
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // User successfully signed in
@@ -159,12 +160,12 @@ export const AuthProvider = ({ children }) => {
         throw new Error(checkErrorMessage(error));
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsButtonLoading(false);
       });
   };
 
   const signupUser = async (email, password) => {
-    setIsLoading(true);
+    setIsButtonLoading(true);
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         navigate(REGISTER_REDIRECT);
@@ -173,12 +174,12 @@ export const AuthProvider = ({ children }) => {
         throw new Error(checkErrorMessage(error));
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsButtonLoading(false);
       });
   };
 
   const forgotPassword = async (email) => {
-    setIsLoading(true);
+    setIsButtonLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
       // Jeżeli w konsoli Firebase jest włączony email enumeration protection to zawsze zwracany jest taki sam request więc odpowiedź zawsze będzie taka sama
@@ -189,12 +190,12 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       throw new Error(checkErrorMessage(error));
     } finally {
-      setIsLoading(false);
+      setIsButtonLoading(false);
     }
   };
 
   const resetPassword = async (oobCode, newPassword) => {
-    setIsLoading(true);
+    setIsButtonLoading(true);
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       return {
@@ -204,7 +205,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       throw new Error(checkErrorMessage(error));
     } finally {
-      setIsLoading(false);
+      setIsButtonLoading(false);
     }
   };
 
@@ -252,6 +253,7 @@ export const AuthProvider = ({ children }) => {
         userEmail,
         idProvidera,
         isLoading,
+        isButtonLoading,
         isLoggedIn,
         signInWithGoogle,
         signInWithTwitter,

@@ -74,7 +74,7 @@ const LoginPage = () => {
             <button
               type="submit"
               className="mx-5 btn-cyan"
-              disabled={auth.isLoading}
+              disabled={auth.isButtonLoading}
             >
               Zaloguj się
             </button>
