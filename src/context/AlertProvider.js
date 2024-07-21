@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { createPortal } from "react-dom";
 import Alert from "../components/alert/Alert";
 
 const AlertContext = createContext();
@@ -25,14 +26,17 @@ export const AlertProvider = ({ children }) => {
   return (
     <AlertContext.Provider value={{ addAlert }}>
       {children}
-      <div
-        className="container h-auto position-absolute start-0 end-0 mx-auto d-flex flex-column"
-        style={{ bottom: "10%" }}
-      >
-        {alerts.map((alert) => (
-          <Alert key={alert.id} msg={alert.message} type={alert.type} />
-        ))}
-      </div>
+      {createPortal(
+        <div
+          className="position-fixed start-0 end-0 z-3"
+          style={{ bottom: "10%" }}
+        >
+          {alerts.map((alert) => (
+            <Alert key={alert.id} msg={alert.message} type={alert.type} />
+          ))}
+        </div>,
+        document.body
+      )}
     </AlertContext.Provider>
   );
 };
