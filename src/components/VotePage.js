@@ -1,11 +1,36 @@
 import "./VotePage.css";
+import { useEffect, useContext, useState } from "react";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import useFetchSongs from "../hooks/useFetchSongs";
 import useVoteSong from "../hooks/useVoteSong";
+import AuthContext from "../context/AuthProvider";
 
 const VotePage = ({ type }) => {
   const voteType = type === "weekly" ? "Tygodnia" : "Miesiąca";
+  const auth = useContext(AuthContext);
+  const [songId, setSongId] = useState(null);
   const { isLoading, songs, currentPollId, setSongs } = useFetchSongs(type);
-  const voteSong = useVoteSong(currentPollId, setSongs, voteType);
+  const voteSong = useVoteSong(currentPollId, setSongs, voteType, setSongId);
+
+  useEffect(() => {
+    async function getUserVote() {
+      if (auth.user && currentPollId) {
+        const userVoteRef = doc(
+          db,
+          "users",
+          auth.user.uid,
+          "votes",
+          currentPollId
+        );
+        const userVoteDoc = await getDoc(userVoteRef);
+        if (userVoteDoc.exists()) {
+          setSongId(userVoteDoc.data().songId);
+        }
+      }
+    }
+    getUserVote();
+  }, [currentPollId, auth.user]);
 
   return (
     <div className="d-flex flex-column align-items-center mx-4">
@@ -37,8 +62,7 @@ const VotePage = ({ type }) => {
                     className="btn-heart py-1 px-3 w-auto col-12 col-sm-auto"
                     onClick={() => voteSong(song.id)}
                   >
-                    {/*TODO: Change liked song to be &#9829 and not liked &#9825 */}
-                    &#9829;
+                    {songId === song.id ? <>&#9829;</> : <>&#9825;</>}
                   </button>
                   <div className="row col-12 col-sm justify-content-center m-0">
                     <div className="col-sm text-center text-sm-start row row-cols-1 column-gap-1">

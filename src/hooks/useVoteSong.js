@@ -12,7 +12,7 @@ import AuthContext from "../context/AuthProvider";
 import AlertContext from "../context/AlertProvider";
 import { useNavigate } from "react-router-dom";
 
-const useVoteSong = (currentPollId, setSongs, voteType) => {
+const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
   const auth = useContext(AuthContext);
   const { addAlert } = useContext(AlertContext);
   const userVoted = useRef(false);
@@ -72,8 +72,9 @@ const useVoteSong = (currentPollId, setSongs, voteType) => {
           song.id === songId ? { ...song, votes: song.votes + 1 } : song
         )
       );
+      setSongId(songId);
       addAlert(`Zagłosowałeś na piosenkę ${voteType.toLowerCase()}`, "success");
-      await setDoc(userVoteRef, { timestamp: Timestamp.now() });
+      await setDoc(userVoteRef, { songId: songId, timestamp: Timestamp.now() });
       userVoted.current = true;
     }
   };
