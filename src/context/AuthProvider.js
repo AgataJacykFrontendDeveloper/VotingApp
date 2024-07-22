@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebase.js";
 import { getDoc, doc } from "firebase/firestore";
@@ -20,6 +20,8 @@ import {
 
 export const AuthContext = createContext();
 auth.languageCode = "pl";
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

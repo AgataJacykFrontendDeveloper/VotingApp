@@ -1,6 +1,7 @@
 import "./UserPanel.css";
 import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/AuthProvider";
+import UserVotes from "./DisplayVote";
 
 const UserPanel = () => {
   const [activeButton, setActiveButton] = useState("user-info");
@@ -115,9 +116,9 @@ const UserPanel = () => {
             {activeButton === "votes" && (
               <div className="votes-content">
                 <h1 className="votes-heading text-center py-4">
-                  Głosy oddane dzisiaj
+                  Wszystkie oddane głosy przez Ciebie
                 </h1>
-                {/* Dodaj treść dla głosów */}
+                <UserVotes />
               </div>
             )}
             {activeButton === "user-info" && (
