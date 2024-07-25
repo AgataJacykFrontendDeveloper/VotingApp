@@ -1,0 +1,19 @@
+.list-group.users-list {
+   
+   
+    height: 200px;
+    
+ }
+.list-group-item.user-item {
+    color: black;
+    margin-top: 10px;
+    
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .block-user {
+    cursor: pointer;
+    color: #ec9898;
+  }

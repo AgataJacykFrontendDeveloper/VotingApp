@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
+import "./AdministratorPanel.css";
 
 const AdministratorPanel = () => {
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
@@ -16,9 +18,15 @@ const AdministratorPanel = () => {
         <div className="page-wrapper">
           <div className="page-inner">
             <aside className="page-sidebar">
-              <nav id="js-primary-nav" className="primary-nav" role="navigation">
+              <nav
+                id="js-primary-nav"
+                className="primary-nav"
+                role="navigation"
+              >
                 <ul id="js-nav-menu" className="nav-menu">
-                  <li className={activeTab === "oddaneGlosy" ? "active open" : ""}>
+                  <li
+                    className={activeTab === "oddaneGlosy" ? "active open" : ""}
+                  >
                     <a
                       href="#"
                       title="Oddane głosy"
@@ -38,7 +46,9 @@ const AdministratorPanel = () => {
                       <span className="nav-link-text">Aktywne głosowania</span>
                     </a>
                   </li>
-                  <li className={activeTab === "uzytkownicy" ? "active open" : ""}>
+                  <li
+                    className={activeTab === "uzytkownicy" ? "active open" : ""}
+                  >
                     <a
                       href="#"
                       title="Użytkownicy"
@@ -48,7 +58,9 @@ const AdministratorPanel = () => {
                       <span className="nav-link-text">Użytkownicy</span>
                     </a>
                   </li>
-                  <li className={activeTab === "ustawienia" ? "active open" : ""}>
+                  <li
+                    className={activeTab === "ustawienia" ? "active open" : ""}
+                  >
                     <a
                       href="#"
                       title="Ustawienia"
@@ -58,7 +70,11 @@ const AdministratorPanel = () => {
                       <span className="nav-link-text">Ustawienia</span>
                     </a>
                   </li>
-                  <li className={activeTab === "nowaListaUtworow" ? "active open" : ""}>
+                  <li
+                    className={
+                      activeTab === "nowaListaUtworow" ? "active open" : ""
+                    }
+                  >
                     <a
                       href="#"
                       title="Nowa lista utworów"
@@ -160,10 +176,26 @@ const AdministratorPanel = () => {
                     </div>
                   )}
                   {activeTab === "uzytkownicy" && (
-                    <div>
-                      <h2>Użytkownicy</h2>
-                      <p>xxx</p>
-                    </div>
+                     <div class="overflow-auto">
+                     <ul class="list-group users-list">
+                       <li class="list-group-item border-2 border-success user-item">
+                         <span>User1</span>
+                         <span className="block-user">Blokuj</span>
+                       </li>
+                       <li class="list-group-item border-2 border-success user-item">
+                         <span>User2</span>
+                         <span className="block-user">Blokuj</span>
+                       </li>
+                       <li class="list-group-item border-2 border-success user-item">
+                         <span>User3</span>
+                         <span className="block-user">Blokuj</span>
+                       </li>
+                       <li class="list-group-item border-2 border-success user-item">
+                         <span>User4</span>
+                         <span className="block-user">Blokuj</span>
+                       </li>
+                     </ul>
+                   </div>
                   )}
                   {activeTab === "ustawienia" && (
                     <div>
