@@ -22,6 +22,85 @@
 .delete-account {
   cursor: pointer;
   color: #ec9898;
+  
+}
+/*modal*/
+.modal-content.modal-bcg {
+  background: linear-gradient(
+    123.55deg,
+    rgba(109, 191, 157, 0.48) 50%,
+    rgba(109, 191, 157, 0.14) 100%
+  );
+    border-radius: 30px;
+}
+.modal-dialog {
+  position: relative;
+  top: 15%;
+  transform: translateY(-50%);
+}
+.modal-backdrop.modal-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(3px);
+}
+.btn.btn-secondary.btn-nodelete,
+.btn.btn-primary.btn-delete {
+  border-radius: 30px;
+  width: 12rem;
+  background: rgba(109, 191, 157, 0.14);
+}
+.btn.btn-secondary.btn-nodelete {
+  border: 2px solid #3dbb87;
+  color: #3dbb87;
+  background: rgba(109, 191, 157, 0.14);
+}
+.btn.btn-primary.btn-delete {
+  color: #ca6464;
+  border: 2px solid #ca6464;
+}
+.modal-footer.btns-footer {
+  display: flex;
+  justify-content: space-between;
+}
+.modal-title{
+  color: #3dbb87;
+  margin: auto;
+}
+.modal-body {
+  color: white;
+}
+.modal-body {
+  text-align: center;
+}
+/*dodatkowe ustawienia*/
+.btn.btn-primary.btn-email, 
+.btn.btn-primary.btn-password {
+  width: 20rem;
+  color: white;
+  background: rgba(109, 191, 157, 0.14);
+  border: 2px solid #3dbb87;
+}
+.card.card-body {
+  background: rgba(109, 191, 157, 0);
+  
+}
+.d-inline-flex.gap-1 {
+  margin-bottom: 10px;
+}
+.userpanel-i {
+  width: 100%;
+  height: 40px;
+  margin-top: 1rem;
+}
+.settings-userpanel {
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  
+}
+.btn.btn-primary.btn-save-userpanel {
+  border: 2px solid #3dbb87;
+  color: #3dbb87;
+  background: rgba(109, 191, 157, 0.14);
 }
 
 
@@ -40,6 +119,10 @@
   }
   .second-column {
     height: 400px;
+  }
+  .modal-footer.btns-footer {
+    display: flex;
+    justify-content: center;
   }
 }
 @media (min-width:576px) {

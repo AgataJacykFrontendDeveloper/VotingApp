@@ -34,7 +34,7 @@ const UserPanel = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showModal]);
+  }, );
 
   /* Tymczasowo zakładka ustawiona na "Informacje podstawowe " */
   const ustawZakladke = () => {
@@ -83,7 +83,7 @@ const UserPanel = () => {
           <div className="p-3 d-flex flex-column justify-content-evenly align-items-center first-column">
             <button
               type="button"
-              className={`btn btn-width votes ${
+              className={`btn-cyan btn-width votes ${
                 activeButton === "votes" ? "active" : ""
               }`}
               onClick={() => setActiveButton("votes")}
@@ -92,7 +92,7 @@ const UserPanel = () => {
             </button>
             <button
               type="button"
-              className={`btn btn-width user-info ${
+              className={`btn-cyan btn-width user-info ${
                 activeButton === "user-info" ? "active" : ""
               }`}
               onClick={() => setActiveButton("user-info")}
@@ -101,7 +101,7 @@ const UserPanel = () => {
             </button>
             <button
               type="button"
-              className={`btn btn-width settings ${
+              className={`btn-cyan btn-width settings ${
                 activeButton === "settings" ? "active" : ""
               }`}
               onClick={() => setActiveButton("settings")}
@@ -115,7 +115,7 @@ const UserPanel = () => {
           <div className="p-3 second-column">
             {activeButton === "votes" && (
               <div className="votes-content">
-                <h1 className="votes-heading text-center py-4">
+                <h1 className="votes-heading text-center py-4 text-white">
                   Wszystkie oddane głosy przez Ciebie
                 </h1>
                 <UserVotes />
@@ -123,12 +123,12 @@ const UserPanel = () => {
             )}
             {activeButton === "user-info" && (
               <div className="user-content d-flex flex-column h-100">
-                <h1 className="user-name text-center py-4">Użytkownik</h1>
+                <h1 className="user-name text-center py-4 text-white">Użytkownik</h1>
 
-                <p className="user-data user-data-name">
+                <p className="fw-bold user-data user-data-name">
                   E-mail: {auth.userEmail}
                 </p>
-                <p className="user-data user-data-name">
+                <p className="fw-bold user-data user-data-name">
                   Sposób logowania: {auth.idProvidera}
                 </p>
                 <div className="newsletter-form mt-auto">
@@ -141,7 +141,7 @@ const UserPanel = () => {
                     />
                     {/* TODO: Obsługa checkboxa */}
                     <label
-                      className="form-check-label"
+                      className="fw-bold form-check-label"
                       htmlFor="flexCheckDefault"
                     >
                       Zapis do newslettera
@@ -163,30 +163,24 @@ const UserPanel = () => {
                   tabIndex="-1"
                 >
                   <div className="modal-dialog">
-                    <div className="modal-content">
+                    <div className="modal-content modal-bcg">
                       <div className="modal-header">
-                        <h5 className="modal-title">
+                        <h5 className="modal-title fw-bold">
                           Przykro nam, że nas opuszczasz
                         </h5>
-                        <button
-                          type="button"
-                          className="btn-close"
-                          onClick={closeModal}
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
+                        
                       </div>
                       <div className="modal-body">
-                        <p>
+                        <p className="modal-text">
                           Ta operacja jest nieodwracalna i stracisz wszystkie
                           swoje zapisane głosowania. Czy na pewno chcesz
                           kontynuować usuwanie konta?
                         </p>
                       </div>
-                      <div className="modal-footer">
+                      <div className="modal-footer btns-footer">
                         <button
                           type="button"
-                          className="btn btn-secondary"
+                          className="btn btn-secondary btn-nodelete"
                           onClick={closeModal}
                           data-bs-dismiss="modal"
                         >
@@ -195,7 +189,7 @@ const UserPanel = () => {
                         <button
                           type="button"
                           onClick={auth.removeAccount}
-                          className="btn btn-primary"
+                          className="btn btn-primary btn-delete"
                         >
                           Tak, usuń moje konto
                         </button>
@@ -206,7 +200,7 @@ const UserPanel = () => {
                 {/* Overlay */}
                 {showModal && (
                   <div
-                    className="modal-backdrop fade show"
+                    className="modal-backdrop fade-shadow modal-overlay"
                     onClick={closeModal}
                   ></div>
                 )}
@@ -214,7 +208,7 @@ const UserPanel = () => {
             )}
             {activeButton === "settings" && (
               <div className="additional-settings-content">
-                <h1 className="settings-heading text-center py-4">
+                <h1 className="settings-heading text-center py-4 text-white">
                   Dodatkowe ustawienia
                 </h1>
                 {/* Dodaj treść dla dodatkowych ustawień */}
@@ -222,7 +216,7 @@ const UserPanel = () => {
                   <div className="row">
                     <p className="d-inline-flex gap-1">
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary btn-email"
                         onClick={() => {
                           toggleCollapse("collapse1");
                           resetErrors();
@@ -233,7 +227,7 @@ const UserPanel = () => {
                         Zmiana e-maila
                       </button>
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary btn-password"
                         onClick={() => {
                           toggleCollapse("collapse2");
                           resetErrors();
@@ -252,9 +246,9 @@ const UserPanel = () => {
                         id="multiCollapseExample1"
                       >
                         <div className="card card-body">
-                          <p>
+                          <p className="settings-userpanel">
                             Nowy adres e-mail
-                            <input
+                            <input className="userpanel-i"
                               type="email"
                               value={newEmail}
                               onChange={(event) =>
@@ -265,7 +259,7 @@ const UserPanel = () => {
                           <button
                             type="button"
                             onClick={changeEmail}
-                            className="btn btn-primary"
+                            className="btn btn-primary fw-bold btn-save-userpanel"
                           >
                             Zapisz
                           </button>
@@ -286,9 +280,9 @@ const UserPanel = () => {
                         id="multiCollapseExample2"
                       >
                         <div className="card card-body">
-                          <p>
+                          <p className="settings-userpanel">
                             Nowe hasło
-                            <input
+                            <input className="userpanel-i"
                               type="password"
                               value={newPassword}
                               onChange={(event) =>
@@ -296,9 +290,9 @@ const UserPanel = () => {
                               }
                             />
                           </p>
-                          <p>
+                          <p className="settings-userpanel">
                             Powtórz nowe hasło
-                            <input
+                            <input className="userpanel-i"
                               type="password"
                               value={confirmNewPassword}
                               onChange={(event) =>
@@ -309,7 +303,7 @@ const UserPanel = () => {
                           <button
                             type="button"
                             onClick={changePasswd}
-                            className="btn btn-primary"
+                            className="btn btn-primary fw-bold btn-save-userpanel"
                           >
                             Zapisz
                           </button>
