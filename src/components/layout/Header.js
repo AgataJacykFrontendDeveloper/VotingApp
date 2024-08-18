@@ -2,7 +2,7 @@ import "./Header.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
-import logo from "../../images/HeaderLogo.png";
+// import logo from "../../images/HeaderLogo.png";
 
 const Header = () => {
   const auth = useContext(AuthContext);
@@ -13,7 +13,7 @@ const Header = () => {
           <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
             <div className="container-fluid ">
               <a className="navbar-brand" href="/">
-                <img src={logo} id="HeaderLogo" alt="Voting App Logo" />
+                <img src={require("../../images/HeaderLogo.png")} id="HeaderLogo" alt="Voting App Logo" />
               </a>
               <button
                 className="navbar-toggler"
@@ -67,7 +67,7 @@ const Header = () => {
           <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
             <div className="container-fluid ">
               <a className="navbar-brand" href="/">
-                <img src={logo} id="HeaderLogo" alt="Voting App Logo" />
+                <img src={"./HeaderLogo.png"} id="HeaderLogo" alt="Voting App Logo" />
               </a>
               <button
                 className="navbar-toggler"

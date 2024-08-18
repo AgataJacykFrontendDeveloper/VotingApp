@@ -106,7 +106,6 @@ const Footer = () => {
                 <h6 className="text-uppercase fw-bold">Informacje</h6>
                 <hr
                   className="mb-4 mt-0 d-inline-block mx-auto"
-                  //   style="width: 60px; background-color: #7c4dff; height: 2px"
                 />
                 <p>
                   <a href="#!" className="text-white">
@@ -139,7 +138,6 @@ const Footer = () => {
                 <h6 className="text-uppercase fw-bold">Przydatne linki</h6>
                 <hr
                   className="mb-4 mt-0 d-inline-block mx-auto"
-                  //   style="width: 60px; background-color: #7c4dff; height: 2px"
                 />
                 <p>
                   <a href="#!" className="text-white">

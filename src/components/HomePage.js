@@ -1,17 +1,19 @@
 import "./HomePage.css";
-import Logo from "../images/VotingAppLogo.png";
-import musicPalyer from "../images/MusicOfTheMonth.png";
+
 
 const HomePage = () => {
   return (
     <>
       <section id="hero" className="container-fluid">
+        <img src={require("../images/concert.png")} id="hero-background" />
         <div id="hero-text">
-          <img src={Logo} className="hero-logo" />
+          <img src={require("../images/VotingAppLogo.png")} className="hero-logo" />
           <h4>Głosuj na ulubione utwory co tydzień i co miesiąc</h4>
           <button className="btn-cyan">Zacznij głosować już teraz!</button>
         </div>
+        <img id="rock-star" src={require("../images/rockStar.png")}></img>
       </section>
+      <section id="player">
       <div
         id="carouselExampleAutoplaying"
         className="carousel slide"
@@ -21,7 +23,7 @@ const HomePage = () => {
           <div className="carousel-item active">
             <div className="d-flex flex-column justify-content-center  align-items-center">
               <img
-                src={musicPalyer}
+                src={require("../images/MusicOfTheMonth.png")}
                 className="music-player"
                 alt="Posłuchaj utworu wybranego w marcu"
               />
@@ -31,7 +33,7 @@ const HomePage = () => {
           <div className="carousel-item">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <img
-                src={musicPalyer}
+                src={require("../images/MusicOfTheMonth.png")}
                 className="music-player"
                 alt="Posłuchaj utworu wybranego w kwietniu"
               />
@@ -41,7 +43,7 @@ const HomePage = () => {
           <div className="carousel-item">
             <div className="d-flex flex-column justify-content-center align-items-center">
               <img
-                src={musicPalyer}
+                src={require("../images/MusicOfTheMonth.png")}
                 className="music-player"
                 alt="Posłuchaj utworu wybranego w maju"
               />
@@ -73,7 +75,7 @@ const HomePage = () => {
           ></span>
           <span className="visually-hidden">Next</span>
         </button>
-      </div>
+      </div></section>
       <section
         id="counting"
         className="d-flex flex-column justify-content-center"

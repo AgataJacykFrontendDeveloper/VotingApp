@@ -10,13 +10,15 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: url("./images/background.png"),
+  background: url("../public/assets/images/background-image.png"),
     linear-gradient(0.25turn, #231048, #2e1c50);
   background-repeat: repeat-y;
   background-size: cover;
-  color: #faecff;
+  color: #faecff !important;
 }
-
+h1{
+  font-size: clamp(2.75rem, 1.261vw + 2.424rem, 4rem) !important;
+}
 .btn-cyan {
   background-color: #faecff00;
   color: #3dbb87;

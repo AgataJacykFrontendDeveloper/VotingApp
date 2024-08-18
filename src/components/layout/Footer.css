@@ -12,7 +12,7 @@ footer .d-flex {
   align-items: center;
 }
 .main-footer-box {
-  background: url("../../images/FooterBackground.png");
+  background: url("../../../public/assets/images/FooterBackground.png");
   background-size: cover;
   padding-top: 15px;
 }

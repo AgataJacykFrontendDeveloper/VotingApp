@@ -1,36 +1,77 @@
 #counting {
   align-items: center;
+  background: url("../../public/assets/images/crowd.png"),linear-gradient(0.25turn, #231048, #2e1c50);
+  background-size: cover;
+  background-position-x: center;
+  height: 60vh;
 }
+
 .carousel-item {
-  height: 30vh;
+  height: 40vh;
   align-content: center;
 }
+
 #hero {
+  background-position-y: top;
+  background-size: cover;
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 0;
+  height: 90vh;
+}
+#hero-background {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 #hero-text {
   width: 50%;
   margin-left: 10%;
+}
+#hero-text, #rock-star {
+  position: relative;
+  z-index: 2;
 }
 #hero-text h4,
 #hero-text button {
   margin: 3% 10%;
 }
 .hero-logo {
-  width: 100%;
+  width: 80%;
 }
 .music-player {
   height: 7rem;
   margin-bottom: 15px;
 }
-
-@media (max-width: 890px) {
+#player {
+  background: linear-gradient(0.25turn, #231048, #2e1c50);
+  height: fit-content;
+  position: relative;
+  z-index: 1;
+}
+#rock-star {
+height: 100%;
+width: auto;
+object-fit: fill;
+}
+@media (max-width: 1150px) {
   #hero {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 0;
+  height: fit-content;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  #hero-background {
+display: none;
   }
   #hero-text {
     margin: auto;
@@ -40,4 +81,7 @@
   #hero-text .btn-cyan {
     margin-left: 20%;
   }
+  #rock-star {
+    height: 70vh;
+    }
 }
