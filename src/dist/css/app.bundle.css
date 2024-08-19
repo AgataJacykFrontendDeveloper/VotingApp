@@ -261,20 +261,8 @@ aside.page-sidebar ($nav-width, $nav-background)
 /* ACCESSIBILITIES */
 /* SHORTCUT BUTTON (appears on bottom right of the page) */
 /* GULP WARNINGS */
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
-body {
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
-  font-size: 0.8125rem;
-  letter-spacing: 0.1px;
-}
-
 .page-content {
   color: #666666;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.3;
-  font-weight: 400;
 }
 
 strong {
@@ -795,18 +783,7 @@ html {
   scroll-behavior: smooth;
 }
 html body {
-  direction: ltr;
   text-rendering: optimizeLegibility;
-  background-color: #fff;
-}
-html body a {
-  color: #886ab5;
-  text-decoration: none;
-  background-color: transparent;
-}
-html body a:hover {
-  color: #967bbd;
-  text-decoration: underline;
 }
 
 /* app header */
@@ -1713,11 +1690,7 @@ html body a:hover {
 		}
 	}
 }*/
-@media (min-width: 1399px) {
-  .page-sidebar .primary-nav .nav-menu > li > a {
-    font-size: 0.875rem;
-  }
-}
+
 /* app navigation filter */
 .nav-filter {
   margin: 0;
