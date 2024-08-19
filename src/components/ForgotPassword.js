@@ -23,12 +23,12 @@ const ForgotPassword = () => {
   return (
     <div className="auth-container container d-flex justify-content-center">
       <div className="auth-panel">
-        <h1 className="auth-panel-title">Zresetuj hasło</h1>
+        <h2 className="auth-panel-title fs-1">Zresetuj hasło</h2>
         <form
           onSubmit={onSubmit}
           className="auth-form d-flex flex-column gap-3"
         >
-          <div className="auth form-group">
+          <div className="auth form-group-a0sPEaj">
             <label htmlFor="email">e-mail</label>
             <input
               type="email"
@@ -45,7 +45,7 @@ const ForgotPassword = () => {
           <div className="d-flex justify-content-center mt-3">
             <button
               type="submit"
-              className="mx-5"
+              className="mx-5 btn-cyan"
               disabled={auth.isButtonLoading}
             >
               Zresetuj hasło

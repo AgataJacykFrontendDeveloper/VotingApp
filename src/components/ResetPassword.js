@@ -36,12 +36,12 @@ const ResetPassword = () => {
   return (
     <div className="auth-container container d-flex justify-content-center">
       <div className="auth-panel">
-        <h1 className="auth-panel-title">Zresetuj hasło</h1>
+        <h2 className="auth-panel-title fs-1">Zresetuj hasło</h2>
         <form
           onSubmit={onSubmit}
           className="auth-form d-flex flex-column gap-3"
         >
-          <div className="auth form-group">
+          <div className="auth form-group-a0sPEaj">
             <label htmlFor="password">hasło</label>
             <input
               type="password"
@@ -50,7 +50,7 @@ const ResetPassword = () => {
               required
             />
           </div>
-          <div className="auth form-group">
+          <div className="auth form-group-a0sPEaj">
             <label htmlFor="confirmPassword">potwórz hasło</label>
             <input
               type="password"

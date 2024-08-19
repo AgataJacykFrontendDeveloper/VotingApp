@@ -38,13 +38,13 @@ const LoginPage = () => {
   return (
     <div className="auth-container container d-flex justify-content-center">
       <div className="auth-panel">
-        <h1 className="auth-panel-title">Zaloguj się</h1>
+        <h2 className="auth-panel-title fs-1">Zaloguj się</h2>
         <SocialAuth />
         <form
           onSubmit={handleSubmit}
           className="auth-form d-flex flex-column gap-3"
         >
-          <div className="auth form-group">
+          <div className="auth form-group-a0sPEaj">
             <label htmlFor="email">e-mail</label>
             <input
               type="email"
@@ -55,7 +55,7 @@ const LoginPage = () => {
               required
             ></input>
           </div>
-          <div className="auth form-group">
+          <div className="auth form-group-a0sPEaj">
             <label htmlFor="password">hasło</label>
             <input
               type="password"
