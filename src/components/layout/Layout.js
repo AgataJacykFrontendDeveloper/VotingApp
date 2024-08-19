@@ -11,7 +11,7 @@ function Layout() {
   if (auth.isLoading) {
     return (
       <div className="d-flex align-items-center justify-content-center vh-100">
-        <Spinner className="col-md-5 mx-auto" animation="border" role="status">
+        <Spinner animation="border" role="status">
           <span className="visually-hidden">Ładowanie...</span>
         </Spinner>
       </div>
