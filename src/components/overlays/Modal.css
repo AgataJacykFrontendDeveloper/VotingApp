@@ -1,13 +1,10 @@
-/* Modal.css */
-
-/* Modal overlay styles */
 .modal-overlay-bp1hFrx {
   backdrop-filter: blur(8px);
-  z-index: 999;
+  z-index: 99;
 }
 
 .modal-wrapper-bp1hFrx {
-  z-index: 1000;
+  z-index: 100;
   padding: 0 1rem 0 1rem;
 }
 
