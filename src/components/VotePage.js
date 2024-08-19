@@ -5,13 +5,19 @@ import { db } from "../firebase/firebase";
 import useFetchSongs from "../hooks/useFetchSongs";
 import useVoteSong from "../hooks/useVoteSong";
 import AuthContext from "../context/AuthProvider";
+import Modal from "./overlays/Modal";
 
 const VotePage = ({ type }) => {
   const voteType = type === "weekly" ? "Tygodnia" : "Miesiąca";
   const auth = useContext(AuthContext);
   const [songId, setSongId] = useState(null);
   const { isLoading, songs, currentPollId, setSongs } = useFetchSongs(type);
-  const voteSong = useVoteSong(currentPollId, setSongs, voteType, setSongId);
+  const { voteForSong, isModalOpen, modalContent } = useVoteSong(
+    currentPollId,
+    setSongs,
+    voteType,
+    setSongId
+  );
 
   useEffect(() => {
     async function getUserVote() {
@@ -50,23 +56,25 @@ const VotePage = ({ type }) => {
                   <img
                     src="/assets/images/stars.png"
                     alt="Najczęsciej głosowana piosenka"
-                    className="stars"
+                    className="stars z-3"
                     width="50"
                   ></img>
                 )}
                 <p className="text-white fs-3 m-0">{i + 1}.</p>
                 <li
-                  className={`w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 overflow-hidden flex-wrap-reverse ${i === 0 ? "border-bottom-2 bg-top-vote-opaque" : "bg-vote-opaque"}`}
+                  className={`position-relative w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 flex-wrap-reverse ${i === 0 ? "border-bottom-2 bg-top-vote-opaque" : "bg-vote-opaque"}`}
                 >
                   <button
                     className="btn-heart py-1 px-3 w-auto col-12 col-sm-auto"
-                    onClick={() => voteSong(song.id)}
+                    onClick={() => voteForSong(song.id)}
                   >
                     {songId === song.id ? <>&#9829;</> : <>&#9825;</>}
                   </button>
-                  <div className="row col-12 col-sm justify-content-center m-0">
+                  <div className="vote-bar row col-12 col-sm justify-content-center m-0">
                     <div className="col-sm text-center text-sm-start row row-cols-1 column-gap-1">
-                      <div className="col col-sm-auto px-0">{song.title}</div>
+                      <div className="col col-sm-auto px-0 text-break">
+                        {song.title}
+                      </div>
                       <div className="col col-sm-auto px-0">{song.artist}</div>
                     </div>
                     <small className="text-white col-auto text-nowrap me-0 me-sm-3 align-self-center">
@@ -77,6 +85,14 @@ const VotePage = ({ type }) => {
               </div>
             ))}
       </ul>
+      {isModalOpen && (
+        <Modal
+          heading={modalContent.heading}
+          text={modalContent.text}
+          close={modalContent.close}
+          buttons={modalContent.buttons}
+        />
+      )}
     </div>
   );
 };

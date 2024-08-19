@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { createPortal } from "react-dom";
-import Alert from "../components/alert/Alert";
+import Alert from "../components/overlays/Alert";
 
 const AlertContext = createContext();
 

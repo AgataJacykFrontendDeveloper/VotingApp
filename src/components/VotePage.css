@@ -1,6 +1,6 @@
 .stars {
   position: absolute;
-  right: -4px;
+  right: -10px;
   top: -20px;
   filter: invert(87%) sepia(25%) saturate(742%) hue-rotate(89deg)
     brightness(97%) contrast(90%);
@@ -30,6 +30,10 @@
   );
 }
 
+.vote-bar {
+  padding: 12px 24px 12px 80px;
+}
+
 .btn-heart {
   background-color: #faecff00;
   color: #4fd89f;
@@ -38,9 +42,24 @@
   border-radius: 30px;
   font-size: 45px;
   line-height: 40px;
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  transform: translateY(-50%);
+  z-index: 1;
 
   &:hover {
     color: #faecff;
     border: 2px solid #faecff;
+  }
+}
+
+@media (max-width: 575px) {
+  .btn-heart {
+    position: static;
+    transform: none;
+  }
+  .vote-bar {
+    padding: 0 0.75rem;
   }
 }
