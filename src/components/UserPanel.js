@@ -115,7 +115,7 @@ const UserPanel = () => {
           <div className="p-3 second-column">
             {activeButton === "votes" && (
               <div className="votes-content">
-                <h1 className="votes-heading text-center py-4 text-white">
+                <h1 className="votes-heading fs-2 text-center py-3 text-white">
                   Wszystkie oddane głosy przez Ciebie
                 </h1>
                 <UserVotes />
@@ -123,7 +123,7 @@ const UserPanel = () => {
             )}
             {activeButton === "user-info" && (
               <div className="user-content d-flex flex-column h-100">
-                <h1 className="user-name text-center py-4 text-white">Użytkownik</h1>
+                <h1 className="user-name fs-2 text-center py-3 text-white">Użytkownik</h1>
 
                 <p className="fw-bold user-data user-data-name">
                   E-mail: {auth.userEmail}
@@ -208,7 +208,7 @@ const UserPanel = () => {
             )}
             {activeButton === "settings" && (
               <div className="additional-settings-content">
-                <h1 className="settings-heading text-center py-4 text-white">
+                <h1 className="settings-heading fs-2 text-center py-3 text-white">
                   Dodatkowe ustawienia
                 </h1>
                 {/* Dodaj treść dla dodatkowych ustawień */}

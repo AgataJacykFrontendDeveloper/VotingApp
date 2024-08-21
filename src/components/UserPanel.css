@@ -103,7 +103,19 @@
   background: rgba(109, 191, 157, 0.14);
 }
 
-
+.btn.btn-primary.btn-save-userpanel:active:focus,
+.btn.btn-primary.btn-email:active:focus,
+.btn.btn-primary.btn-password:active:focus
+ {
+  border-color: #3dbb87 ;
+  color: white ;
+  background-color: #3dbb87 ;
+}
+.btn.btn-primary.btn-save-userpanel:focus,
+.btn.btn-primary.btn-email:focus,
+.btn.btn-primary.btn-password:focus {
+  box-shadow: none;
+}
 
 @media (max-width: 575px) {
   .btn-width {
