@@ -5,6 +5,7 @@ import { getDoc, doc } from "firebase/firestore";
 import {
   signInWithRedirect,
   getRedirectResult,
+  EmailAuthProvider,
   GoogleAuthProvider,
   TwitterAuthProvider,
   FacebookAuthProvider,
@@ -16,6 +17,8 @@ import {
   deleteUser,
   verifyBeforeUpdateEmail,
   updatePassword,
+  reauthenticateWithCredential,
+  reauthenticateWithPopup,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -60,6 +63,7 @@ export const AuthProvider = ({ children }) => {
     "auth/invalid-new-email":
       "Podany adres e-mail jest niepoprawny. Zweryfikuj go.",
     "auth/requires-recent-login": "Wymagana reautentykacja.",
+    "auth/missing-password": "Musisz podać obecne hasło.",
   };
 
   function checkErrorMessage(e) {
@@ -217,15 +221,58 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const removeAccount = async () => {
-    deleteUser(auth.currentUser).then(() => {
-      navigate(SIGNOUT_REDIRECT);
-    });
+  const reAuthentication = async (actualPassword) => {
+    const user = auth.currentUser;
+    const provider = user.providerData[0].providerId;
+    try {
+      switch (provider) {
+        case "password":
+          const credential = EmailAuthProvider.credential(
+            user.email,
+            actualPassword
+          );
+          await reauthenticateWithCredential(user, credential);
+          break;
+
+        case "google.com":
+          const googleProvider = new GoogleAuthProvider();
+          await reauthenticateWithPopup(user, googleProvider);
+          break;
+
+        case "twitter.com":
+          const twitterProvider = new TwitterAuthProvider();
+          await reauthenticateWithPopup(user, twitterProvider);
+          break;
+
+        case "facebook.com":
+          const facebookProvider = new FacebookAuthProvider();
+          await reauthenticateWithPopup(user, facebookProvider);
+          break;
+
+        default:
+          throw new Error(
+            "Nieznany dostawca logowania. Skontaktuj się z administratorem."
+          );
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
-  const changeMail = async (newEmail) => {
+  const removeAccount = async (actualPassword) => {
     try {
-      /* TODO: Wiadomość potwierdzająca zmianę maila + Reautentykacja (Firebase wymaga reautentykacji gdy użytkownik logował się dawno) */
+      await reAuthentication(actualPassword);
+      await deleteUser(auth.currentUser);
+      navigate(SIGNOUT_REDIRECT);
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    }
+  };
+
+  const changeMail = async (newEmail, actualPassword) => {
+    try {
+      /* TODO: Wiadomość potwierdzająca zmianę maila */
+      await reAuthentication(actualPassword);
       await verifyBeforeUpdateEmail(auth.currentUser, newEmail);
       return {
         message:
@@ -236,9 +283,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const changePassword = async (newPassword) => {
+  const changePassword = async (newPassword, actualPassword) => {
     try {
-      /* TODO: Reautentykacja (Firebase wymaga reautentykacji gdy użytkownik logował się dawno) */
+      await reAuthentication(actualPassword);
       await updatePassword(auth.currentUser, newPassword);
       return {
         message: "Twoje hasło zostało pomyślnie zmienione.",
