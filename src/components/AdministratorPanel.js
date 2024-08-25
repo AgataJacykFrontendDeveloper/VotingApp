@@ -5,6 +5,7 @@ import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
 
+
 const AdministratorPanel = () => {
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
   const [isNavHidden, setNavHidden] = useState(false);
@@ -28,9 +29,10 @@ const AdministratorPanel = () => {
         isNavFixed ? "nav-function-fixed" : ""
       } ${isMobileNavOn ? "mobile-nav-on" : ""}`}
     >
+      
       <div className="page-wrapper">
         <div className="page-inner">
-          <aside className="page-sidebar">
+          <aside className="page-sidebar page-sidebar-bcg">
             <nav id="js-primary-nav" className="primary-nav" role="navigation">
               <ul id="js-nav-menu" className="nav-menu">
                 <li
@@ -92,8 +94,8 @@ const AdministratorPanel = () => {
             </nav>
           </aside>
 
-          <div className="page-content-wrapper">
-            <header className="page-header" role="banner">
+          <div className="page-content-wrapper bg-transparent">
+            <header className="page-header bg-transparent" role="banner">
               <div className="hidden-md-down dropdown-icon-menu position-relative">
                 <a
                   href="#"
@@ -151,17 +153,9 @@ const AdministratorPanel = () => {
               </div>
             </header>
 
-            <main id="js-page-content" role="main" className="page-content">
-              <div className="subheader">
-                <h1 className="subheader-title">
-                  {activeTab === "oddaneGlosy" && "Oddane głosy"}
-                  {activeTab === "aktywneGlosowania" && "Aktywne głosowania"}
-                  {activeTab === "uzytkownicy" && "Użytkownicy"}
-                  {activeTab === "ustawienia" && "Ustawienia"}
-                  {activeTab === "nowaListaUtworow" && "Nowa lista utworów"}
-                </h1>
-              </div>
-              <div className="fs-lg fw-300 p-5 bg-white border-faded rounded mb-g">
+            <main id="js-page-content" role="main" className="page-content page-bcg">
+              
+              <div className="fs-lg fw-300 p-5 border-faded mb-g main-content-admin">
                 {activeTab === "oddaneGlosy" && (
                   <div>
                     <h2>Oddane głosy</h2>
@@ -176,6 +170,7 @@ const AdministratorPanel = () => {
                 )}
                 {activeTab === "uzytkownicy" && (
                   <div className="overflow-auto">
+                    <h2>Użytkownicy</h2>
                     <ul className="list-group users-list">
                       <li className="list-group-item border-2 border-success user-item">
                         <span>User1</span>
