@@ -34,7 +34,7 @@ const UserPanel = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, );
+  });
 
   /* Tymczasowo zakładka ustawiona na "Informacje podstawowe " */
   const ustawZakladke = () => {
@@ -123,7 +123,9 @@ const UserPanel = () => {
             )}
             {activeButton === "user-info" && (
               <div className="user-content d-flex flex-column h-100">
-                <h1 className="user-name fs-2 text-center py-3 text-white">Użytkownik</h1>
+                <h1 className="user-name fs-2 text-center py-3 text-white">
+                  Użytkownik
+                </h1>
 
                 <p className="fw-bold user-data user-data-name">
                   E-mail: {auth.userEmail}
@@ -168,7 +170,6 @@ const UserPanel = () => {
                         <h5 className="modal-title fw-bold">
                           Przykro nam, że nas opuszczasz
                         </h5>
-                        
                       </div>
                       <div className="modal-body">
                         <p className="modal-text">
@@ -248,7 +249,8 @@ const UserPanel = () => {
                         <div className="card card-body">
                           <p className="settings-userpanel">
                             Nowy adres e-mail
-                            <input className="userpanel-i"
+                            <input
+                              className="userpanel-i"
                               type="email"
                               value={newEmail}
                               onChange={(event) =>
@@ -282,7 +284,8 @@ const UserPanel = () => {
                         <div className="card card-body">
                           <p className="settings-userpanel">
                             Nowe hasło
-                            <input className="userpanel-i"
+                            <input
+                              className="userpanel-i"
                               type="password"
                               value={newPassword}
                               onChange={(event) =>
@@ -292,7 +295,8 @@ const UserPanel = () => {
                           </p>
                           <p className="settings-userpanel">
                             Powtórz nowe hasło
-                            <input className="userpanel-i"
+                            <input
+                              className="userpanel-i"
                               type="password"
                               value={confirmNewPassword}
                               onChange={(event) =>
