@@ -31,7 +31,14 @@ const VotePage = ({ type }) => {
         );
         const userVoteDoc = await getDoc(userVoteRef);
         if (userVoteDoc.exists()) {
-          setSongId(userVoteDoc.data().songId);
+          // Show only today's voted song
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          const lastVoteTime = userVoteDoc.data().timestamp?.toDate();
+          if (lastVoteTime >= today) {
+            setSongId(userVoteDoc.data().songId);
+          }
         }
       }
     }
