@@ -1,8 +1,19 @@
+.bg-brand-gradient, .nav-footer, .page-sidebar, .page-logo {
+  background-image: none;
+  background-color: transparent;
+}
+.main-content-admin {
+  height: 500px;
+  background: linear-gradient(
+    123.55deg,
+    rgba(109, 191, 157, 0.48) 0%,
+    rgba(109, 191, 157, 0.14) 100%
+  );
+  border-radius: 30px;
+  color: white;
+}
 .list-group.users-list {
-   
-   
-    height: 200px;
-    
+    height: 200px; 
  }
 .list-group-item.user-item {
     color: black;
@@ -17,3 +28,6 @@
     cursor: pointer;
     color: #ec9898;
   }
+
+
+  
