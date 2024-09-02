@@ -5,6 +5,7 @@
   background-size: cover;
   background-position-x: center;
   height: 60vh;
+  margin-bottom: -50px;
 }
 
 .carousel-item {
