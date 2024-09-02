@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Form } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 import { AuthProvider } from "./context/AuthProvider";
@@ -13,6 +13,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import VotePage from "./components/VotePage";
 import AdministratorPanel from "./components/AdministratorPanel";
+import PageNotFound from "./components/404";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
                 path="vote-monthly"
                 element={<VotePage type="monthly" />}
               />
-              <Route path="*" element={<>404 page not found</>} />
+              <Route path="*" element={<PageNotFound/>} />
             </Route>
             <Route element={<ProtectedLayout />}>
               <Route path="settings" element={<UserPanel />} />
