@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect, useState } from "react";
+import { useContext, useRef, useEffect } from "react";
 import {
   getDoc,
   setDoc,
@@ -11,20 +11,14 @@ import { db } from "../firebase/firebase";
 import AuthContext from "../context/AuthProvider";
 import AlertContext from "../context/AlertProvider";
 import { useNavigate } from "react-router-dom";
+import { useModal } from "../context/ModalProvider";
 
 const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
   const auth = useContext(AuthContext);
   const { addAlert } = useContext(AlertContext);
+  const { openModal, closeModal } = useModal();
   const userVoted = useRef(false);
   const navigate = useNavigate();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState({
-    heading: "",
-    text: "",
-    close: () => {},
-    buttons: [],
-  });
 
   useEffect(() => {
     // Reset userVoted if poll was changed
@@ -81,28 +75,26 @@ const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
         )
       );
       setSongId(songId);
-      setModalContent({
+      openModal({
         heading: "Twój głos został zapisany!",
         text: "Następny głos możesz oddać już jutro, a do tego czasu ciesz się z nami playlistą utworów które zostały wybrane w poprzednich głosowaniach. Wszystkie swoje głosy znajdziesz w panelu użytkownika",
-        close: () => setIsModalOpen(false),
         buttons: [
           {
             label: "Zobacz listę zapisanych głosów",
             type: "success",
             action: () => {
-              setIsModalOpen(false);
+              closeModal();
               navigate("/settings");
             },
           },
         ],
       });
-      setIsModalOpen(true);
       await setDoc(userVoteRef, { songId: songId, timestamp: Timestamp.now() });
       userVoted.current = true;
     }
   };
 
-  return { voteForSong, isModalOpen, modalContent };
+  return { voteForSong };
 };
 
 export default useVoteSong;

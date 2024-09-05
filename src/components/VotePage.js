@@ -5,19 +5,51 @@ import { db } from "../firebase/firebase";
 import useFetchSongs from "../hooks/useFetchSongs";
 import useVoteSong from "../hooks/useVoteSong";
 import AuthContext from "../context/AuthProvider";
-import Modal from "./overlays/Modal";
+import AlertContext from "../context/AlertProvider";
+import { useModal } from "../context/ModalProvider";
+import { useNavigate } from "react-router-dom";
 
 const VotePage = ({ type }) => {
   const voteType = type === "weekly" ? "Tygodnia" : "Miesiąca";
   const auth = useContext(AuthContext);
+  const { addAlert } = useContext(AlertContext);
+  const { openModal, closeModal } = useModal();
   const [songId, setSongId] = useState(null);
+  const navigate = useNavigate();
+
   const { isLoading, songs, currentPollId, setSongs } = useFetchSongs(type);
-  const { voteForSong, isModalOpen, modalContent } = useVoteSong(
+  const { voteForSong } = useVoteSong(
     currentPollId,
     setSongs,
     voteType,
     setSongId
   );
+
+  const confirmVote = (song) => {
+    if (!auth.user) {
+      return navigate("/login");
+    }
+    if (songId) {
+      return addAlert(
+        `Już dzisiaj głosowałeś na piosenkę ${voteType.toLowerCase()}`,
+        "warning"
+      );
+    }
+    openModal({
+      heading: `Potwierdź swój wybór`,
+      text: `Zaakceptuj swój wybór na ${song.title} artysty ${song.artist} w głosowaniu ${voteType}`,
+      buttons: [
+        {
+          label: "Akceptuj",
+          type: "success",
+          action: () => {
+            closeModal();
+            voteForSong(song.id);
+          },
+        },
+      ],
+    });
+  };
 
   useEffect(() => {
     async function getUserVote() {
@@ -39,6 +71,8 @@ const VotePage = ({ type }) => {
           if (lastVoteTime >= today) {
             setSongId(userVoteDoc.data().songId);
           }
+        } else {
+          setSongId(null);
         }
       }
     }
@@ -73,7 +107,7 @@ const VotePage = ({ type }) => {
                 >
                   <button
                     className="btn-heart py-1 px-3 w-auto col-12 col-sm-auto"
-                    onClick={() => voteForSong(song.id)}
+                    onClick={() => confirmVote(song)}
                   >
                     {songId === song.id ? <>&#9829;</> : <>&#9825;</>}
                   </button>
@@ -92,14 +126,6 @@ const VotePage = ({ type }) => {
               </div>
             ))}
       </ul>
-      {isModalOpen && (
-        <Modal
-          heading={modalContent.heading}
-          text={modalContent.text}
-          close={modalContent.close}
-          buttons={modalContent.buttons}
-        />
-      )}
     </div>
   );
 };
