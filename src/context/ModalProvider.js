@@ -32,8 +32,8 @@ export const ModalProvider = ({ children }) => {
       {createPortal(
         modalContent && (
           <Modal
-            heading={modalContent.heading}
-            text={modalContent.text}
+            title={modalContent.title}
+            body={modalContent.body}
             close={closeModal}
             buttons={modalContent.buttons}
           />

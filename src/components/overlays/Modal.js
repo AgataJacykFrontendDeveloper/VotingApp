@@ -1,6 +1,6 @@
 import "./Modal.css";
 
-const Modal = ({ heading, text, close, buttons }) => {
+const Modal = ({ title, body, close, buttons }) => {
   return (
     <>
       <div
@@ -24,9 +24,9 @@ const Modal = ({ heading, text, close, buttons }) => {
             </svg>
           </button>
 
-          {heading && <h4 className="modal-heading-bp1hFrx mb-3">{heading}</h4>}
-          {text && (
-            <p className="modal-text-bp1hFrx text-center mb-3">{text}</p>
+          {title && <h4 className="modal-title-bp1hFrx mb-3">{title}</h4>}
+          {body && (
+            <p className="modal-body-bp1hFrx text-center mb-3">{body}</p>
           )}
           <div className="d-flex justify-content-evenly w-100">
             {buttons &&

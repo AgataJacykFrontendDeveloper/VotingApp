@@ -76,8 +76,8 @@ const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
       );
       setSongId(songId);
       openModal({
-        heading: "Twój głos został zapisany!",
-        text: "Następny głos możesz oddać już jutro, a do tego czasu ciesz się z nami playlistą utworów które zostały wybrane w poprzednich głosowaniach. Wszystkie swoje głosy znajdziesz w panelu użytkownika",
+        title: "Twój głos został zapisany!",
+        body: "Następny głos możesz oddać już jutro, a do tego czasu ciesz się z nami playlistą utworów które zostały wybrane w poprzednich głosowaniach. Wszystkie swoje głosy znajdziesz w panelu użytkownika",
         buttons: [
           {
             label: "Zobacz listę zapisanych głosów",

@@ -36,8 +36,8 @@ const VotePage = ({ type }) => {
       );
     }
     openModal({
-      heading: `Potwierdź swój wybór`,
-      text: `Zaakceptuj swój wybór na ${song.title} artysty ${song.artist} w głosowaniu ${voteType}`,
+      title: `Potwierdź swój wybór`,
+      body: `Zaakceptuj swój wybór na ${song.title} artysty ${song.artist} w głosowaniu ${voteType}`,
       buttons: [
         {
           label: "Akceptuj",

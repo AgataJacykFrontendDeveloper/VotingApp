@@ -24,7 +24,7 @@
   color: var(--bs-emphasis-color-rgb);
 }
 
-.modal-heading-bp1hFrx {
+.modal-title-bp1hFrx {
   color: rgba(117, 235, 185, 1);
 }
 
@@ -65,6 +65,6 @@
   }
 }
 
-.modal-text-bp1hFrx {
+.modal-body-bp1hFrx {
   max-width: 500px;
 }
