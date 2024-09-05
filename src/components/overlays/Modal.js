@@ -7,7 +7,7 @@ const Modal = ({ heading, text, close, buttons }) => {
         className="modal-overlay-bp1hFrx position-fixed top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center"
         onClick={close}
       ></div>
-      <div className="modal-wrapper-bp1hFrx relative position-fixed translate-middle-y top-50 left-50">
+      <div className="modal-wrapper-bp1hFrx position-fixed start-50 top-50 translate-middle d-flex justify-content-center">
         <div className="modal-content-bp1hFrx rounded-5 gap-1 d-flex flex-column justify-content-between align-items-center">
           <button
             className="modal-close-bp1hFrx border-0 p-0 bg-transparent align-self-end"

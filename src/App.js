@@ -1,10 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { BrowserRouter, Routes, Route, Form } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 import { AuthProvider } from "./context/AuthProvider";
 import { AlertProvider } from "./context/AlertProvider";
+import { ModalProvider } from "./context/ModalProvider";
 import HomePage from "./components/HomePage";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
@@ -20,25 +21,30 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <AlertProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="register" element={<RegisterPage />} />
-              <Route path="login" element={<LoginPage />} />
-              <Route path="forgot-password" element={<ForgotPassword />} />
-              <Route path="reset-password" element={<ResetPassword />} />
-              <Route path="vote-weekly" element={<VotePage type="weekly" />} />
-              <Route
-                path="vote-monthly"
-                element={<VotePage type="monthly" />}
-              />
-              <Route path="*" element={<PageNotFound/>} />
-            </Route>
-            <Route element={<ProtectedLayout />}>
-              <Route path="settings" element={<UserPanel />} />
-              <Route path="admin" element={<AdministratorPanel />} />
-            </Route>
-          </Routes>
+          <ModalProvider>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="register" element={<RegisterPage />} />
+                <Route path="login" element={<LoginPage />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="reset-password" element={<ResetPassword />} />
+                <Route
+                  path="vote-weekly"
+                  element={<VotePage type="weekly" />}
+                />
+                <Route
+                  path="vote-monthly"
+                  element={<VotePage type="monthly" />}
+                />
+                <Route path="*" element={<PageNotFound />} />
+              </Route>
+              <Route element={<ProtectedLayout />}>
+                <Route path="settings" element={<UserPanel />} />
+                <Route path="admin" element={<AdministratorPanel />} />
+              </Route>
+            </Routes>
+          </ModalProvider>
         </AlertProvider>
       </AuthProvider>
     </BrowserRouter>
