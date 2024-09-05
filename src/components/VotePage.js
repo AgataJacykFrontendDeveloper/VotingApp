@@ -67,7 +67,7 @@ const VotePage = ({ type }) => {
                     width="50"
                   ></img>
                 )}
-                <p className="text-white fs-3 m-0">{i + 1}.</p>
+                <p className="text-white fs-3 m-0 vote-enumeration">{i + 1}.</p>
                 <li
                   className={`position-relative w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 flex-wrap-reverse ${i === 0 ? "border-bottom-2 bg-top-vote-opaque" : "bg-vote-opaque"}`}
                 >
