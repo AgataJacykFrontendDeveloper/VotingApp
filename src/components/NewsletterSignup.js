@@ -18,7 +18,7 @@ const useNewsletterSignup = () => {
           setMessage("Dziękujemy za zapisanie się do newslettera!");
         }
       } catch (error) {
-        console.error("Error adding document: ", error); // Logowanie błędów
+        console.error("Error adding document: ", error);
         setMessage("Wystąpił błąd. Spróbuj ponownie.");
       }
     } else {
