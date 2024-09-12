@@ -70,6 +70,8 @@ const VotePage = ({ type }) => {
           const lastVoteTime = userVoteDoc.data().timestamp?.toDate();
           if (lastVoteTime >= today) {
             setSongId(userVoteDoc.data().songId);
+          } else {
+            setSongId(null);
           }
         } else {
           setSongId(null);
