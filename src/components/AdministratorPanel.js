@@ -5,7 +5,6 @@ import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
 
-
 const AdministratorPanel = () => {
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
   const [isNavHidden, setNavHidden] = useState(false);
@@ -29,8 +28,7 @@ const AdministratorPanel = () => {
         isNavFixed ? "nav-function-fixed" : ""
       } ${isMobileNavOn ? "mobile-nav-on" : ""}`}
     >
-      
-      <div className="page-wrapper">
+      <div className="page-wrapper small-dev-bcg">
         <div className="page-inner">
           <aside className="page-sidebar page-sidebar-bcg">
             <nav id="js-primary-nav" className="primary-nav" role="navigation">
@@ -53,11 +51,13 @@ const AdministratorPanel = () => {
                     title="Aktywne głosowania"
                     onClick={() => handleTabClick("aktywneGlosowania")}
                   >
-                    <i className="fal fa-cog"></i>
+                    <i className="fal fa-window"></i>
                     <span className="nav-link-text">Aktywne głosowania</span>
                   </a>
                 </li>
-                <li className={activeTab === "uzytkownicy" ? "active open" : ""}>
+                <li
+                  className={activeTab === "uzytkownicy" ? "active open" : ""}
+                >
                   <a
                     href="#"
                     title="Użytkownicy"
@@ -73,19 +73,21 @@ const AdministratorPanel = () => {
                     title="Ustawienia"
                     onClick={() => handleTabClick("ustawienia")}
                   >
-                    <i className="fal fa-book"></i>
+                    <i className="fal fa-cog"></i>
                     <span className="nav-link-text">Ustawienia</span>
                   </a>
                 </li>
                 <li
-                  className={activeTab === "nowaListaUtworow" ? "active open" : ""}
+                  className={
+                    activeTab === "nowaListaUtworow" ? "active open" : ""
+                  }
                 >
                   <a
                     href="#"
                     title="Nowa lista utworów"
                     onClick={() => handleTabClick("nowaListaUtworow")}
                   >
-                    <i className="fal fa-book"></i>
+                    <i className="fal fa-edit"></i>
                     <span className="nav-link-text">Nowa lista utworów</span>
                   </a>
                 </li>
@@ -94,8 +96,8 @@ const AdministratorPanel = () => {
             </nav>
           </aside>
 
-          <div className="page-content-wrapper bg-transparent">
-            <header className="page-header bg-transparent" role="banner">
+          <div className="page-content-wrapper bg-transparent  ">
+            <header className="page-header bg-transparent " role="banner">
               <div className="hidden-md-down dropdown-icon-menu position-relative">
                 <a
                   href="#"
@@ -138,23 +140,13 @@ const AdministratorPanel = () => {
                   <i className="ni ni-menu"></i>
                 </a>
               </div>
-
-              <div className="ml-auto d-flex">
-                <div>
-                  <a
-                    href="#"
-                    data-toggle="dropdown"
-                    title="drlantern@gotbootstrap.com"
-                    className="header-icon d-flex align-items-center justify-content-center ml-2"
-                  >
-                    Wyloguj
-                  </a>
-                </div>
-              </div>
             </header>
 
-            <main id="js-page-content" role="main" className="page-content page-bcg">
-              
+            <main
+              id="js-page-content"
+              role="main"
+              className="page-content page-bcg"
+            >
               <div className="fs-lg fw-300 p-5 border-faded mb-g main-content-admin">
                 {activeTab === "oddaneGlosy" && (
                   <div>
@@ -193,8 +185,38 @@ const AdministratorPanel = () => {
                 )}
                 {activeTab === "ustawienia" && (
                   <div>
-                    <h2>Ustawienia</h2>
-                    <p>xxx</p>
+                    <h2>Zmiana hasła</h2>
+                    <div>
+                      <label for="inputPassword5" class="form-label">
+                        Stare hasło
+                      </label>
+                      <input
+                        type="password"
+                        id="inputPassword5"
+                        class="form-control"
+                        aria-describedby="passwordHelpBlock"
+                      />
+
+                      <label for="inputPassword5" class="form-label">
+                        Nowe hasło
+                      </label>
+                      <input
+                        type="password"
+                        id="inputPassword5"
+                        class="form-control"
+                        aria-describedby="passwordHelpBlock"
+                      />
+
+                      <label for="inputPassword5" class="form-label">
+                        Powtórz nowe hasło
+                      </label>
+                      <input
+                        type="password"
+                        id="inputPassword5"
+                        class="form-control"
+                        aria-describedby="passwordHelpBlock"
+                      />
+                    </div>
                   </div>
                 )}
                 {activeTab === "nowaListaUtworow" && (
