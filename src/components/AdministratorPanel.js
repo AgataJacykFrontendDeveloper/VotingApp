@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
+import { getUserList, getPollList } from "./AdministratorPanelFunctions";
 
 const AdministratorPanel = () => {
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
@@ -11,6 +12,11 @@ const AdministratorPanel = () => {
   const [isNavMinified, setNavMinified] = useState(false);
   const [isNavFixed, setNavFixed] = useState(false);
   const [isMobileNavOn, setMobileNavOn] = useState(false);
+  const [userList, setUserList] = useState([]);
+  const [records, setRecords] = useState({
+    WeeklyRecord: null,
+    MonthlyRecord: null,
+  });
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -19,6 +25,28 @@ const AdministratorPanel = () => {
   const toggleClass = (toggleFunction, currentState) => {
     toggleFunction(!currentState);
   };
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const users = await getUserList();
+        setUserList(users);
+      } catch (error) {
+        console.log("Błąd: ", error);
+      }
+    };
+    const loadPolls = async () => {
+      try {
+        const fetchedRecords = await getPollList();
+        setRecords(fetchedRecords);
+      } catch (error) {
+        console.log("Błąd: ", error);
+      }
+    };
+
+    loadUsers();
+    loadPolls();
+  }, []);
 
   return (
     <div
@@ -157,29 +185,69 @@ const AdministratorPanel = () => {
                 {activeTab === "aktywneGlosowania" && (
                   <div>
                     <h2>Aktywne głosowania</h2>
-                    <p>xxx</p>
+                    {/* TODO: Funkcjonalność do zarządzania + Jakie piosenki występują w głosowaniu */}
+                    <div>
+                      <h5>Głosowanie Tygodnia:</h5>
+                      {records.WeeklyRecord ? (
+                        <div>
+                          <p>ID: {records.WeeklyRecord.id}</p>
+                          <p>Tytuł: {records.WeeklyRecord.title}</p>
+                          <p>
+                            Start:{" "}
+                            {records.WeeklyRecord.start_at
+                              .toDate()
+                              .toLocaleString()}
+                          </p>
+                          <p>
+                            Koniec:{" "}
+                            {records.WeeklyRecord.end_at
+                              .toDate()
+                              .toLocaleString()}
+                          </p>
+                        </div>
+                      ) : (
+                        <p>Ładowanie głosowania tygodnia...</p>
+                      )}
+                    </div>
+                    <div>
+                      <h5>Głosowanie Miesiąca:</h5>
+                      {records.MonthlyRecord ? (
+                        <div>
+                          <p>ID: {records.MonthlyRecord.id}</p>
+                          <p>Tytuł: {records.MonthlyRecord.title}</p>
+                          <p>
+                            Start:{" "}
+                            {records.MonthlyRecord.start_at
+                              .toDate()
+                              .toLocaleString()}
+                          </p>
+                          <p>
+                            Koniec:{" "}
+                            {records.MonthlyRecord.end_at
+                              .toDate()
+                              .toLocaleString()}
+                          </p>
+                        </div>
+                      ) : (
+                        <p>Ładowanie głosowania miesiąca...</p>
+                      )}
+                    </div>
                   </div>
                 )}
                 {activeTab === "uzytkownicy" && (
                   <div className="overflow-auto">
                     <h2>Użytkownicy</h2>
                     <ul className="list-group users-list">
-                      <li className="list-group-item border-2 border-success user-item">
-                        <span>User1</span>
-                        <span className="block-user">Blokuj</span>
-                      </li>
-                      <li className="list-group-item border-2 border-success user-item">
-                        <span>User2</span>
-                        <span className="block-user">Blokuj</span>
-                      </li>
-                      <li className="list-group-item border-2 border-success user-item">
-                        <span>User3</span>
-                        <span className="block-user">Blokuj</span>
-                      </li>
-                      <li className="list-group-item border-2 border-success user-item">
-                        <span>User4</span>
-                        <span className="block-user">Blokuj</span>
-                      </li>
+                      {userList.map((user) => (
+                        <li
+                          key={user.id}
+                          className="list-group-item border-2 border-success user-item"
+                        >
+                          <span>{user.id}</span>
+                          {/* TODO: Blokowanie użytkowników i wyświetlanie maila zamiast ID + Dodawanie maila użytkownika do firestore przy rejestracji */}
+                          <span className="block-user">Blokuj</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 )}
