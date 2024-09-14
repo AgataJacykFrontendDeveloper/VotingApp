@@ -1,0 +1,10 @@
+.song-votes {
+  color: #4fd89f;
+}
+
+.link-song {
+  color: var(--bs-body-color);
+  &:hover {
+    color: #4fd89f;
+  }
+}

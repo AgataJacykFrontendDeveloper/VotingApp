@@ -85,7 +85,7 @@ const HomePage = () => {
             className="hero-logo"
           />
           <h4>Głosuj na ulubione utwory co tydzień i co miesiąc</h4>
-          <Link to="vote-weekly" className="btn-cyan">
+          <Link to="vote/weekly" className="btn-cyan">
             Zacznij głosować już teraz!
           </Link>
         </div>
@@ -172,7 +172,7 @@ const HomePage = () => {
             {remainingTime.minutes} min {remainingTime.seconds} s
           </h1>
         )}
-        <Link to="vote-weekly" className="btn-cyan">
+        <Link to="vote/weekly" className="btn-cyan">
           Głosuj w najbliższym głosowaniu
         </Link>
       </section>

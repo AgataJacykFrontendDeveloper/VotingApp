@@ -10,6 +10,13 @@
   border-color: #4fd89f !important;
 }
 
+.vote-text {
+  color: var(--bs-body-color);
+  &:hover {
+    color: #4fd89f;
+  }
+}
+
 .border-bottom-2 {
   border-bottom-width: 4px !important;
 }
@@ -20,6 +27,7 @@
     rgba(117, 235, 185, 0.2) 0%,
     rgba(105, 64, 182, 0.2) 100%
   );
+  backdrop-filter: blur(4px);
 }
 
 .bg-vote-opaque {
@@ -28,6 +36,7 @@
     rgba(124, 84, 131, 0.2) 0%,
     rgba(105, 64, 182, 0.2) 100%
   );
+  backdrop-filter: blur(4px);
 }
 
 .vote-bar {

@@ -7,7 +7,7 @@ import useVoteSong from "../hooks/useVoteSong";
 import AuthContext from "../context/AuthProvider";
 import AlertContext from "../context/AlertProvider";
 import { useModal } from "../context/ModalProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const VotePage = ({ type }) => {
   const voteType = type === "weekly" ? "Tygodnia" : "Miesiąca";
@@ -70,6 +70,8 @@ const VotePage = ({ type }) => {
           const lastVoteTime = userVoteDoc.data().timestamp?.toDate();
           if (lastVoteTime >= today) {
             setSongId(userVoteDoc.data().songId);
+          } else {
+            setSongId(null);
           }
         } else {
           setSongId(null);
@@ -111,7 +113,10 @@ const VotePage = ({ type }) => {
                   >
                     {songId === song.id ? <>&#9829;</> : <>&#9825;</>}
                   </button>
-                  <div className="vote-bar row col-12 col-sm justify-content-center m-0">
+                  <Link
+                    to={`/vote/${currentPollId}/songs/${song.id}`}
+                    className="vote-bar row col-12 col-sm justify-content-center m-0 vote-text"
+                  >
                     <div className="col-sm text-center text-sm-start row row-cols-1 column-gap-1">
                       <div className="col col-sm-auto px-0 text-break">
                         {song.title}
@@ -121,7 +126,7 @@ const VotePage = ({ type }) => {
                     <small className="text-white col-auto text-nowrap me-0 me-sm-3 align-self-center">
                       Głosy: {song.votes}
                     </small>
-                  </div>
+                  </Link>
                 </li>
               </div>
             ))}

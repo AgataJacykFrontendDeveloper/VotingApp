@@ -13,6 +13,7 @@ import UserPanel from "./components/UserPanel";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import VotePage from "./components/VotePage";
+import SongPage from "./components/SongPage";
 import AdministratorPanel from "./components/AdministratorPanel";
 import PageNotFound from "./components/404";
 
@@ -30,12 +31,16 @@ function App() {
                 <Route path="forgot-password" element={<ForgotPassword />} />
                 <Route path="reset-password" element={<ResetPassword />} />
                 <Route
-                  path="vote-weekly"
+                  path="vote/weekly"
                   element={<VotePage type="weekly" />}
                 />
                 <Route
-                  path="vote-monthly"
+                  path="vote/monthly"
                   element={<VotePage type="monthly" />}
+                />
+                <Route
+                  path="vote/:pollId/songs/:songId"
+                  element={<SongPage />}
                 />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
