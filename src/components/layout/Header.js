@@ -36,12 +36,12 @@ const Header = () => {
             </li>
             <li className="nav-item">
               {" "}
-              <Link className="nav-link" to="/vote-weekly">
+              <Link className="nav-link" to="/vote/weekly">
                 Głosowanie tygodnia
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/vote-monthly">
+              <Link className="nav-link" to="/vote/monthly">
                 Głosowanie miesiąca
               </Link>
             </li>{" "}

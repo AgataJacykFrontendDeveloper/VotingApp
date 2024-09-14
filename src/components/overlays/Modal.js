@@ -1,13 +1,13 @@
 import "./Modal.css";
 
-const Modal = ({ heading, text, close, buttons }) => {
+const Modal = ({ title, body, close, buttons }) => {
   return (
     <>
       <div
         className="modal-overlay-bp1hFrx position-fixed top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center"
         onClick={close}
       ></div>
-      <div className="modal-wrapper-bp1hFrx relative position-fixed translate-middle-y top-50 left-50">
+      <div className="modal-wrapper-bp1hFrx position-fixed start-50 top-50 translate-middle d-flex justify-content-center">
         <div className="modal-content-bp1hFrx rounded-5 gap-1 d-flex flex-column justify-content-between align-items-center">
           <button
             className="modal-close-bp1hFrx border-0 p-0 bg-transparent align-self-end"
@@ -24,9 +24,9 @@ const Modal = ({ heading, text, close, buttons }) => {
             </svg>
           </button>
 
-          {heading && <h4 className="modal-heading-bp1hFrx mb-3">{heading}</h4>}
-          {text && (
-            <p className="modal-text-bp1hFrx text-center mb-3">{text}</p>
+          {title && <h4 className="modal-title-bp1hFrx mb-3">{title}</h4>}
+          {body && (
+            <p className="modal-body-bp1hFrx text-center mb-3">{body}</p>
           )}
           <div className="d-flex justify-content-evenly w-100">
             {buttons &&

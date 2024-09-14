@@ -1,13 +1,36 @@
-import { useEffect, useState, useCallback } from "react";
-import { collection, getDocs, doc, getDoc, query } from "firebase/firestore";
+import { useEffect, useState, useRef } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 const useFetchVotes = (userId) => {
-  const [isLoading, setIsLoading] = useState(true);
   const [monthlyVotes, setMonthlyVotes] = useState([]);
   const [weeklyVotes, setWeeklyVotes] = useState([]);
+  const [pollsMap, setPollsMap] = useState(new Map());
+  const votesFetched = useRef(false);
 
-  const getUserVotes = useCallback(async () => {
+  const fetchPollsAndSongs = async () => {
+    if (pollsMap.size > 0) return pollsMap;
+
+    const newPollsMap = new Map();
+    const pollsSnapshot = await getDocs(collection(db, "polls"));
+
+    await Promise.all(
+      pollsSnapshot.docs.map(async (pollDoc) => {
+        const songsSnapshot = await getDocs(
+          collection(db, "polls", pollDoc.id, "songs")
+        );
+        const songsMap = new Map(
+          songsSnapshot.docs.map((songDoc) => [songDoc.id, songDoc.data()])
+        );
+        newPollsMap.set(pollDoc.id, songsMap);
+      })
+    );
+
+    setPollsMap(newPollsMap);
+    return newPollsMap;
+  };
+
+  const getUserVotes = async () => {
     if (!userId) {
       console.error("Niepoprawny ID użytkownika: ", userId);
       return [];
@@ -15,65 +38,34 @@ const useFetchVotes = (userId) => {
 
     const userVotesCollectionRef = collection(db, "users", userId, "votes");
     return await getDocs(userVotesCollectionRef);
-  }, [userId]);
-
-  const getSongDetails = useCallback(async (pollId, songId) => {
-    try {
-      const songDocRef = doc(db, "polls", pollId, "songs", songId);
-      const songDoc = await getDoc(songDocRef);
-      if (songDoc.exists()) {
-        return { ...songDoc.data(), id: songDoc.id };
-      } else {
-        console.error("Nie znaleziono piosenki o ID: ", songId);
-        return null;
-      }
-    } catch (error) {
-      console.error("Szczegóły błędu: ", error);
-      return null;
-    }
-  }, []);
-
-  const getPollIdFromSongId = useCallback(async (songId) => {
-    try {
-      const pollsCollectionRef = collection(db, "polls");
-      const pollsQuery = query(pollsCollectionRef);
-      const pollsSnapshot = await getDocs(pollsQuery);
-
-      for (const pollDoc of pollsSnapshot.docs) {
-        const songsCollectionRef = collection(db, "polls", pollDoc.id, "songs");
-        const songsSnapshot = await getDocs(songsCollectionRef);
-
-        const songDoc = songsSnapshot.docs.find((song) => song.id === songId);
-        if (songDoc) {
-          return pollDoc.id;
-        }
-      }
-      return null;
-    } catch (error) {
-      console.error("Błąd znalezienia PollID dopasowanego do SongID: ", error);
-      return null;
-    }
-  }, []);
+  };
 
   useEffect(() => {
     const fetchVotes = async () => {
-      setIsLoading(true);
+      if (votesFetched.current) {
+        return;
+      }
+
       try {
+        const fetchedPollsMap = await fetchPollsAndSongs();
         const userVotesSnapshot = await getUserVotes();
 
         if (userVotesSnapshot && !userVotesSnapshot.empty) {
-          const votesPromises = userVotesSnapshot.docs.map(async (voteDoc) => {
+          const allVotes = userVotesSnapshot.docs.map((voteDoc) => {
             const { songId, timestamp } = voteDoc.data();
-            const pollId = await getPollIdFromSongId(songId);
-            const songDetails = pollId
-              ? await getSongDetails(pollId, songId)
-              : null;
-            return songDetails
-              ? { ...voteDoc.data(), ...songDetails, voteId: voteDoc.id }
-              : null;
+            for (const [pollId, songsMap] of fetchedPollsMap.entries()) {
+              const songDetails = songsMap.get(songId);
+              if (songDetails) {
+                return {
+                  ...voteDoc.data(),
+                  ...songDetails,
+                  voteId: voteDoc.id,
+                };
+              }
+            }
+            return null;
           });
 
-          const allVotes = await Promise.all(votesPromises);
           const filteredVotes = allVotes.filter((vote) => vote !== null);
 
           const now = new Date();
@@ -91,23 +83,23 @@ const useFetchVotes = (userId) => {
 
           setWeeklyVotes(weeklyVotes);
           setMonthlyVotes(monthlyVotes);
+          votesFetched.current = true;
         } else {
           setWeeklyVotes([]);
           setMonthlyVotes([]);
-          console.error("Brak oddanych!");
+          console.error("Brak oddanych głosów!");
         }
       } catch (error) {
         setWeeklyVotes([]);
         setMonthlyVotes([]);
         console.error("Błąd ze znalezieniem głosów użytkownika: ", error);
       }
-      setIsLoading(false);
     };
 
     fetchVotes();
-  }, [getUserVotes, getSongDetails, getPollIdFromSongId]);
+  }, [userId, pollsMap]);
 
-  return { isLoading, weeklyVotes, monthlyVotes };
+  return { weeklyVotes, monthlyVotes };
 };
 
 export default useFetchVotes;

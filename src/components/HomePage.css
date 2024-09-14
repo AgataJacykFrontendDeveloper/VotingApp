@@ -1,9 +1,11 @@
 #counting {
   align-items: center;
-  background: url("../../public/assets/images/crowd.png"),linear-gradient(0.25turn, #231048, #2e1c50);
+  background: url("../../public/assets/images/crowd.png"),
+    linear-gradient(0.25turn, #231048, #2e1c50);
   background-size: cover;
   background-position-x: center;
   height: 60vh;
+  margin-bottom: -50px;
 }
 
 .carousel-item {
@@ -32,12 +34,13 @@
   width: 50%;
   margin-left: 10%;
 }
-#hero-text, #rock-star {
+#hero-text,
+#rock-star {
   position: relative;
   z-index: 2;
 }
 #hero-text h4,
-#hero-text button {
+#hero-text a {
   margin: 3% 10%;
 }
 .hero-logo {
@@ -54,24 +57,24 @@
   z-index: 1;
 }
 #rock-star {
-height: 100%;
-width: auto;
-object-fit: fill;
+  height: 100%;
+  width: auto;
+  object-fit: fill;
 }
 @media (max-width: 1150px) {
   #hero {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-top: 0;
-  height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+    height: fit-content;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
   #hero-background {
-display: none;
+    display: none;
   }
   #hero-text {
     margin: auto;
@@ -83,5 +86,5 @@ display: none;
   }
   #rock-star {
     height: 70vh;
-    }
+  }
 }

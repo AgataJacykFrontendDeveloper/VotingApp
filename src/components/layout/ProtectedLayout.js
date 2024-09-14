@@ -23,8 +23,8 @@ function ProtectedLayout() {
   return (
     <>
       <Header />
-      <div>
-        <Outlet /> {/* Call to render a child component */}
+      <div className="d-flex flex-column flex-grow-1 flex-shrink-0">
+        <Outlet />
       </div>
       <Footer />
     </>

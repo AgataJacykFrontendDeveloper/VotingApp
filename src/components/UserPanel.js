@@ -2,6 +2,7 @@ import "./UserPanel.css";
 import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../context/AuthProvider";
 import UserVotes from "./DisplayVote";
+import NewsletterCheckbox from "./NewsletterCheckbox";
 
 const UserPanel = () => {
   const [activeButton, setActiveButton] = useState("user-info");
@@ -170,19 +171,8 @@ const UserPanel = () => {
                 </p>
                 <div className="newsletter-form mt-auto">
                   <div className="form-check custom-form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    {/* TODO: Obsługa checkboxa */}
-                    <label
-                      className="fw-bold form-check-label"
-                      htmlFor="flexCheckDefault"
-                    >
-                      Zapis do newslettera
-                    </label>
+                    {/* Dodaj komunikaty o poprawnym zapisie-wypisaniu/modal */}
+                    {<NewsletterCheckbox />}
                   </div>
                 </div>
                 <p

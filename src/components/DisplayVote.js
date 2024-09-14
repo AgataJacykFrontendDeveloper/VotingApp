@@ -12,18 +12,9 @@ const UserVotes = () => {
     return <div>Ładowanie...</div>;
   }
 
-  console.log("Weekly Votes:", weeklyVotes);
-  console.log("Monthly Votes:", monthlyVotes);
-
   const filterDuplicates = (votes, filterFunc) => {
-    console.log("Filtering with votes:", votes);
-
     const filteredIds = new Set(votes.map((vote) => vote.songId));
-    console.log("Filtered IDs:", filteredIds);
-
     const result = filterFunc((vote) => !filteredIds.has(vote.songId));
-    console.log("Filter Result:", result);
-
     return result;
   };
 
@@ -31,22 +22,8 @@ const UserVotes = () => {
     const result = monthlyVotes.filter(
       (monthlyVote) => monthlyVote.songId !== vote.songId
     );
-    console.log("Weekly Vote:", vote);
-    console.log("Filtered Monthly Votes:", result);
     return result;
   });
-
-  const filteredMonthlyVotes = filterDuplicates(monthlyVotes, (vote) => {
-    const result = weeklyVotes.filter(
-      (weeklyVote) => weeklyVote.songId !== vote.songId
-    );
-    console.log("Monthly Vote:", vote);
-    console.log("Filtered Weekly Votes:", result);
-    return result;
-  });
-
-  console.log("Filtered Weekly Votes:", filteredWeeklyVotes);
-  console.log("Filtered Monthly Votes:", filteredMonthlyVotes);
 
   return (
     <div>
