@@ -24,7 +24,7 @@ body {
 h1 {
   font-size: clamp(2.75rem, 1.261vw + 2.424rem, 4rem) !important;
 }
-.btn-cyan {
+.btn-cyan, .btn-white {
   background-color: #faecff00;
   color: #3dbb87;
   cursor: pointer;
@@ -85,6 +85,18 @@ h1 {
       transform: translate(10px, -50%);
     }
   }
+}
+.btn-white {
+    color: #FAECFF;
+    border: 2px solid #FAECFF;
+  
+    &::before {
+      color: #FAECFF;
+    }
+  
+    &::after {
+      background-color: #FAECFF;
+    }
 }
 
 a.btn-cyan {

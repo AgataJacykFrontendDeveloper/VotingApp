@@ -3,8 +3,7 @@ hr {
   background-color: #7c4dff;
   height: 2px;
 }
-.copyright,
-.newsletter {
+.copyright{
   background-color: #17023f;
 }
 
@@ -17,11 +16,13 @@ footer .d-flex {
   padding-top: 15px;
 }
 .newsletter {
+  background-image: url(../../../public/assets/images/newsletter.jpg);
+  background-size: cover;
   margin-top: 50px;
 }
 .newsletter input {
   background: transparent;
-  border: 3px solid #75ebb9;
+  border: 3px solid #FAECFF;
   border-radius: 30px;
   height: 40px;
   margin: 10px;

@@ -29,7 +29,7 @@ const Footer = () => {
                 placeholder="Wpisz swój e-mail"
                 required
               />
-              <button type="submit" className="btn-cyan">
+              <button type="submit" className="btn-white">
                 Zapisz się!
               </button>
             </form>
