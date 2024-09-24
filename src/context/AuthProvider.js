@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
         setUser(authUser);
         setUserEmail(authUser.providerData[0].email);
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         } else {
           setIdProvidera(authUser.providerData[0].providerId);
         }
-        checkIsAdmin(authUser);
+        await checkIsAdmin(authUser);
         setIsLoggedIn(true);
         setIsLoading(false);
       } else {
