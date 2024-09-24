@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import AlertContext from "../context/AlertProvider";
+import AdminCreatePoll from "./AdminCreatePoll";
+import { getUserList, getPollList } from "./AdministratorPanelFunctions";
 
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
-import { getUserList, getPollList } from "./AdministratorPanelFunctions";
 
 const AdministratorPanel = () => {
+  const { addAlert } = useContext(AlertContext);
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
   const [isNavHidden, setNavHidden] = useState(false);
   const [isNavMinified, setNavMinified] = useState(false);
@@ -255,44 +258,39 @@ const AdministratorPanel = () => {
                   <div>
                     <h2>Zmiana hasła</h2>
                     <div>
-                      <label for="inputPassword5" class="form-label">
+                      <label for="inputPassword5" className="form-label">
                         Stare hasło
                       </label>
                       <input
                         type="password"
                         id="inputPassword5"
-                        class="form-control"
+                        className="form-control"
                         aria-describedby="passwordHelpBlock"
                       />
 
-                      <label for="inputPassword5" class="form-label">
+                      <label for="inputPassword5" className="form-label">
                         Nowe hasło
                       </label>
                       <input
                         type="password"
                         id="inputPassword5"
-                        class="form-control"
+                        className="form-control"
                         aria-describedby="passwordHelpBlock"
                       />
 
-                      <label for="inputPassword5" class="form-label">
+                      <label for="inputPassword5" className="form-label">
                         Powtórz nowe hasło
                       </label>
                       <input
                         type="password"
                         id="inputPassword5"
-                        class="form-control"
+                        className="form-control"
                         aria-describedby="passwordHelpBlock"
                       />
                     </div>
                   </div>
                 )}
-                {activeTab === "nowaListaUtworow" && (
-                  <div>
-                    <h2>Nowa lista utworów</h2>
-                    <p>xxx</p>
-                  </div>
-                )}
+                {activeTab === "nowaListaUtworow" && AdminCreatePoll(addAlert)}
               </div>
             </main>
 
