@@ -1,13 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
 import { Spinner } from "react-bootstrap";
+import { useContext } from "react";
 
 function ProtectedLayout() {
   const auth = useContext(AuthContext);
+  const location = useLocation();
+
   if (auth.isLoading) {
     return (
       <div className="d-flex align-items-center justify-content-center vh-100">
@@ -17,9 +18,15 @@ function ProtectedLayout() {
       </div>
     );
   }
+
   if (!auth.isLoggedIn) {
     return <Navigate to="/" replace />;
   }
+
+  if (location.pathname === "/admin" && auth.user.isAdmin !== true) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <>
       <Header />
