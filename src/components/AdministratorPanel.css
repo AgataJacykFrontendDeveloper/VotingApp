@@ -2,7 +2,7 @@
   background: linear-gradient(0.25turn, #231048, #2e1c50);
 }
 .main-content-admin {
-  height: 500px;
+  min-height: 500px;
   background: linear-gradient(
     123.55deg,
     rgba(109, 191, 157, 0.48) 0%,
