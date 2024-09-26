@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-import AlertContext from "../context/AlertProvider";
+import { useState, useEffect } from "react";
 import AdminCreatePoll from "./AdminCreatePoll";
 import { getUserList, getPollList } from "./AdministratorPanelFunctions";
 
@@ -9,7 +8,6 @@ import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
 
 const AdministratorPanel = () => {
-  const { addAlert } = useContext(AlertContext);
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
   const [isNavHidden, setNavHidden] = useState(false);
   const [isNavMinified, setNavMinified] = useState(false);
@@ -290,7 +288,7 @@ const AdministratorPanel = () => {
                     </div>
                   </div>
                 )}
-                {activeTab === "nowaListaUtworow" && AdminCreatePoll(addAlert)}
+                {activeTab === "nowaListaUtworow" && <AdminCreatePoll />}
               </div>
             </main>
 
