@@ -6606,16 +6606,6 @@ button.bg-warning:focus {
   background-color: #ffb20e !important;
 }
 
-.bg-danger {
-  background-color: #fd3995 !important;
-}
-
-a.bg-danger:hover, a.bg-danger:focus,
-button.bg-danger:hover,
-button.bg-danger:focus {
-  background-color: #fc077a !important;
-}
-
 .bg-light {
   background-color: #fff !important;
 }
@@ -10243,14 +10233,6 @@ a.text-info:hover, a.text-info:focus {
 
 a.text-warning:hover, a.text-warning:focus {
   color: #f4a500 !important;
-}
-
-.text-danger {
-  color: #fd3995 !important;
-}
-
-a.text-danger:hover, a.text-danger:focus {
-  color: #e7026e !important;
 }
 
 .text-light {
