@@ -17,7 +17,10 @@ const AdminCreatePoll = () => {
   const [songs, setSongs] = useState([]);
 
   const handleSongAdd = () => {
-    setSongs([...songs, { artist: "", genre: "", title: "", url: "" }]);
+    setSongs([
+      ...songs,
+      { artist: "", genre: "", title: "", url: "", votes: 0 },
+    ]);
   };
 
   const handleSongDelete = (i) => {
