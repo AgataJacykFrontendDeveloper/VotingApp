@@ -4,7 +4,12 @@ import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
-import { getUserList, getPollList } from "./AdministratorPanelFunctions";
+import {
+  getUserList,
+  getPollList,
+  viewPoll,
+  updateVotes,
+} from "./AdministratorPanelFunctions";
 
 const AdministratorPanel = () => {
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
@@ -17,6 +22,10 @@ const AdministratorPanel = () => {
     WeeklyRecord: null,
     MonthlyRecord: null,
   });
+  const [pollSongs, setPollSongs] = useState([]);
+  const [editingPoll, setEditingPoll] = useState("");
+  const [votes, setVotes] = useState({});
+  const [updateVotesMessage, setUpdateVotesMessage] = useState("");
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -47,6 +56,35 @@ const AdministratorPanel = () => {
     loadUsers();
     loadPolls();
   }, []);
+
+  const handleViewPoll = async (pollId) => {
+    try {
+      const fetchedSongs = await viewPoll(pollId);
+      setPollSongs(fetchedSongs);
+      setEditingPoll(pollId);
+    } catch (error) {
+      console.log("Błąd podczas pobierania głosowania: ", error);
+    }
+  };
+
+  const handleVotesChange = (songId, newVotes) => {
+    if (newVotes < 0) return;
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [songId]: newVotes,
+    }));
+  };
+
+  const handleSaveVotes = async () => {
+    try {
+      for (const [songId, newVotes] of Object.entries(votes)) {
+        const message = await updateVotes(editingPoll, songId, newVotes);
+        setUpdateVotesMessage(message);
+      }
+    } catch (error) {
+      setUpdateVotesMessage(error.message);
+    }
+  };
 
   return (
     <div
@@ -204,6 +242,14 @@ const AdministratorPanel = () => {
                               .toDate()
                               .toLocaleString()}
                           </p>
+                          <button
+                            onClick={() =>
+                              handleViewPoll(records.WeeklyRecord.id)
+                            }
+                            className="btn-cyan"
+                          >
+                            Edytuj głosowanie tygodnia
+                          </button>
                         </div>
                       ) : (
                         <p>Ładowanie głosowania tygodnia...</p>
@@ -227,11 +273,55 @@ const AdministratorPanel = () => {
                               .toDate()
                               .toLocaleString()}
                           </p>
+                          <button
+                            onClick={() =>
+                              handleViewPoll(records.MonthlyRecord.id)
+                            }
+                            className="btn-cyan"
+                          >
+                            Edytuj głosowanie miesiąca
+                          </button>
                         </div>
                       ) : (
                         <p>Ładowanie głosowania miesiąca...</p>
                       )}
                     </div>
+                    {pollSongs.length > 0 && (
+                      <div>
+                        <h5>Edycja głosowania (ID: {editingPoll}):</h5>
+                        <ul>
+                          {pollSongs.map((song) => (
+                            <li key={song.id}>
+                              [{song.data.genre}] {song.data.artist} -{" "}
+                              {song.data.title} (ID utworu: {song.id}) | Głosy:
+                              <input
+                                type="number"
+                                min="0"
+                                value={
+                                  votes[song.id] !== undefined
+                                    ? votes[song.id]
+                                    : song.data.votes
+                                }
+                                onChange={(e) =>
+                                  handleVotesChange(
+                                    song.id,
+                                    Number(e.target.value)
+                                  )
+                                }
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                        <button onClick={handleSaveVotes} className="btn-cyan">
+                          Zapisz
+                        </button>
+                        {updateVotesMessage && (
+                          <div className="alert alert-success">
+                            {updateVotesMessage}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
                 {activeTab === "uzytkownicy" && (
@@ -255,33 +345,33 @@ const AdministratorPanel = () => {
                   <div>
                     <h2>Zmiana hasła</h2>
                     <div>
-                      <label for="inputPassword5" class="form-label">
+                      <label for="inputPassword5" className="form-label">
                         Stare hasło
                       </label>
                       <input
                         type="password"
                         id="inputPassword5"
-                        class="form-control"
+                        className="form-control"
                         aria-describedby="passwordHelpBlock"
                       />
 
-                      <label for="inputPassword5" class="form-label">
+                      <label for="inputPassword5" className="form-label">
                         Nowe hasło
                       </label>
                       <input
                         type="password"
                         id="inputPassword5"
-                        class="form-control"
+                        className="form-control"
                         aria-describedby="passwordHelpBlock"
                       />
 
-                      <label for="inputPassword5" class="form-label">
+                      <label for="inputPassword5" className="form-label">
                         Powtórz nowe hasło
                       </label>
                       <input
                         type="password"
                         id="inputPassword5"
-                        class="form-control"
+                        className="form-control"
                         aria-describedby="passwordHelpBlock"
                       />
                     </div>
