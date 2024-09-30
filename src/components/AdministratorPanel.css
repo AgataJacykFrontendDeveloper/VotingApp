@@ -28,6 +28,21 @@
   color: #ec9898;
 }
 
+.song-list {
+  padding: 16px;
+  border-radius: 30px;
+  margin: 4px;
+  background: transparent;
+  border: 1px solid #ccc;
+  color: black;
+  cursor: move; 
+
+  list-style: none;
+}
+
+
+
+
 @media only screen and (max-width: 992px) {
   .page-wrapper.small-dev-bcg {
     background-color: transparent;

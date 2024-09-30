@@ -48,6 +48,29 @@ const AdministratorPanel = () => {
     loadPolls();
   }, []);
 
+  const initialSongs = [
+    { id: "1", title: "Song A" },
+    { id: "2", title: "Song B" },
+    { id: "3", title: "Song C" },
+    { id: "4", title: "Song D" },
+  ];
+  // Nowe stany dla utworów
+  const [songs, setSongs] = useState(initialSongs);
+  const [draggedSong, setDraggedSong] = useState(null);
+
+  // Funkcje obsługujące przeciąganie i upuszczanie
+  const handleDragStart = (index) => {
+    setDraggedSong(index);
+  };
+
+  const handleDrop = (index) => {
+    const updatedSongs = [...songs];
+    const [removed] = updatedSongs.splice(draggedSong, 1);
+    updatedSongs.splice(index, 0, removed);
+    setSongs(updatedSongs);
+    setDraggedSong(null);
+  };
+
   return (
     <div
       className={`mod-bg-1 mod-nav-link ${
@@ -290,7 +313,22 @@ const AdministratorPanel = () => {
                 {activeTab === "nowaListaUtworow" && (
                   <div>
                     <h2>Nowa lista utworów</h2>
-                    <p>xxx</p>
+                    <div>
+                      <ul>
+                        {songs.map((song, index) => (
+                          <li
+                            className="song-list border-2 border-success"
+                            key={song.id}
+                            draggable
+                            onDragStart={() => handleDragStart(index)}
+                            onDrop={() => handleDrop(index)}
+                            onDragOver={(e) => e.preventDefault()}
+                          >
+                            {song.title}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 )}
               </div>
