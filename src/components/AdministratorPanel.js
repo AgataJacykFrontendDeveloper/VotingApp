@@ -9,6 +9,8 @@ import {
   getPollList,
   viewPoll,
   updateVotes,
+  checkPollStatus,
+  togglePollStatus,
 } from "./AdministratorPanelFunctions";
 
 const AdministratorPanel = () => {
@@ -26,7 +28,7 @@ const AdministratorPanel = () => {
   const [editingPoll, setEditingPoll] = useState("");
   const [votes, setVotes] = useState({});
   const [updateVotesMessage, setUpdateVotesMessage] = useState("");
-
+  const [updateStatusMessage, setUpdateStatusMessage] = useState("");
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
@@ -92,6 +94,19 @@ const AdministratorPanel = () => {
     { id: "3", title: "Song C" },
     { id: "4", title: "Song D" },
   ];
+
+  const handleTogglePollStatus = async (poll) => {
+    try {
+      const message = await togglePollStatus(poll.id, checkPollStatus(poll));
+      setUpdateStatusMessage(message);
+
+      const updatedRecords = await getPollList();
+      setRecords(updatedRecords);
+    } catch (error) {
+      console.log("Błąd podczas zmiany statusu publikacji: ", error);
+    }
+  };
+
   // Nowe stany dla utworów
   const [songs, setSongs] = useState(initialSongs);
   const [draggedSong, setDraggedSong] = useState(null);
@@ -265,6 +280,20 @@ const AdministratorPanel = () => {
                               .toDate()
                               .toLocaleString()}
                           </p>
+                          <p>
+                            Status:{" "}
+                            {checkPollStatus(records.WeeklyRecord)
+                              ? "Opublikowane"
+                              : "Nieopublikowane"}
+                          </p>
+                          <button
+                            onClick={() =>
+                              handleTogglePollStatus(records.WeeklyRecord)
+                            }
+                            className="btn-cyan"
+                          >
+                            Zmień status publikacji
+                          </button>
                           <button
                             onClick={() =>
                               handleViewPoll(records.WeeklyRecord.id)
@@ -296,6 +325,20 @@ const AdministratorPanel = () => {
                               .toDate()
                               .toLocaleString()}
                           </p>
+                          <p>
+                            Status:{" "}
+                            {checkPollStatus(records.MonthlyRecord)
+                              ? "Opublikowane"
+                              : "Nieopublikowane"}
+                          </p>
+                          <button
+                            onClick={() =>
+                              handleTogglePollStatus(records.MonthlyRecord)
+                            }
+                            className="btn-cyan"
+                          >
+                            Zmień status publikacji
+                          </button>
                           <button
                             onClick={() =>
                               handleViewPoll(records.MonthlyRecord.id)

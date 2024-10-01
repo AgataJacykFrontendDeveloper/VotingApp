@@ -36,6 +36,7 @@ export const getPollList = async () => {
       id: doc.id,
       ...doc.data(),
     }))[0];
+
     return { WeeklyRecord, MonthlyRecord };
   } catch (error) {
     console.log("Błąd podczas pobierania listy głosowań: ", error);
@@ -62,5 +63,22 @@ export const updateVotes = async (pollId, songId, votes) => {
     return "Pomyślnie zaktualizowano głosy!";
   } catch (error) {
     throw new Error("Błąd podczas aktualizowania głosów: " + error.message);
+  }
+};
+
+export const checkPollStatus = (poll) => {
+  return poll.published === true;
+};
+
+export const togglePollStatus = async (pollId, currentStatus) => {
+  try {
+    const pollRef = doc(db, "polls", pollId);
+    await updateDoc(pollRef, {
+      published: !currentStatus,
+    });
+    return "Status publikacji zaktualizowany!";
+  } catch (error) {
+    console.log("Błąd podczas aktualizacji statusu publikacji: ", error);
+    throw error;
   }
 };
