@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import Alert from "../components/overlays/Alert";
 
@@ -27,10 +27,7 @@ export const AlertProvider = ({ children }) => {
     <AlertContext.Provider value={{ addAlert }}>
       {children}
       {createPortal(
-        <div
-          className="position-fixed start-0 end-0 z-3"
-          style={{ bottom: "10%" }}
-        >
+        <div className="position-fixed end-0  bottom-0 mr-4 mb-4 z-3 d-flex flex-column gap-3">
           {alerts.map((alert) => (
             <Alert key={alert.id} msg={alert.message} type={alert.type} />
           ))}
@@ -40,5 +37,7 @@ export const AlertProvider = ({ children }) => {
     </AlertContext.Provider>
   );
 };
+
+export const useAlert = () => useContext(AlertContext);
 
 export default AlertContext;
