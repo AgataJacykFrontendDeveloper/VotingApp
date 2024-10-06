@@ -114,12 +114,12 @@ const UserPanel = () => {
 
   return (
     <div className="container mt-3 mb-3 mt-sm-5 mb-sm-5 custom-container">
-      <div className="row cc">
+      <div className="row">
         <div className="col-12 col-md-12 col-lg-5">
-          <div className="p-3 d-flex flex-column justify-content-evenly align-items-center first-column">
+          <div className="p-3 d-flex flex-column justify-content-evenly align-items-center first-column m-auto">
             <button
               type="button"
-              className={`btn-cyan btn-width votes ${
+              className={`btn-cyan w-100 votes ${
                 activeButton === "votes" ? "active" : ""
               }`}
               onClick={() => setActiveButton("votes")}
@@ -128,7 +128,7 @@ const UserPanel = () => {
             </button>
             <button
               type="button"
-              className={`btn-cyan btn-width user-info ${
+              className={`btn-cyan w-100 user-info ${
                 activeButton === "user-info" ? "active" : ""
               }`}
               onClick={() => setActiveButton("user-info")}
@@ -137,7 +137,7 @@ const UserPanel = () => {
             </button>
             <button
               type="button"
-              className={`btn-cyan btn-width settings ${
+              className={`btn-cyan w-100 settings ${
                 activeButton === "settings" ? "active" : ""
               }`}
               onClick={() => setActiveButton("settings")}

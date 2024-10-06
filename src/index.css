@@ -5,6 +5,7 @@
   --bs-emphasis-color-rgb: #75ebb9 !important;
   --bs-navbar-hover-color: #2ef5a2 !important;
 }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Montserrat", sans-serif !important;
@@ -16,15 +17,19 @@ body {
   background-size: auto;
   color: #faecff !important;
 }
+
 #root {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
+
 h1 {
   font-size: clamp(2.75rem, 1.261vw + 2.424rem, 4rem) !important;
 }
-.btn-cyan, .btn-white {
+
+.btn-cyan,
+.btn-white {
   background-color: #faecff00;
   color: #3dbb87;
   cursor: pointer;
@@ -34,7 +39,7 @@ h1 {
   overflow: hidden;
   position: relative;
   z-index: 1;
-  padding: 10px 100px 10px 20px;
+  padding: 10px 80px 10px 20px;
   transition: color 0.2s ease;
 
   &::before {
@@ -86,17 +91,18 @@ h1 {
     }
   }
 }
+
 .btn-white {
-    color: #FAECFF;
-    border: 2px solid #FAECFF;
-  
-    &::before {
-      color: #FAECFF;
-    }
-  
-    &::after {
-      background-color: #FAECFF;
-    }
+  color: #faecff;
+  border: 2px solid #faecff;
+
+  &::before {
+    color: #faecff;
+  }
+
+  &::after {
+    background-color: #faecff;
+  }
 }
 
 a.btn-cyan {

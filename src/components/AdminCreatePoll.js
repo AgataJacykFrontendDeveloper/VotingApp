@@ -127,8 +127,8 @@ const AdminCreatePoll = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label htmlFor="type">Typ głosowania</Form.Label>
-          <Form.Select name="type" id="type" required>
-            <option value="" selected disabled hidden>
+          <Form.Select defaultValue="" name="type" id="type" required>
+            <option value="" disabled hidden>
               Wybierz typ głosowania
             </option>
             <option value="weekly">Tygodnia</option>

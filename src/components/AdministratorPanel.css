@@ -9,6 +9,7 @@
     rgba(109, 191, 157, 0.48) 0%,
     rgba(109, 191, 157, 0.14) 100%
   );
+  border: none;
   border-radius: 30px;
   color: white;
 }

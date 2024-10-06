@@ -1,5 +1,7 @@
 .first-column {
   height: 300px;
+  min-width: 200px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -14,10 +16,6 @@
     rgba(109, 191, 157, 0.14) 100%
   );
   border-radius: 30px;
-}
-
-.btn-width {
-  width: 14rem;
 }
 
 .delete-account {
@@ -117,8 +115,6 @@
 @media (max-width: 575px) {
   .btn-width {
     font-size: 1rem;
-    width: 12rem;
-    white-space: nowrap;
   }
   .user-name,
   .votes-heading,

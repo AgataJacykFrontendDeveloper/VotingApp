@@ -126,7 +126,11 @@ const AdministratorPanel = () => {
                     <span className="nav-link-text">Oddane głosy</span>
                   </a>
                 </li>
-                <li className={activeTab === "aktywneGlosowania" ? "" : ""}>
+                <li
+                  className={
+                    activeTab === "aktywneGlosowania" ? "active open" : ""
+                  }
+                >
                   <a
                     href="#"
                     title="Aktywne głosowania"
@@ -263,22 +267,24 @@ const AdministratorPanel = () => {
                               ? "Opublikowane"
                               : "Nieopublikowane"}
                           </p>
-                          <button
-                            onClick={() =>
-                              handleTogglePollStatus(records.WeeklyRecord)
-                            }
-                            className="btn-cyan"
-                          >
-                            Zmień status publikacji
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleViewPoll(records.WeeklyRecord.id)
-                            }
-                            className="btn-cyan"
-                          >
-                            Edytuj głosowanie tygodnia
-                          </button>
+                          <div className="d-flex flex-wrap gap-2">
+                            <button
+                              onClick={() =>
+                                handleTogglePollStatus(records.WeeklyRecord)
+                              }
+                              className="btn-cyan"
+                            >
+                              Zmień status publikacji
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleViewPoll(records.WeeklyRecord.id)
+                              }
+                              className="btn-cyan"
+                            >
+                              Edytuj głosowanie tygodnia
+                            </button>
+                          </div>
                         </div>
                       ) : (
                         <p>Ładowanie głosowania tygodnia...</p>
@@ -374,7 +380,7 @@ const AdministratorPanel = () => {
                       {userList.map((user) => (
                         <li
                           key={user.id}
-                          className="list-group-item border-2 border-success user-item"
+                          className="list-group-item border-2 border-success user-item text-white"
                         >
                           <span>{user.id}</span>
                           {/* TODO: Blokowanie użytkowników i wyświetlanie maila zamiast ID + Dodawanie maila użytkownika do firestore przy rejestracji */}
