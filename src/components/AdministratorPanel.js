@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import AdminCreatePoll from "./AdminCreatePoll";
-import { getUserList, getPollList } from "./AdministratorPanelFunctions";
-
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
 import "./AdministratorPanel.css";
+import {
+  getUserList,
+  getPollList,
+  viewPoll,
+  updateVotes,
+  checkPollStatus,
+  togglePollStatus,
+} from "./AdministratorPanelFunctions";
 
 const AdministratorPanel = () => {
   const [activeTab, setActiveTab] = useState("oddaneGlosy");
@@ -18,6 +24,11 @@ const AdministratorPanel = () => {
     WeeklyRecord: null,
     MonthlyRecord: null,
   });
+  const [pollSongs, setPollSongs] = useState([]);
+  const [editingPoll, setEditingPoll] = useState("");
+  const [votes, setVotes] = useState({});
+  const [updateVotesMessage, setUpdateVotesMessage] = useState("");
+  const [updateStatusMessage, setUpdateStatusMessage] = useState("");
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -48,6 +59,47 @@ const AdministratorPanel = () => {
     loadUsers();
     loadPolls();
   }, []);
+
+  const handleViewPoll = async (pollId) => {
+    try {
+      const fetchedSongs = await viewPoll(pollId);
+      setPollSongs(fetchedSongs);
+      setEditingPoll(pollId);
+    } catch (error) {
+      console.log("Błąd podczas pobierania głosowania: ", error);
+    }
+  };
+
+  const handleVotesChange = (songId, newVotes) => {
+    if (newVotes < 0) return;
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [songId]: newVotes,
+    }));
+  };
+
+  const handleSaveVotes = async () => {
+    try {
+      for (const [songId, newVotes] of Object.entries(votes)) {
+        const message = await updateVotes(editingPoll, songId, newVotes);
+        setUpdateVotesMessage(message);
+      }
+    } catch (error) {
+      setUpdateVotesMessage(error.message);
+    }
+  };
+
+  const handleTogglePollStatus = async (poll) => {
+    try {
+      const message = await togglePollStatus(poll.id, checkPollStatus(poll));
+      setUpdateStatusMessage(message);
+
+      const updatedRecords = await getPollList();
+      setRecords(updatedRecords);
+    } catch (error) {
+      console.log("Błąd podczas zmiany statusu publikacji: ", error);
+    }
+  };
 
   return (
     <div
@@ -205,6 +257,28 @@ const AdministratorPanel = () => {
                               .toDate()
                               .toLocaleString()}
                           </p>
+                          <p>
+                            Status:{" "}
+                            {checkPollStatus(records.WeeklyRecord)
+                              ? "Opublikowane"
+                              : "Nieopublikowane"}
+                          </p>
+                          <button
+                            onClick={() =>
+                              handleTogglePollStatus(records.WeeklyRecord)
+                            }
+                            className="btn-cyan"
+                          >
+                            Zmień status publikacji
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleViewPoll(records.WeeklyRecord.id)
+                            }
+                            className="btn-cyan"
+                          >
+                            Edytuj głosowanie tygodnia
+                          </button>
                         </div>
                       ) : (
                         <p>Ładowanie głosowania tygodnia...</p>
@@ -228,11 +302,69 @@ const AdministratorPanel = () => {
                               .toDate()
                               .toLocaleString()}
                           </p>
+                          <p>
+                            Status:{" "}
+                            {checkPollStatus(records.MonthlyRecord)
+                              ? "Opublikowane"
+                              : "Nieopublikowane"}
+                          </p>
+                          <button
+                            onClick={() =>
+                              handleTogglePollStatus(records.MonthlyRecord)
+                            }
+                            className="btn-cyan"
+                          >
+                            Zmień status publikacji
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleViewPoll(records.MonthlyRecord.id)
+                            }
+                            className="btn-cyan"
+                          >
+                            Edytuj głosowanie miesiąca
+                          </button>
                         </div>
                       ) : (
                         <p>Ładowanie głosowania miesiąca...</p>
                       )}
                     </div>
+                    {pollSongs.length > 0 && (
+                      <div>
+                        <h5>Edycja głosowania (ID: {editingPoll}):</h5>
+                        <ul>
+                          {pollSongs.map((song) => (
+                            <li key={song.id}>
+                              [{song.data.genre}] {song.data.artist} -{" "}
+                              {song.data.title} (ID utworu: {song.id}) | Głosy:
+                              <input
+                                type="number"
+                                min="0"
+                                value={
+                                  votes[song.id] !== undefined
+                                    ? votes[song.id]
+                                    : song.data.votes
+                                }
+                                onChange={(e) =>
+                                  handleVotesChange(
+                                    song.id,
+                                    Number(e.target.value)
+                                  )
+                                }
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                        <button onClick={handleSaveVotes} className="btn-cyan">
+                          Zapisz
+                        </button>
+                        {updateVotesMessage && (
+                          <div className="alert alert-success">
+                            {updateVotesMessage}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
                 {activeTab === "uzytkownicy" && (
@@ -291,7 +423,6 @@ const AdministratorPanel = () => {
                 {activeTab === "nowaListaUtworow" && <AdminCreatePoll />}
               </div>
             </main>
-
             <div
               className="page-content-overlay"
               onClick={() => toggleClass(setMobileNavOn, isMobileNavOn)}

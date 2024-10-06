@@ -16,7 +16,20 @@ const createSlug = (title) => {
 const AdminCreatePoll = () => {
   const { addAlert } = useContext(AlertContext);
   const [songs, setSongs] = useState([]);
+  const [draggedSong, setDraggedSong] = useState(null);
   const [validated, setValidated] = useState(false);
+
+  const handleDragStart = (index) => {
+    setDraggedSong(index);
+  };
+
+  const handleDrop = (index) => {
+    const updatedSongs = [...songs];
+    const [removed] = updatedSongs.splice(draggedSong, 1);
+    updatedSongs.splice(index, 0, removed);
+    setSongs(updatedSongs);
+    setDraggedSong(null);
+  };
 
   const handleSongAdd = () => {
     setSongs([
@@ -152,7 +165,14 @@ const AdminCreatePoll = () => {
         <div>
           <h4 className="ml-n2 mt-2">Lista utworów</h4>
           {songs.map((song, i) => (
-            <div key={i} className="d-flex flex-column gap-1 mb-3">
+            <div
+              key={i}
+              className="d-flex flex-column gap-1 mb-3"
+              draggable
+              onDragStart={() => handleDragStart(i)}
+              onDrop={() => handleDrop(i)}
+              onDragOver={(e) => e.preventDefault()}
+            >
               <div className="d-flex flex-row gap-2">
                 <h5 className="fw-semibold my-auto">Utwór {i + 1}</h5>
                 <button
