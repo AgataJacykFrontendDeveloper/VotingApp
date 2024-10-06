@@ -74,7 +74,7 @@ const HomePage = () => {
     <>
       <section id="hero" className="container-fluid">
         <img
-          src={require("../images/concert.png")}
+          src={require("../images/concert.webp")}
           alt="hero-background"
           id="hero-background"
         />
@@ -91,7 +91,7 @@ const HomePage = () => {
         </div>
         <img
           id="rock-star"
-          src={require("../images/rockStar.png")}
+          src={require("../images/rockStar.webp")}
           alt="rockstar"
         ></img>
       </section>

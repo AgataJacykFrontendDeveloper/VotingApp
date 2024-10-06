@@ -3,7 +3,7 @@ hr {
   background-color: #7c4dff;
   height: 2px;
 }
-.copyright{
+.copyright {
   background-color: #17023f;
 }
 
@@ -11,7 +11,7 @@ footer .d-flex {
   align-items: center;
 }
 .main-footer-box {
-  background: url("../../../public/assets/images/FooterBackground.png");
+  background: url("../../../public/assets/images/FooterBackground.webp");
   background-size: cover;
   padding-top: 15px;
 }
@@ -22,7 +22,7 @@ footer .d-flex {
 }
 .newsletter input {
   background: transparent;
-  border: 3px solid #FAECFF;
+  border: 3px solid #faecff;
   border-radius: 30px;
   height: 40px;
   margin: 10px;
