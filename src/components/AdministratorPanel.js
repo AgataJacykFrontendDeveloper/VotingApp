@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-
+import { useState, useEffect } from "react";
+import AdminCreatePoll from "./AdminCreatePoll";
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
@@ -29,6 +29,7 @@ const AdministratorPanel = () => {
   const [votes, setVotes] = useState({});
   const [updateVotesMessage, setUpdateVotesMessage] = useState("");
   const [updateStatusMessage, setUpdateStatusMessage] = useState("");
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
@@ -88,13 +89,6 @@ const AdministratorPanel = () => {
     }
   };
 
-  const initialSongs = [
-    { id: "1", title: "Song A" },
-    { id: "2", title: "Song B" },
-    { id: "3", title: "Song C" },
-    { id: "4", title: "Song D" },
-  ];
-
   const handleTogglePollStatus = async (poll) => {
     try {
       const message = await togglePollStatus(poll.id, checkPollStatus(poll));
@@ -105,23 +99,6 @@ const AdministratorPanel = () => {
     } catch (error) {
       console.log("Błąd podczas zmiany statusu publikacji: ", error);
     }
-  };
-
-  // Nowe stany dla utworów
-  const [songs, setSongs] = useState(initialSongs);
-  const [draggedSong, setDraggedSong] = useState(null);
-
-  // Funkcje obsługujące przeciąganie i upuszczanie
-  const handleDragStart = (index) => {
-    setDraggedSong(index);
-  };
-
-  const handleDrop = (index) => {
-    const updatedSongs = [...songs];
-    const [removed] = updatedSongs.splice(draggedSong, 1);
-    updatedSongs.splice(index, 0, removed);
-    setSongs(updatedSongs);
-    setDraggedSong(null);
   };
 
   return (
@@ -443,30 +420,9 @@ const AdministratorPanel = () => {
                     </div>
                   </div>
                 )}
-                {activeTab === "nowaListaUtworow" && (
-                  <div>
-                    <h2>Nowa lista utworów</h2>
-                    <div>
-                      <ul>
-                        {songs.map((song, index) => (
-                          <li
-                            className="song-list border-2 border-success"
-                            key={song.id}
-                            draggable
-                            onDragStart={() => handleDragStart(index)}
-                            onDrop={() => handleDrop(index)}
-                            onDragOver={(e) => e.preventDefault()}
-                          >
-                            {song.title}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
+                {activeTab === "nowaListaUtworow" && <AdminCreatePoll />}
               </div>
             </main>
-
             <div
               className="page-content-overlay"
               onClick={() => toggleClass(setMobileNavOn, isMobileNavOn)}

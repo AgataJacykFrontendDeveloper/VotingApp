@@ -8,7 +8,7 @@ const Header = () => {
   const auth = useContext(AuthContext);
   return (
     <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
-      <div className="container-fluid ">
+      <div className="container-fluid">
         <a className="navbar-brand" href="/">
           <img
             src={require("../../images/HeaderLogo.png")}
@@ -58,6 +58,13 @@ const Header = () => {
                     Panel użytkownika
                   </Link>
                 </li>
+                {auth.user.isAdmin && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/admin">
+                      Panel administratora
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" to="/" onClick={auth.signOut}>
                     <button className="btn-cyan">Wyloguj</button>
