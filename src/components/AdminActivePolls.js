@@ -6,13 +6,13 @@ import {
   checkPollStatus,
   togglePollStatus,
 } from "../hooks/useAdminPanel";
+import { useAlert } from "../context/AlertProvider";
 
 const AdminActivePools = ({ records, setRecords }) => {
+  const { addAlert } = useAlert();
   const [pollSongs, setPollSongs] = useState([]);
   const [editingPoll, setEditingPoll] = useState("");
   const [votes, setVotes] = useState({});
-  const [updateVotesMessage, setUpdateVotesMessage] = useState("");
-  const [updateStatusMessage, setUpdateStatusMessage] = useState("");
 
   const handleViewPoll = async (pollId) => {
     try {
@@ -36,17 +36,17 @@ const AdminActivePools = ({ records, setRecords }) => {
     try {
       for (const [songId, newVotes] of Object.entries(votes)) {
         const message = await updateVotes(editingPoll, songId, newVotes);
-        setUpdateVotesMessage(message);
+        addAlert(message, "success");
       }
     } catch (error) {
-      setUpdateVotesMessage(error.message);
+      addAlert(error.message, "error");
     }
   };
 
   const handleTogglePollStatus = async (poll) => {
     try {
       const message = await togglePollStatus(poll.id, checkPollStatus(poll));
-      setUpdateStatusMessage(message);
+      addAlert(message, "success");
 
       const updatedRecords = await getPollList();
       setRecords(updatedRecords);
@@ -156,9 +156,6 @@ const AdminActivePools = ({ records, setRecords }) => {
           <button onClick={handleSaveVotes} className="btn-cyan">
             Zapisz
           </button>
-          {updateVotesMessage && (
-            <div className="alert alert-success">{updateVotesMessage}</div>
-          )}
         </div>
       )}
     </div>
