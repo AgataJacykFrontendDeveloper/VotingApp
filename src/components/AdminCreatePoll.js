@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { doc, setDoc, addDoc, getDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import AlertContext from "../context/AlertProvider";
+import Form from "react-bootstrap/Form";
 
 const createSlug = (title) => {
   return title
@@ -15,6 +16,7 @@ const createSlug = (title) => {
 const AdminCreatePoll = () => {
   const { addAlert } = useContext(AlertContext);
   const [songs, setSongs] = useState([]);
+  const [validated, setValidated] = useState(false);
 
   const handleSongAdd = () => {
     setSongs([
@@ -37,6 +39,13 @@ const AdminCreatePoll = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (e.target.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
     const formData = new FormData(e.target);
     const form = {
       title: formData.get("title"),
@@ -76,6 +85,7 @@ const AdminCreatePoll = () => {
         }
         e.target.reset();
         setSongs([]);
+        setValidated(false);
         return addAlert("Głosowanie zostało utworzone.", "success");
       }
     } catch (error) {
@@ -89,51 +99,56 @@ const AdminCreatePoll = () => {
   return (
     <div>
       <h2>Nowa lista utworów</h2>
-      <form
+      <Form
         onSubmit={handleSubmit}
-        className="d-flex flex-column gap-2 container-sm container m-0"
+        noValidate
+        validated={validated}
+        className="d-flex flex-column gap-3 container-sm container m-0"
       >
-        <label htmlFor="title" className="form-label">
-          Nazwa
-        </label>
-        <input
-          name="title"
-          type="text"
-          id="title"
-          className="form-control"
-          required
-        />
-
-        <label htmlFor="type" className="form-label">
-          Typ głosowania
-        </label>
-        <select name="type" id="type" className="form-control">
-          <option value="weekly">Tygodnia</option>
-          <option value="monthly">Miesiąca</option>
-        </select>
-
-        <label htmlFor="start_at" className="form-label">
-          Data rozpoczęcia
-        </label>
-        <input
-          name="start_at"
-          type="datetime-local"
-          id="start_at"
-          className="form-control"
-          required
-        />
-
-        <label htmlFor="end_at" className="form-label">
-          Data zakończenia
-        </label>
-        <input
-          name="end_at"
-          type="datetime-local"
-          id="end_at"
-          className="form-control"
-          required
-        />
-
+        <Form.Group>
+          <Form.Label htmlFor="title">Nazwa</Form.Label>
+          <Form.Control type="text" id="title" name="title" required />
+          <Form.Control.Feedback type="invalid">
+            Proszę podaj nazwe głosowania.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="type">Typ głosowania</Form.Label>
+          <Form.Select name="type" id="type" required>
+            <option value="" selected disabled hidden>
+              Wybierz typ głosowania
+            </option>
+            <option value="weekly">Tygodnia</option>
+            <option value="monthly">Miesiąca</option>
+          </Form.Select>
+          <Form.Control.Feedback type="invalid">
+            Proszę podaj typ głosowania.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="start_at">Data rozpoczęcia</Form.Label>
+          <Form.Control
+            type="datetime-local"
+            id="start_at"
+            name="start_at"
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Proszę prawidłową date rozpoczęcia głosowania.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="end_at">Data zakończenia</Form.Label>
+          <Form.Control
+            type="datetime-local"
+            id="end_at"
+            name="end_at"
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Proszę prawidłową date zakończenia głosowania.
+          </Form.Control.Feedback>
+        </Form.Group>
         <div>
           <h4 className="ml-n2 mt-2">Lista utworów</h4>
           {songs.map((song, i) => (
@@ -161,57 +176,62 @@ const AdminCreatePoll = () => {
                   </svg>
                 </button>
               </div>
-              <label htmlFor={`song-artist-${i}`} className="form-label">
-                Artysta
-              </label>
-              <input
-                type="text"
-                name="artist"
-                id={`song-artist-${i}`}
-                className="form-control"
-                value={song.artist}
-                onChange={(e) => handleSongChange(e, i)}
-                required
-              />
-
-              <label htmlFor={`song-genre-${i}`} className="form-label">
-                Gatunek
-              </label>
-              <input
-                type="text"
-                name="genre"
-                id={`song-genre-${i}`}
-                className="form-control"
-                value={song.genre}
-                onChange={(e) => handleSongChange(e, i)}
-                required
-              />
-
-              <label htmlFor={`song-title-${i}`} className="form-label">
-                Tytuł
-              </label>
-              <input
-                type="text"
-                name="title"
-                id={`song-title-${i}`}
-                className="form-control"
-                value={song.title}
-                onChange={(e) => handleSongChange(e, i)}
-                required
-              />
-
-              <label htmlFor={`song-url-${i}`} className="form-label">
-                URL
-              </label>
-              <input
-                type="url"
-                name="url"
-                id={`song-url-${i}`}
-                className="form-control"
-                value={song.url}
-                onChange={(e) => handleSongChange(e, i)}
-                required
-              />
+              <Form.Group>
+                <Form.Label htmlFor={`song-artist-${i}`}>Artysta</Form.Label>
+                <Form.Control
+                  type="text"
+                  id={`song-artist-${i}`}
+                  name="artist"
+                  value={song.artist}
+                  onChange={(e) => handleSongChange(e, i)}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Proszę podaj nazwe artysty.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor={`song-genre-${i}`}>Gatunek</Form.Label>
+                <Form.Control
+                  type="text"
+                  id={`song-genre-${i}`}
+                  name="genre"
+                  value={song.genre}
+                  onChange={(e) => handleSongChange(e, i)}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Proszę podaj nazwe gatunku.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor={`song-title-${i}`}>Tytuł</Form.Label>
+                <Form.Control
+                  type="text"
+                  id={`song-title-${i}`}
+                  name="title"
+                  value={song.title}
+                  onChange={(e) => handleSongChange(e, i)}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Proszę podaj nazwe artysty.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor={`song-url-${i}`}>URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  id={`song-url-${i}`}
+                  name="url"
+                  value={song.url}
+                  onChange={(e) => handleSongChange(e, i)}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Proszę podaj nazwe artysty.
+                </Form.Control.Feedback>
+              </Form.Group>
             </div>
           ))}
           <button
@@ -226,7 +246,7 @@ const AdminCreatePoll = () => {
         <button type="submit" className="btn-cyan w-fit">
           Utwórz głosowanie
         </button>
-      </form>
+      </Form>
     </div>
   );
 };
