@@ -192,7 +192,9 @@ const AdministratorPanel = () => {
                 {activeTab === "aktywneGlosowania" && (
                   <AdminActivePolls records={records} setRecords={setRecords} />
                 )}
-                {activeTab === "uzytkownicy" && <AdminUsers users={userList} />}
+                {activeTab === "uzytkownicy" && (
+                  <AdminUsers users={userList} setUserList={setUserList} />
+                )}
                 {activeTab === "ustawienia" && <AdminSettings />}
                 {activeTab === "nowaListaUtworow" && <AdminCreatePoll />}
               </div>

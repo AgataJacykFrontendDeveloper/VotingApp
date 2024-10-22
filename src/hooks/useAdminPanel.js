@@ -13,6 +13,8 @@ export const getUserList = async () => {
     const query = await getDocs(collection(db, "users"));
     const users = query.docs.map((doc) => ({
       id: doc.id,
+      isAdmin: doc.data().isAdmin || false,
+      isBlocked: doc.data().isBlocked || false,
     }));
     return users;
   } catch (error) {
@@ -80,5 +82,19 @@ export const togglePollStatus = async (pollId, currentStatus) => {
   } catch (error) {
     console.log("Błąd podczas aktualizacji statusu publikacji: ", error);
     throw error;
+  }
+};
+
+export const blockUser = async (userId, status) => {
+  try {
+    const userRef = doc(db, "users", userId);
+
+    await updateDoc(userRef, {
+      isBlocked: status,
+    });
+    return true;
+  } catch (error) {
+    console.log("Błąd podczas blokowania użytkownika: ", error);
+    return false;
   }
 };
