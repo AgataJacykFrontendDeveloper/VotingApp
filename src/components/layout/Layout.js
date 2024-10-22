@@ -21,7 +21,16 @@ function Layout() {
     <>
       <Header />
       <div className="d-flex flex-column flex-grow-1 flex-shrink-0">
-        <Outlet />
+        {auth.user && auth.user.isBlocked ? (
+          <div className="w-100 d-flex align-items-center my-auto flex-column">
+            <p className="fs-3 text-danger fw-medium text-center">
+              Twoje konto zostało zablokowane, <br />
+              <span className="fs-4">skontaktuj się z administratorem</span>
+            </p>
+          </div>
+        ) : (
+          <Outlet />
+        )}
       </div>
       <Footer />
     </>

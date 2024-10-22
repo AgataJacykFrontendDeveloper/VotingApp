@@ -75,9 +75,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const userDoc = await getDoc(doc(db, "users", user.uid));
       if (userDoc.exists()) {
-        setUser({ ...user, isAdmin: userDoc.data().isAdmin });
+        setUser({
+          ...user,
+          isAdmin: userDoc.data().isAdmin,
+          isBlocked: userDoc.data().isBlocked,
+        });
       } else {
-        setUser({ ...user, isAdmin: false });
+        setUser({ ...user, isAdmin: false, isBlocked: false });
       }
     } catch (error) {
       console.warn(error);
