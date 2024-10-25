@@ -8,34 +8,16 @@ const NewsletterCheckbox = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const fetchSubscriptionStatus = async () => {
-    if (!user) return;
-
-    try {
-      const docRef = doc(db, "newsletter", user.email);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        setIsSubscribed(true);
-      } else {
-        setIsSubscribed(false);
-      }
-    } catch (error) {
-      console.error("Error fetching subscription status:", error);
-    }
-    setLoading(false);
-  };
-
   const handleCheckboxChange = async () => {
     setIsSubscribed(!isSubscribed);
 
     try {
       if (!isSubscribed) {
-        await setDoc(doc(db, "newsletter", user.email), {
+        await setDoc(doc(db, "newsletter", user.uid), {
           email: user.email,
         });
       } else {
-        await deleteDoc(doc(db, "newsletter", user.email));
+        await deleteDoc(doc(db, "newsletter", user.uid));
       }
     } catch (error) {
       console.error("Error updating subscription status:", error);
@@ -43,6 +25,23 @@ const NewsletterCheckbox = () => {
   };
 
   useEffect(() => {
+    const fetchSubscriptionStatus = async () => {
+      if (!user) return;
+
+      try {
+        const docRef = doc(db, "newsletter", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setIsSubscribed(true);
+        } else {
+          setIsSubscribed(false);
+        }
+      } catch (error) {
+        console.error("Error fetching subscription status:", error);
+      }
+      setLoading(false);
+    };
     if (user) {
       fetchSubscriptionStatus();
     }
