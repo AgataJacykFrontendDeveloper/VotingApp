@@ -9,6 +9,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
+  const [newsletter, setNewsletter] = useState(false);
   const [error, setError] = useState(null);
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +18,7 @@ const RegisterPage = () => {
       if (password !== confirmPassword) {
         throw new Error("Hasła muszą być takie same");
       }
-      await auth.signupUser(email, password);
+      await auth.signupUser(email, password, newsletter);
     } catch (error) {
       setError(error.message);
     }
@@ -79,7 +80,12 @@ const RegisterPage = () => {
           </div>
           <div className="d-flex flex-column gap-2 ms-3">
             <div className="d-flex align-items-center gap-2">
-              <input className="rounded-checkbox" type="checkbox" />
+              <input
+                className="rounded-checkbox"
+                type="checkbox"
+                checked={newsletter}
+                onChange={() => setNewsletter(!newsletter)}
+              />
               <label htmlFor="newsletter">Zapisz się do newslettera</label>
             </div>
             <div className="d-flex align-items-center gap-2">

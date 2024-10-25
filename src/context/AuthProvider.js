@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebase.js";
-import { getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import {
   signInWithRedirect,
   getRedirectResult,
@@ -174,18 +174,22 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const signupUser = async (email, password) => {
+  const signupUser = async (email, password, newsletter) => {
     setIsButtonLoading(true);
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        navigate(REGISTER_REDIRECT);
-      })
-      .catch((error) => {
-        throw new Error(checkErrorMessage(error));
-      })
-      .finally(() => {
-        setIsButtonLoading(false);
-      });
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+
+      if (newsletter) {
+        await addDoc(collection(db, "newsletter"), { email });
+      }
+
+      navigate(REGISTER_REDIRECT);
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    } finally {
+      setIsButtonLoading(false);
+    }
   };
 
   const forgotPassword = async (email) => {
