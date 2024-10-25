@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebase.js";
-import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { setDoc, getDoc, doc } from "firebase/firestore";
 import {
   signInWithRedirect,
   getRedirectResult,
@@ -88,6 +88,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const checkNewsletter = async (user) => {
+    try {
+      const newsletterDoc = await getDoc(doc(db, "newsletter", user.uid));
+      if (newsletterDoc.exists()) {
+        setUser({
+          ...user,
+          isSubscribed: true,
+        });
+      } else {
+        setUser({ ...user, isSubscribed: false });
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
@@ -105,6 +121,7 @@ export const AuthProvider = ({ children }) => {
           setIdProvidera(authUser.providerData[0].providerId);
         }
         await checkIsAdmin(authUser);
+        await checkNewsletter(authUser);
         setIsLoggedIn(true);
         setIsLoading(false);
       } else {
@@ -178,10 +195,14 @@ export const AuthProvider = ({ children }) => {
     setIsButtonLoading(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
       if (newsletter) {
-        await addDoc(collection(db, "newsletter"), { email });
+        await setDoc(doc(db, "newsletter", userCredential.user.uid), { email });
       }
 
       navigate(REGISTER_REDIRECT);
