@@ -2,40 +2,39 @@ import React from "react";
 import useNewsletterSignup from "../NewsletterSignup";
 import "./Footer.css";
 import Logo from "../../images/VotingAppLogo.png";
+import { useAuth } from "../../context/AuthProvider";
+
 const Footer = () => {
+  const { user } = useAuth();
   const { handleSubmit, setEmail, email, message } = useNewsletterSignup();
   return (
     <>
-      <footer
-        className="text-center text-lg-start"
-        // style="background-color: #1c2331"
-      >
-        <section
-          className="d-flex justify-content-center p-4 mb-2 newsletter"
-          //   style="background-color: #6351ce"
-        >
-          <span>
-            Zapisz się do newslettera aby zawsze być na bieżąco z wynikami
-            głosowania!
-          </span>
+      <footer className="text-center text-lg-start">
+        {(!user || (user && !user.isSubscribed)) && (
+          <section className="d-flex justify-content-center p-4 mb-2 newsletter">
+            <span>
+              Zapisz się do newslettera aby zawsze być na bieżąco z wynikami
+              głosowania!
+            </span>
 
-          <div>
-            {" "}
-            <form onSubmit={handleSubmit}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Wpisz swój e-mail"
-                required
-              />
-              <button type="submit" className="btn-white">
-                Zapisz się!
-              </button>
-            </form>
-            {message && <p>{message}</p>}
-          </div>
-        </section>
+            <div>
+              {" "}
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Wpisz swój e-mail"
+                  required
+                />
+                <button type="submit" className="btn-white">
+                  Zapisz się!
+                </button>
+              </form>
+              {message && <p>{message}</p>}
+            </div>
+          </section>
+        )}
 
         <section className="main-footer-box">
           <div className="container text-center text-md-start mt-5">
