@@ -186,6 +186,10 @@ export const AuthProvider = ({ children }) => {
         await setDoc(doc(db, "newsletter", userCredential.user.uid), { email });
       }
 
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        email,
+        isBlocked: false,
+      });
       navigate(REGISTER_REDIRECT);
     } catch (error) {
       throw new Error(checkErrorMessage(error));

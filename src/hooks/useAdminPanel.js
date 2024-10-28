@@ -13,6 +13,7 @@ export const getUserList = async () => {
     const query = await getDocs(collection(db, "users"));
     const users = query.docs.map((doc) => ({
       id: doc.id,
+      email: doc.data().email,
       isAdmin: doc.data().isAdmin || false,
       isBlocked: doc.data().isBlocked || false,
     }));

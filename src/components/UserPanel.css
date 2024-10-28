@@ -8,8 +8,6 @@
   align-items: center;
 }
 .second-column {
-  height: 500px;
-  backdrop-filter: blur(4px);
   background: linear-gradient(
     123.55deg,
     rgba(109, 191, 157, 0.48) 0%,
@@ -37,8 +35,7 @@
   transform: translateY(-50%);
 }
 .modal-backdrop.modal-overlay {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.95);
 }
 .btn.btn-secondary.btn-nodelete,
 .btn.btn-primary.btn-delete {
@@ -124,12 +121,13 @@
   .user-data {
     font-size: 1rem;
   }
-  .second-column {
-    height: 400px;
-  }
   .modal-footer.btns-footer {
     display: flex;
     justify-content: center;
+  }
+  .modal-dialog {
+    position: relative;
+    top: 0%;
   }
 }
 @media (min-width: 576px) {
@@ -141,8 +139,8 @@
   .user-data {
     font-size: 1.2rem;
   }
-  .second-column {
-    height: 450px;
+  .modal{
+    --bs-modal-margin: 0;
   }
 }
 @media (min-width: 768px) {

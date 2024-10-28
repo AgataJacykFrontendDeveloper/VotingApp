@@ -26,11 +26,10 @@ const AdminUsers = ({ users, setUserList }) => {
             >
               <div className="d-flex flex-column flex-md-row w-100">
                 <span className="w-100" style={{ maxWidth: 300 }}>
-                  {user.id}
+                  {user.email} (ID: {user.id})
                 </span>
                 <span>{user.isAdmin ? "Admin" : "Użytkownik"}</span>
               </div>
-              {/* TODO: wyświetlanie maila zamiast ID + Dodawanie maila użytkownika do firestore przy rejestracji */}
               {user.id !== auth.user.uid &&
                 !user.isAdmin &&
                 (user.isBlocked ? (
