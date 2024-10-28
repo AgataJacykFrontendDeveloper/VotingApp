@@ -71,34 +71,16 @@ export const AuthProvider = ({ children }) => {
     return errorMessages[errorCode] || errorMessages["auth/unexpected-error"];
   }
 
-  const checkIsAdmin = async (user) => {
+  const getUserDetails = async (user) => {
     try {
       const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        setUser({
-          ...user,
-          isAdmin: userDoc.data().isAdmin,
-          isBlocked: userDoc.data().isBlocked,
-        });
-      } else {
-        setUser({ ...user, isAdmin: false, isBlocked: false });
-      }
-    } catch (error) {
-      console.warn(error);
-    }
-  };
-
-  const checkNewsletter = async (user) => {
-    try {
       const newsletterDoc = await getDoc(doc(db, "newsletter", user.uid));
-      if (newsletterDoc.exists()) {
-        setUser({
-          ...user,
-          isSubscribed: true,
-        });
-      } else {
-        setUser({ ...user, isSubscribed: false });
-      }
+
+      const { isAdmin = false, isBlocked = false } =
+        userDoc.exists() && userDoc.data();
+      const isSubscribed = newsletterDoc.exists();
+
+      setUser({ ...user, isAdmin, isBlocked, isSubscribed });
     } catch (error) {
       console.warn(error);
     }
@@ -120,8 +102,7 @@ export const AuthProvider = ({ children }) => {
         } else {
           setIdProvidera(authUser.providerData[0].providerId);
         }
-        await checkIsAdmin(authUser);
-        await checkNewsletter(authUser);
+        await getUserDetails(authUser);
         setIsLoggedIn(true);
         setIsLoading(false);
       } else {
