@@ -189,7 +189,7 @@ const UserPanel = () => {
                   }`}
                   tabIndex="-1"
                 >
-                  <div className="modal-dialog">
+                  <div className="modal-dialog modal-dialog-scrollable">
                     <div className="modal-content modal-bcg">
                       <div className="modal-header">
                         <h5 className="modal-title fw-bold">
