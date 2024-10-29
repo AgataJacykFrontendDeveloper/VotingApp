@@ -57,7 +57,6 @@ const AdminActivePools = ({ records, setRecords }) => {
   return (
     <div>
       <h2>Aktywne głosowania</h2>
-      {/* TODO: Funkcjonalność do zarządzania + Jakie piosenki występują w głosowaniu */}
       <div>
         <h5>Głosowanie Tygodnia:</h5>
         {records.WeeklyRecord ? (
