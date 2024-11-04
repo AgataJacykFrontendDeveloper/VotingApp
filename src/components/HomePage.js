@@ -19,7 +19,7 @@ const HomePage = () => {
     seconds: 0,
   });
   const [pollTimestamp, setPollTimestmap] = useState(null);
-  const [pollActive, setPollActive] = useState(true);
+  const [pollActive, setPollActive] = useState(false);
 
   useEffect(() => {
     const getPollRemainingTime = async () => {
@@ -27,6 +27,7 @@ const HomePage = () => {
       const latestPollQuery = query(
         pollsCollectionRef,
         where("type", "==", "weekly"),
+        where("published", "==", true),
         orderBy("start_at", "desc"),
         limit(1)
       );
@@ -51,6 +52,7 @@ const HomePage = () => {
 
       if (timeDiff <= 0) {
         setRemainingTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setPollTimestmap(null);
         setPollActive(false);
         return;
       }
@@ -164,7 +166,7 @@ const HomePage = () => {
         className="d-flex flex-column justify-content-center"
       >
         <h3>Do następnego głosowania pozostało</h3>
-        {pollTimestamp && !pollActive ? (
+        {!pollTimestamp && !pollActive ? (
           <h1>Głosowanie dobiegło końca</h1>
         ) : (
           <h1>

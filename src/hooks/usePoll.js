@@ -14,6 +14,7 @@ const getLatestPoll = async (type) => {
   const latestPollQuery = query(
     pollsCollectionRef,
     where("type", "==", type),
+    where("published", "==", true),
     orderBy("start_at", "desc"),
     limit(1)
   );
@@ -28,7 +29,7 @@ const getSongs = async (pollRef) => {
 };
 
 function usePoll(type) {
-  const [poll, setPoll] = useState({});
+  const [poll, setPoll] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,11 +46,11 @@ function usePoll(type) {
             songs,
           });
         } else {
-          setPoll({});
+          setPoll(null);
           console.error("No polls found were found!");
         }
       } catch (error) {
-        setPoll({});
+        setPoll(null);
         console.error("Error fetching poll data: ", error);
       } finally {
         setIsLoading(false);
