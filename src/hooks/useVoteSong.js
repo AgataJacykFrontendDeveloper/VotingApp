@@ -13,7 +13,7 @@ import AlertContext from "../context/AlertProvider";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../context/ModalProvider";
 
-const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
+const useVoteSong = (currentPollId, voteType, setSongId, incrementSongVote) => {
   const auth = useContext(AuthContext);
   const { addAlert } = useContext(AlertContext);
   const { openModal, closeModal } = useModal();
@@ -67,13 +67,11 @@ const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
     const songDoc = await getDoc(songDocRef);
 
     if (songDoc.exists()) {
-      updateDoc(songDocRef, { votes: increment(1) });
+      await setDoc(userVoteRef, { songId: songId, timestamp: Timestamp.now() });
+      await updateDoc(songDocRef, { votes: increment(1) });
+      userVoted.current = true;
       // Update local votes state
-      setSongs((prevSongs) =>
-        prevSongs.map((song) =>
-          song.id === songId ? { ...song, votes: song.votes + 1 } : song
-        )
-      );
+      incrementSongVote(songId);
       setSongId(songId);
       openModal({
         title: "Twój głos został zapisany!",
@@ -89,8 +87,6 @@ const useVoteSong = (currentPollId, setSongs, voteType, setSongId) => {
           },
         ],
       });
-      await setDoc(userVoteRef, { songId: songId, timestamp: Timestamp.now() });
-      userVoted.current = true;
     }
   };
 

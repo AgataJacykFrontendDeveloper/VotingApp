@@ -2,7 +2,7 @@ import "./VotePage.css";
 import { useEffect, useContext, useState } from "react";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import useFetchSongs from "../hooks/useFetchSongs";
+import usePoll from "../hooks/usePoll";
 import useVoteSong from "../hooks/useVoteSong";
 import AuthContext from "../context/AuthProvider";
 import AlertContext from "../context/AlertProvider";
@@ -15,14 +15,15 @@ const VotePage = ({ type }) => {
   const { addAlert } = useContext(AlertContext);
   const { openModal, closeModal } = useModal();
   const [songId, setSongId] = useState(null);
+  const [isLoadingVote, setLoadingVote] = useState(true);
   const navigate = useNavigate();
 
-  const { isLoading, songs, currentPollId, setSongs } = useFetchSongs(type);
+  const { isLoading, poll, incrementSongVote } = usePoll(type);
   const { voteForSong } = useVoteSong(
-    currentPollId,
-    setSongs,
+    poll.id,
     voteType,
-    setSongId
+    setSongId,
+    incrementSongVote
   );
 
   const confirmVote = (song) => {
@@ -53,14 +54,9 @@ const VotePage = ({ type }) => {
 
   useEffect(() => {
     async function getUserVote() {
-      if (auth.user && currentPollId) {
-        const userVoteRef = doc(
-          db,
-          "users",
-          auth.user.uid,
-          "votes",
-          currentPollId
-        );
+      setLoadingVote(true);
+      if (auth.user && poll.id) {
+        const userVoteRef = doc(db, "users", auth.user.uid, "votes", poll.id);
         const userVoteDoc = await getDoc(userVoteRef);
         if (userVoteDoc.exists()) {
           // Show only today's voted song
@@ -77,18 +73,26 @@ const VotePage = ({ type }) => {
           setSongId(null);
         }
       }
+      setLoadingVote(false);
     }
     getUserVote();
-  }, [currentPollId, auth.user]);
+  }, [poll.id, auth.user]);
 
   return (
     <div className="d-flex flex-column align-items-center mx-4">
       <h1 className="text-white text-uppercase fs-2 mb-4 text-center">
         Zagłosuj na piosenkę {voteType}
       </h1>
+      <p className="text-white text-uppercase fw-medium fs-4 mb-4 text-center">
+        Głosowanie {poll.title}
+      </p>
+      <p className="text-white text-uppercase fs-5 mb-4 text-center">
+        Zakończenie: {poll.end_at?.toDate().toLocaleDateString()}
+      </p>
       <ul className="list-unstyled fs-4 container-md d-flex flex-column gap-4 p-0">
         {!isLoading &&
-          songs
+          !isLoadingVote &&
+          poll.songs
             .sort((a, b) => b.votes - a.votes)
             .map((song, i) => (
               <div
@@ -114,7 +118,7 @@ const VotePage = ({ type }) => {
                     {songId === song.id ? <>&#9829;</> : <>&#9825;</>}
                   </button>
                   <Link
-                    to={`/vote/${currentPollId}/songs/${song.id}`}
+                    to={`/vote/${poll.id}/songs/${song.id}`}
                     className="vote-bar row col-12 col-sm justify-content-center m-0 vote-text"
                   >
                     <div className="col-sm text-center text-sm-start row row-cols-1 column-gap-1">
