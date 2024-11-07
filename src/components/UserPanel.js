@@ -1,5 +1,6 @@
 import "./UserPanel.css";
 import React, { useState, useContext, useEffect } from "react";
+import { createPortal } from "react-dom";
 import AuthContext from "../context/AuthProvider";
 import UserVotes from "./DisplayVote";
 import NewsletterCheckbox from "./NewsletterCheckbox";
@@ -183,59 +184,62 @@ const UserPanel = () => {
                 </p>
 
                 {/* Modal*/}
-                <div
-                  className={`modal fade ${
-                    showModal ? "show d-block" : "d-none"
-                  }`}
-                  tabIndex="-1"
-                >
-                  <div className="modal-dialog modal-dialog-scrollable">
-                    <div className="modal-content modal-bcg">
-                      <div className="modal-header">
-                        <h5 className="modal-title fw-bold">
-                          Przykro nam, że nas opuszczasz
-                        </h5>
+                {showModal &&
+                  createPortal(
+                    <>
+                      <div
+                        className="modal-backdrop fade-shadow modal-overlay"
+                        onClick={closeModal}
+                      ></div>
+                      <div
+                        className={`modal fade ${
+                          showModal ? "show d-block" : "d-none"
+                        }`}
+                        tabIndex="-1"
+                      >
+                        <div className="modal-dialog modal-dialog-scrollable">
+                          <div className="modal-content modal-bcg">
+                            <div className="modal-header">
+                              <h5 className="modal-title fw-bold">
+                                Przykro nam, że nas opuszczasz
+                              </h5>
+                            </div>
+                            <div className="modal-body">
+                              <p className="modal-text">
+                                Ta operacja jest nieodwracalna i stracisz
+                                wszystkie swoje zapisane głosowania. Czy na
+                                pewno chcesz kontynuować usuwanie konta?
+                              </p>
+                              <p className="modal-title">Uwaga!</p>
+                              <p className="modal-text">
+                                Tak wrażliwa operacja wymaga reautentykacji.
+                              </p>
+                              {passwordUserRender()}
+                              {error}
+                            </div>
+                            <div className="modal-footer btns-footer">
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-nodelete"
+                                onClick={closeModal}
+                                data-bs-dismiss="modal"
+                              >
+                                Nie, zatrzymaj usuwanie
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => deleteAccount(actualPassword)}
+                                className="btn btn-primary btn-delete"
+                              >
+                                Tak, usuń moje konto
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="modal-body">
-                        <p className="modal-text">
-                          Ta operacja jest nieodwracalna i stracisz wszystkie
-                          swoje zapisane głosowania. Czy na pewno chcesz
-                          kontynuować usuwanie konta?
-                        </p>
-                        <p className="modal-title">Uwaga!</p>
-                        <p className="modal-text">
-                          Tak wrażliwa operacja wymaga reautentykacji.
-                        </p>
-                        {passwordUserRender()}
-                        {error}
-                      </div>
-                      <div className="modal-footer btns-footer">
-                        <button
-                          type="button"
-                          className="btn btn-secondary btn-nodelete"
-                          onClick={closeModal}
-                          data-bs-dismiss="modal"
-                        >
-                          Nie, zatrzymaj usuwanie
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => deleteAccount(actualPassword)}
-                          className="btn btn-primary btn-delete"
-                        >
-                          Tak, usuń moje konto
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Overlay */}
-                {showModal && (
-                  <div
-                    className="modal-backdrop fade-shadow modal-overlay"
-                    onClick={closeModal}
-                  ></div>
-                )}
+                    </>,
+                    document.body
+                  )}
               </div>
             )}
             {activeButton === "settings" && (
