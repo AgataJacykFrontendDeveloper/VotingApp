@@ -16,7 +16,8 @@
 }
 
 .list-group.users-list {
-  height: 340px;
+  min-height: 330px;
+  height: calc(90vh - 250px);
 }
 
 .list-group-item.user-item {

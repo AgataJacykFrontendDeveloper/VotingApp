@@ -8,6 +8,7 @@
   align-items: center;
 }
 .second-column {
+  backdrop-filter: blur(4px);
   background: linear-gradient(
     123.55deg,
     rgba(109, 191, 157, 0.48) 0%,
@@ -139,7 +140,7 @@
   .user-data {
     font-size: 1.2rem;
   }
-  .modal{
+  .modal {
     --bs-modal-margin: 0;
   }
 }
