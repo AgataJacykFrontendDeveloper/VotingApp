@@ -43,6 +43,10 @@
   padding: 12px 24px 12px 80px;
 }
 
+.vote-bar-ended {
+  padding: 12px 24px 12px 40px;
+}
+
 .btn-heart {
   background-color: #faecff00;
   color: #4fd89f;

@@ -1,5 +1,5 @@
 import "./VotePage.css";
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useRef } from "react";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import usePoll from "../hooks/usePoll";
@@ -15,7 +15,9 @@ const VotePage = ({ type }) => {
   const { addAlert } = useContext(AlertContext);
   const { openModal, closeModal } = useModal();
   const [songId, setSongId] = useState(null);
+  const timer = useRef(null);
   const [isLoadingVote, setLoadingVote] = useState(true);
+  const [pollEnded, setPollEnded] = useState(false);
   const navigate = useNavigate();
 
   const { isLoading, poll, incrementSongVote } = usePoll(type);
@@ -25,6 +27,25 @@ const VotePage = ({ type }) => {
     setSongId,
     incrementSongVote
   );
+
+  useEffect(() => {
+    if (!poll) return;
+    setPollEnded(false);
+    const calculateRemainingTime = () => {
+      const now = Date.now();
+      const endTime = poll?.end_at.toDate().getTime();
+      if (now > endTime) {
+        setPollEnded(true);
+        clearInterval(timer.current);
+      }
+    };
+
+    calculateRemainingTime();
+
+    timer.current = setInterval(() => calculateRemainingTime(), 1000);
+
+    return () => clearInterval(timer.current);
+  }, [poll]);
 
   useEffect(() => {
     const getUserVote = async () => {
@@ -94,9 +115,16 @@ const VotePage = ({ type }) => {
             <p className="text-white text-uppercase fw-medium fs-4 mb-4 text-center">
               Głosowanie {poll.title}
             </p>
-            <p className="text-white text-uppercase fs-5 mb-4 text-center">
-              Zakończenie: {poll.end_at?.toDate().toLocaleDateString()}
-            </p>
+            {pollEnded ? (
+              <p className="text-white text-uppercase fs-5 mb-4 text-center">
+                Głosowanie zakończone dnia:{" "}
+                {poll.end_at?.toDate().toLocaleDateString()}
+              </p>
+            ) : (
+              <p className="text-white text-uppercase fs-5 mb-4 text-center">
+                Zakończenie: {poll.end_at?.toDate().toLocaleDateString()}
+              </p>
+            )}
             <ul className="list-unstyled fs-4 container-md d-flex flex-column gap-4 p-0">
               {poll.songs
                 .sort((a, b) => b.votes - a.votes)
@@ -120,6 +148,8 @@ const VotePage = ({ type }) => {
                       className={`position-relative w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 flex-wrap-reverse ${i === 0 ? "border-bottom-2 bg-top-vote-opaque" : "bg-vote-opaque"}`}
                     >
                       <button
+                        disabled={pollEnded}
+                        hidden={pollEnded}
                         className="btn-heart py-1 px-3 w-auto col-12 col-sm-auto"
                         onClick={() => confirmVote(song)}
                       >
@@ -127,7 +157,7 @@ const VotePage = ({ type }) => {
                       </button>
                       <Link
                         to={`/vote/${poll.id}/songs/${song.id}`}
-                        className="vote-bar row col-12 col-sm justify-content-center m-0 vote-text"
+                        className={`${pollEnded ? "vote-bar-ended" : "vote-bar"} row col-12 col-sm justify-content-center m-0 vote-text`}
                       >
                         <div className="col-sm text-center text-sm-start row row-cols-1 column-gap-1">
                           <div className="col col-sm-auto px-0 text-break">
