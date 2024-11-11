@@ -4,6 +4,7 @@ import {
   doc,
   collection,
   query,
+  limit,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
@@ -27,13 +28,21 @@ export const getUserList = async () => {
 export const getPollList = async () => {
   try {
     const votesRef = collection(db, "polls");
-    const queryWeekly = query(votesRef, where("type", "==", "weekly"));
+    const queryWeekly = query(
+      votesRef,
+      where("type", "==", "weekly"),
+      limit(1)
+    );
     const querySnapshotWeekly = await getDocs(queryWeekly);
     const WeeklyRecord = querySnapshotWeekly.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }))[0];
-    const queryMonthly = query(votesRef, where("type", "==", "monthly"));
+    const queryMonthly = query(
+      votesRef,
+      where("type", "==", "monthly"),
+      limit(1)
+    );
     const querySnapshotMonthly = await getDocs(queryMonthly);
     const MonthlyRecord = querySnapshotMonthly.docs.map((doc) => ({
       id: doc.id,
@@ -69,6 +78,16 @@ export const updateVotes = async (pollId, songId, votes) => {
   }
 };
 
+export const updatePoll = async (pollId, pollData) => {
+  try {
+    const pollRef = doc(db, "polls", pollId);
+    await updateDoc(pollRef, { ...pollData });
+    return "Pomyślnie zaktualizowano głosowanie!";
+  } catch (error) {
+    throw new Error("Błąd podczas aktualizowania głosowania: " + error.message);
+  }
+};
+
 export const checkPollStatus = (poll) => {
   return poll.published === true;
 };
@@ -81,8 +100,10 @@ export const togglePollStatus = async (pollId, currentStatus) => {
     });
     return "Status publikacji zaktualizowany!";
   } catch (error) {
-    console.log("Błąd podczas aktualizacji statusu publikacji: ", error);
-    throw error;
+    throw new Error(
+      "Błąd podczas aktualizacji statusu publikacji: ",
+      error.message
+    );
   }
 };
 
