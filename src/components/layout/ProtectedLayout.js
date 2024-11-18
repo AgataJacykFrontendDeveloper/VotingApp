@@ -1,6 +1,7 @@
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+import CookieBanner from "./Cookies";
 import AuthContext from "../../context/AuthProvider";
 import { Spinner } from "react-bootstrap";
 import { useContext } from "react";
@@ -29,6 +30,7 @@ function ProtectedLayout() {
 
   return (
     <>
+      <CookieBanner />
       <Header />
       <div className="d-flex flex-column flex-grow-1 flex-shrink-0">
         {auth.user && auth.user.isBlocked ? (

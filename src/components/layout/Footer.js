@@ -3,6 +3,7 @@ import useNewsletterSignup from "../NewsletterSignup";
 import "./Footer.css";
 import Logo from "../../images/VotingAppLogo.png";
 import { useAuth } from "../../context/AuthProvider";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { user } = useAuth();
@@ -67,9 +68,9 @@ const Footer = () => {
                   </a>
                 </p>
                 <p>
-                  <a href="#!" className="text-white">
+                  <Link to="/cookies" className="text-white">
                     Polityka prywatności
-                  </a>
+                  </Link>
                 </p>
               </div>
 
