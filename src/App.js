@@ -3,6 +3,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
+import CookiesLayout from "./components/layout/CookiesLayout";
 import { AuthProvider } from "./context/AuthProvider";
 import { AlertProvider } from "./context/AlertProvider";
 import { ModalProvider } from "./context/ModalProvider";
@@ -16,6 +17,7 @@ import VotePage from "./components/VotePage";
 import SongPage from "./components/SongPage";
 import AdministratorPanel from "./components/AdministratorPanel";
 import PageNotFound from "./components/404";
+import Cookies from "./components/CookiesSite";
 
 function App() {
   return (
@@ -47,6 +49,9 @@ function App() {
               <Route element={<ProtectedLayout />}>
                 <Route path="settings" element={<UserPanel />} />
                 <Route path="admin" element={<AdministratorPanel />} />
+              </Route>
+              <Route element={<CookiesLayout />}>
+                <Route path="cookies" element={<Cookies />} />
               </Route>
             </Routes>
           </ModalProvider>
