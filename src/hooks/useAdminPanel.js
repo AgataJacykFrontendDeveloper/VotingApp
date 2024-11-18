@@ -120,3 +120,61 @@ export const blockUser = async (userId, status) => {
     return false;
   }
 };
+
+export const getUserVotes = async () => {
+  try {
+    const usersCollection = collection(db, "users");
+    const usersSnapshot = await getDocs(usersCollection);
+
+    const allVotes = [];
+
+    for (const userDoc of usersSnapshot.docs) {
+      const userData = userDoc.data();
+      const email = userData.email;
+
+      const votesCollection = collection(db, "users", userDoc.id, "votes");
+      const votesSnapshot = await getDocs(votesCollection);
+
+      const votesArray = votesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      allVotes.push({
+        email: email,
+        votes: votesArray,
+      });
+    }
+
+    return allVotes;
+  } catch (error) {
+    console.error("Błąd podczas pobierania listy oddanych głosów:", error);
+    return [];
+  }
+};
+
+export const getSongsInfo = async () => {
+  try {
+    const pollsCollection = collection(db, "polls");
+    const pollsSnapshot = await getDocs(pollsCollection);
+
+    const allSongs = {};
+
+    for (const pollDoc of pollsSnapshot.docs) {
+      const songsCollection = collection(db, "polls", pollDoc.id, "songs");
+      const songsSnapshot = await getDocs(songsCollection);
+
+      songsSnapshot.forEach((songDoc) => {
+        allSongs[songDoc.id] = {
+          artist: songDoc.data().artist,
+          title: songDoc.data().title,
+        };
+      });
+    }
+
+    return allSongs;
+  } catch (error) {
+    console.error("Błąd podczas pobierania danych piosenek:", error);
+    return {};
+  }
+};
