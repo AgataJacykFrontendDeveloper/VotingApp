@@ -125,7 +125,7 @@ const UserPanel = () => {
               }`}
               onClick={() => setActiveButton("votes")}
             >
-              Głosy oddane dzisiaj
+              Oddane głosy
             </button>
             <button
               type="button"

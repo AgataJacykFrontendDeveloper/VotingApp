@@ -3,6 +3,7 @@ import AdminCreatePoll from "./AdminCreatePoll";
 import AdminSettings from "./AdminSettings";
 import AdminUsers from "./AdminUsers";
 import AdminActivePolls from "./AdminActivePolls";
+import AdminGetVotes from "./AdminGetVotes";
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
@@ -183,12 +184,7 @@ const AdministratorPanel = () => {
               className="page-content page-bcg"
             >
               <div className="fs-lg fw-300 p-5 border-faded mb-g main-content-admin">
-                {activeTab === "oddaneGlosy" && (
-                  <div>
-                    <h2>Oddane głosy</h2>
-                    <p>xxx</p>
-                  </div>
-                )}
+                {activeTab === "oddaneGlosy" && <AdminGetVotes />}
                 {activeTab === "aktywneGlosowania" && (
                   <AdminActivePolls records={records} setRecords={setRecords} />
                 )}
