@@ -58,7 +58,7 @@ const AdminActivePolls = ({ records, setRecords }) => {
     }
   };
 
-  const handleTogglePollAnonymity = async (poll) => {
+  const handleToggleAnonymousVoting = async (poll) => {
     try {
       const message = await toggleAnonymousVoting(
         poll.id,
@@ -97,7 +97,7 @@ const AdminActivePolls = ({ records, setRecords }) => {
               poll={weeklyPoll}
               handleTogglePollStatus={handleTogglePollStatus}
               handleViewPoll={handleViewPoll}
-              handleTogglePollAnonymity={handleTogglePollAnonymity}
+              handleToggleAnonymousVoting={handleToggleAnonymousVoting}
             />
           ) : (
             <p>Brak aktywnego głosowania na ten tydzień.</p>
@@ -110,7 +110,7 @@ const AdminActivePolls = ({ records, setRecords }) => {
               poll={monthlyPoll}
               handleTogglePollStatus={handleTogglePollStatus}
               handleViewPoll={handleViewPoll}
-              handleTogglePollAnonymity={handleTogglePollAnonymity}
+              handleToggleAnonymousVoting={handleToggleAnonymousVoting}
             />
           ) : (
             <p>Brak aktywnego głosowania na ten miesiąc.</p>

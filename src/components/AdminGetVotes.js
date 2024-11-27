@@ -44,8 +44,10 @@ const AdminGetVotes = () => {
                       {/* TODO: Obsługa przycisku do usuwania głosu */}
                       <button className="btn btn-outline-danger">x</button>{" "}
                       {song.artist || "Nieznany"} - {song.title || "Nieznany"} (
-                      {vote.timestamp.toDate().toLocaleString()}) [Głosowanie:{" "}
-                      {vote.id}]
+                      {vote.timestamp
+                        ? vote.timestamp.toLocaleString()
+                        : "Brak daty"}
+                      ) [Głosowanie: {vote.id}]
                     </li>
                   );
                 })}

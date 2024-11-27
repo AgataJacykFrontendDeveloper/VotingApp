@@ -1,13 +1,20 @@
 import "./VotePage.css";
 import { useEffect, useContext, useState, useRef } from "react";
-import { getDoc, doc, updateDoc, increment } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  increment,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import usePoll from "../hooks/usePoll";
 import useVoteSong from "../hooks/useVoteSong";
 import AuthContext from "../context/AuthProvider";
 import AlertContext from "../context/AlertProvider";
 import { useModal } from "../context/ModalProvider";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const VotePage = ({ type }) => {
   const voteType = type === "weekly" ? "Tygodnia" : "Miesiąca";
@@ -18,9 +25,9 @@ const VotePage = ({ type }) => {
   const timer = useRef(null);
   const [isLoadingVote, setLoadingVote] = useState(true);
   const [pollEnded, setPollEnded] = useState(false);
-  const navigate = useNavigate();
 
-  const { isLoading, poll, incrementSongVote } = usePoll(type);
+  const { isLoading, poll } = usePoll(type);
+  const { voteSong } = useVoteSong();
 
   useEffect(() => {
     if (!poll) return;
@@ -45,21 +52,28 @@ const VotePage = ({ type }) => {
     const getUserVote = async () => {
       setLoadingVote(true);
       if (auth.user && poll?.id) {
-        const userVoteRef = doc(db, "users", auth.user.uid, "votes", poll.id);
-        const userVoteDoc = await getDoc(userVoteRef);
-        if (userVoteDoc.exists()) {
-          // Show only today's voted song
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
+        try {
+          const userVoteRef = doc(db, "users", auth.user.uid, "votes", poll.id);
+          const userVoteDoc = await getDoc(userVoteRef);
+          if (userVoteDoc.exists()) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-          const lastVoteTime = userVoteDoc.data().timestamp?.toDate();
-          if (lastVoteTime >= today) {
-            setSongId(userVoteDoc.data().songId);
+            const lastVoteTime = userVoteDoc.data().timestamp?.toDate();
+            if (lastVoteTime && lastVoteTime >= today) {
+              setSongId(userVoteDoc.data().songId);
+            } else {
+              setSongId(null);
+            }
           } else {
             setSongId(null);
           }
-        } else {
-          setSongId(null);
+        } catch (error) {
+          console.error("Error getting user vote: ", error);
+          addAlert(
+            "Wystąpił błąd podczas pobierania głosu użytkownika.",
+            "danger"
+          );
         }
       }
       setLoadingVote(false);
@@ -95,10 +109,28 @@ const VotePage = ({ type }) => {
                 await updateDoc(songRef, {
                   votes: increment(1),
                 });
+
+                const userVoteRef = doc(
+                  db,
+                  "users",
+                  auth.user.uid,
+                  "votes",
+                  poll.id
+                );
+                await setDoc(
+                  userVoteRef,
+                  {
+                    songId: song.id,
+                    timestamp: serverTimestamp(),
+                  },
+                  { merge: true }
+                );
+
                 setSongId(song.id);
                 addAlert("Głos został oddany pomyślnie!", "success");
               }
             } catch (error) {
+              console.error("Error voting: ", error);
               addAlert("Wystąpił błąd podczas oddawania głosu.", "danger");
             }
           },
