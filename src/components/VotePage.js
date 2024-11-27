@@ -75,6 +75,13 @@ const VotePage = ({ type }) => {
             "danger"
           );
         }
+      } else if (!auth.user && poll?.anonymousVoting) {
+        const localVote = localStorage.getItem(`vote_${poll.id}`);
+        if (localVote) {
+          setSongId(localVote);
+        } else {
+          setSongId(null);
+        }
       }
       setLoadingVote(false);
     };
@@ -110,21 +117,25 @@ const VotePage = ({ type }) => {
                   votes: increment(1),
                 });
 
-                const userVoteRef = doc(
-                  db,
-                  "users",
-                  auth.user.uid,
-                  "votes",
-                  poll.id
-                );
-                await setDoc(
-                  userVoteRef,
-                  {
-                    songId: song.id,
-                    timestamp: serverTimestamp(),
-                  },
-                  { merge: true }
-                );
+                if (auth.user) {
+                  const userVoteRef = doc(
+                    db,
+                    "users",
+                    auth.user.uid,
+                    "votes",
+                    poll.id
+                  );
+                  await setDoc(
+                    userVoteRef,
+                    {
+                      songId: song.id,
+                      timestamp: serverTimestamp(),
+                    },
+                    { merge: true }
+                  );
+                } else if (poll?.anonymousVoting) {
+                  localStorage.setItem(`vote_${poll.id}`, song.id);
+                }
 
                 setSongId(song.id);
                 addAlert("Głos został oddany pomyślnie!", "success");
