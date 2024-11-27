@@ -12,7 +12,7 @@ import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import UserPanel from "./components/UserPanel";
 import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
+import Mail from "./components/Mail";
 import VotePage from "./components/VotePage";
 import SongPage from "./components/SongPage";
 import AdministratorPanel from "./components/AdministratorPanel";
@@ -31,7 +31,7 @@ function App() {
                 <Route path="register" element={<RegisterPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
-                <Route path="reset-password" element={<ResetPassword />} />
+                <Route path="mail" element={<Mail />} />
                 <Route
                   path="vote/weekly"
                   element={<VotePage type="weekly" />}
