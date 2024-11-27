@@ -19,6 +19,7 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   reauthenticateWithPopup,
+  applyActionCode,
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -285,7 +286,6 @@ export const AuthProvider = ({ children }) => {
 
   const changeMail = async (newEmail, actualPassword) => {
     try {
-      /* TODO: Wiadomość potwierdzająca zmianę maila */
       await reAuthentication(actualPassword);
       await verifyBeforeUpdateEmail(auth.currentUser, newEmail);
       return {
@@ -303,6 +303,18 @@ export const AuthProvider = ({ children }) => {
       await updatePassword(auth.currentUser, newPassword);
       return {
         message: "Twoje hasło zostało pomyślnie zmienione.",
+      };
+    } catch (error) {
+      throw new Error(checkErrorMessage(error));
+    }
+  };
+
+  const verifyEmail = async (oobCode) => {
+    try {
+      await applyActionCode(auth, oobCode);
+      signOutUser(auth);
+      return {
+        message: "Twój mail został potwierdzony!",
       };
     } catch (error) {
       throw new Error(checkErrorMessage(error));
@@ -330,6 +342,7 @@ export const AuthProvider = ({ children }) => {
         removeAccount,
         changeMail,
         changePassword,
+        verifyEmail,
       }}
     >
       {children}
