@@ -4,6 +4,7 @@ import AdminSettings from "./AdminSettings";
 import AdminUsers from "./AdminUsers";
 import AdminActivePolls from "./AdminActivePolls";
 import AdminGetVotes from "./AdminGetVotes";
+import AdminAllPolls from "./AdminAllPolls";
 import "../dist/css/vendors.bundle.css";
 import "../dist/css/app.bundle.css";
 import "../dist/css/skins/skin-master.css";
@@ -127,6 +128,20 @@ const AdministratorPanel = () => {
                     <span className="nav-link-text">Nowa lista utworów</span>
                   </a>
                 </li>
+                <li
+                  className={
+                    activeTab === "wszystkieGlosowania" ? "active open" : ""
+                  }
+                >
+                  <a
+                    href="#"
+                    title="Wszystkie głosowania"
+                    onClick={() => handleTabClick("wszystkieGlosowania")}
+                  >
+                    <i className="fal fa-list"></i>
+                    <span className="nav-link-text">Wszystkie głosowania</span>
+                  </a>
+                </li>
               </ul>
               <div className="filter-message js-filter-message bg-success-600"></div>
             </nav>
@@ -193,6 +208,7 @@ const AdministratorPanel = () => {
                 )}
                 {activeTab === "ustawienia" && <AdminSettings />}
                 {activeTab === "nowaListaUtworow" && <AdminCreatePoll />}
+                {activeTab === "wszystkieGlosowania" && <AdminAllPolls />}
               </div>
             </main>
             <div

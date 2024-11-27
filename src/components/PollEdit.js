@@ -4,7 +4,13 @@ import { Timestamp } from "firebase/firestore";
 import Form from "react-bootstrap/Form";
 
 const convertToISOString = (date) => {
-  return date.toDate().toISOString().slice(0, 16);
+  if (date instanceof Timestamp) {
+    return date.toDate().toISOString().slice(0, 16);
+  } else if (date instanceof Date) {
+    return date.toISOString().slice(0, 16);
+  } else {
+    return new Date(date).toISOString().slice(0, 16);
+  }
 };
 
 const convertToTimestamp = (date) => {

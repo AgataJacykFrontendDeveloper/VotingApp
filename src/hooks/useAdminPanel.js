@@ -28,20 +28,22 @@ export const getUserList = async () => {
 export const getPollList = async () => {
   try {
     const votesRef = collection(db, "polls");
+
     const queryWeekly = query(
       votesRef,
       where("type", "==", "weekly"),
-      limit(1)
+      where("published", "==", true)
     );
     const querySnapshotWeekly = await getDocs(queryWeekly);
     const WeeklyRecord = querySnapshotWeekly.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }))[0];
+
     const queryMonthly = query(
       votesRef,
       where("type", "==", "monthly"),
-      limit(1)
+      where("published", "==", true)
     );
     const querySnapshotMonthly = await getDocs(queryMonthly);
     const MonthlyRecord = querySnapshotMonthly.docs.map((doc) => ({
@@ -176,5 +178,20 @@ export const getSongsInfo = async () => {
   } catch (error) {
     console.error("Błąd podczas pobierania danych piosenek:", error);
     return {};
+  }
+};
+
+export const toggleAnonymousVoting = async (pollId, currentStatus) => {
+  try {
+    const pollRef = doc(db, "polls", pollId);
+    await updateDoc(pollRef, {
+      anonymousVoting: !currentStatus,
+    });
+    return "Status anonimowego głosowania zaktualizowany!";
+  } catch (error) {
+    throw new Error(
+      "Błąd podczas aktualizacji statusu anonimowego głosowania: " +
+        error.message
+    );
   }
 };

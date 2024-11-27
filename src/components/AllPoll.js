@@ -1,9 +1,8 @@
 import { checkPollStatus } from "../hooks/useAdminPanel";
 
-const ActivePoll = ({
+const AllPoll = ({
   poll,
   handleTogglePollStatus,
-  handleViewPoll,
   handleToggleAnonymousVoting,
 }) => (
   <div>
@@ -16,9 +15,6 @@ const ActivePoll = ({
       Głosowanie anonimowe: {poll.anonymousVoting ? "Włączone" : "Wyłączone"}
     </p>
     <div className="d-flex flex-wrap gap-2">
-      <button onClick={() => handleViewPoll(poll)} className="btn-cyan">
-        Edytuj głosowanie
-      </button>
       <button onClick={() => handleTogglePollStatus(poll)} className="btn-cyan">
         Zmień status publikacji
       </button>
@@ -34,4 +30,4 @@ const ActivePoll = ({
   </div>
 );
 
-export default ActivePoll;
+export default AllPoll;

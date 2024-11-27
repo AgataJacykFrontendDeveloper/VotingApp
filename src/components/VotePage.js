@@ -1,6 +1,6 @@
 import "./VotePage.css";
 import { useEffect, useContext, useState, useRef } from "react";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import usePoll from "../hooks/usePoll";
 import useVoteSong from "../hooks/useVoteSong";
@@ -21,12 +21,6 @@ const VotePage = ({ type }) => {
   const navigate = useNavigate();
 
   const { isLoading, poll, incrementSongVote } = usePoll(type);
-  const { voteForSong } = useVoteSong(
-    poll?.id,
-    voteType,
-    setSongId,
-    incrementSongVote
-  );
 
   useEffect(() => {
     if (!poll) return;
@@ -73,9 +67,12 @@ const VotePage = ({ type }) => {
     getUserVote();
   }, [poll?.id, auth.user]);
 
-  const confirmVote = (song) => {
-    if (!auth.user) {
-      return navigate("/login");
+  const confirmVote = async (song) => {
+    if (!auth.user && poll?.anonymousVoting === false) {
+      return addAlert(
+        "Aby wziąć udział w głosowaniu, musisz się zalogować.",
+        "warning"
+      );
     }
     if (songId) {
       return addAlert(
@@ -84,15 +81,26 @@ const VotePage = ({ type }) => {
       );
     }
     openModal({
-      title: `Potwierdź swój wybór`,
+      title: "Potwierdź swój wybór",
       body: `Zaakceptuj swój wybór na ${song.title} artysty ${song.artist} w głosowaniu ${voteType}`,
       buttons: [
         {
           label: "Akceptuj",
           type: "success",
-          action: () => {
+          action: async () => {
             closeModal();
-            voteForSong(song.id);
+            try {
+              if (poll && poll.id) {
+                const songRef = doc(db, "polls", poll.id, "songs", song.id);
+                await updateDoc(songRef, {
+                  votes: increment(1),
+                });
+                setSongId(song.id);
+                addAlert("Głos został oddany pomyślnie!", "success");
+              }
+            } catch (error) {
+              addAlert("Wystąpił błąd podczas oddawania głosu.", "danger");
+            }
           },
         },
       ],
@@ -136,7 +144,7 @@ const VotePage = ({ type }) => {
                     {i === 0 && (
                       <img
                         src="/assets/images/stars.png"
-                        alt="Najczęsciej głosowana piosenka"
+                        alt="Najczęściej głosowana piosenka"
                         className="stars z-3"
                         width="50"
                       ></img>
@@ -145,7 +153,11 @@ const VotePage = ({ type }) => {
                       {i + 1}.
                     </p>
                     <li
-                      className={`position-relative w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 flex-wrap-reverse ${i === 0 ? "border-bottom-2 bg-top-vote-opaque" : "bg-vote-opaque"}`}
+                      className={`position-relative w-100 border border-2 border-success rounded-5 fs-6 m-0 p-2 p-sm-0 row align-items-center justify-content-center row-gap-2 me-4 flex-wrap-reverse ${
+                        i === 0
+                          ? "border-bottom-2 bg-top-vote-opaque"
+                          : "bg-vote-opaque"
+                      }`}
                     >
                       <button
                         disabled={pollEnded}
@@ -157,7 +169,9 @@ const VotePage = ({ type }) => {
                       </button>
                       <Link
                         to={`/vote/${poll.id}/songs/${song.id}`}
-                        className={`${pollEnded ? "vote-bar-ended" : "vote-bar"} row col-12 col-sm justify-content-center m-0 vote-text`}
+                        className={`${
+                          pollEnded ? "vote-bar-ended" : "vote-bar"
+                        } row col-12 col-sm justify-content-center m-0 vote-text`}
                       >
                         <div className="col-sm text-center text-sm-start row row-cols-1 column-gap-1">
                           <div className="col col-sm-auto px-0 text-break">

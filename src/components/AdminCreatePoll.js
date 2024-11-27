@@ -63,8 +63,10 @@ const AdminCreatePoll = () => {
     const form = {
       title: formData.get("title"),
       type: formData.get("type"),
-      start_at: formData.get("start_at"),
-      end_at: formData.get("end_at"),
+      start_at: new Date(formData.get("start_at")),
+      end_at: new Date(formData.get("end_at")),
+      anonymousVoting: formData.get("anonymousVoting") === "on",
+      published: formData.get("published") === "on",
     };
 
     if (form.title.length < 3) {
@@ -161,6 +163,22 @@ const AdminCreatePoll = () => {
           <Form.Control.Feedback type="invalid">
             Proszę prawidłową date zakończenia głosowania.
           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Check
+            type="checkbox"
+            id="anonymousVoting"
+            name="anonymousVoting"
+            label="Głosowanie anonimowe"
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Check
+            type="checkbox"
+            id="published"
+            name="published"
+            label="Opublikowana"
+          />
         </Form.Group>
         <div>
           <h4 className="ml-n2 mt-2">Lista utworów</h4>
