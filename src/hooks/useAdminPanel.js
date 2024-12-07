@@ -1,10 +1,10 @@
 import {
   getDocs,
+  getDoc,
   updateDoc,
   doc,
   collection,
   query,
-  limit,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
@@ -194,4 +194,84 @@ export const toggleAnonymousVoting = async (pollId, currentStatus) => {
         error.message
     );
   }
+};
+
+export const getVotesForPoll = async (pollId) => {
+  const pollRef = doc(db, "polls", pollId);
+  const pollDoc = await getDoc(pollRef);
+
+  if (!pollDoc.exists()) {
+    return [];
+  }
+
+  const songsRef = collection(pollRef, "songs");
+  const songsSnapshot = await getDocs(songsRef);
+
+  if (songsSnapshot.empty) {
+    return [];
+  }
+
+  const votesData = [];
+
+  for (const songDoc of songsSnapshot.docs) {
+    const songData = songDoc.data();
+    const songId = songDoc.id;
+    const songTitle = songData.title;
+    const songArtist = songData.artist;
+    const songVotes = songData.votes;
+
+    const usersRef = collection(db, "users");
+    const userVotesData = [];
+
+    const usersSnapshot = await getDocs(usersRef);
+    for (const userDoc of usersSnapshot.docs) {
+      const userVotesRef = doc(db, "users", userDoc.id, "votes", pollId);
+      const userVotesDoc = await getDoc(userVotesRef);
+      if (userVotesDoc.exists()) {
+        const userVotes = userVotesDoc.data();
+        if (userVotes && userVotes.songId === songId) {
+          const userEmail = userDoc.data().email;
+
+          const timestamp = userVotes.timestamp
+            ? userVotes.timestamp.toDate()
+            : null;
+
+          userVotesData.push({
+            userId: userDoc.id,
+            userEmail,
+            songId,
+            songTitle,
+            songArtist,
+            songVotes,
+            timestamp,
+          });
+        }
+      }
+    }
+
+    if (userVotesData.length === 0) {
+      votesData.push({
+        songId,
+        songTitle,
+        songArtist,
+        songVotes,
+        usersVoted: [],
+      });
+    } else {
+      votesData.push({
+        songId,
+        songTitle,
+        songArtist,
+        songVotes,
+        usersVoted: userVotesData.map((vote) => ({
+          userId: vote.userId,
+          userEmail: vote.userEmail,
+          userTimeStamp: vote.timestamp
+            ? vote.timestamp.toLocaleString()
+            : "N/A",
+        })),
+      });
+    }
+  }
+  return votesData;
 };

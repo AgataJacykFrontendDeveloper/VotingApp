@@ -5,15 +5,19 @@ import {
   checkPollStatus,
   togglePollStatus,
   toggleAnonymousVoting,
+  getVotesForPoll,
 } from "../hooks/useAdminPanel";
 import { useAlert } from "../context/AlertProvider";
 import PollEdit from "./PollEdit";
 import ActivePoll from "./ActivePoll";
+import VotesDisplay from "./AdminVotesDisplay";
 
 const AdminActivePolls = ({ records, setRecords }) => {
   const { addAlert } = useAlert();
   const [pollSongs, setPollSongs] = useState([]);
   const [editingPoll, setEditingPoll] = useState("");
+  const [votes, setVotes] = useState([]);
+  const [loadingVotes, setLoadingVotes] = useState(false);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -73,9 +77,17 @@ const AdminActivePolls = ({ records, setRecords }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Records: ", records);
-  }, [records]);
+  const handleShowVotes = async (poll) => {
+    setLoadingVotes(true);
+    try {
+      const votesData = await getVotesForPoll(poll.id);
+      setVotes(votesData);
+    } catch (error) {
+      console.error("Error fetching votes:", error);
+    } finally {
+      setLoadingVotes(false);
+    }
+  };
 
   const weeklyPoll =
     records?.WeeklyRecord && records.WeeklyRecord.published
@@ -98,6 +110,7 @@ const AdminActivePolls = ({ records, setRecords }) => {
               handleTogglePollStatus={handleTogglePollStatus}
               handleViewPoll={handleViewPoll}
               handleToggleAnonymousVoting={handleToggleAnonymousVoting}
+              handleShowVotes={handleShowVotes}
             />
           ) : (
             <p>Brak aktywnego głosowania na ten tydzień.</p>
@@ -111,6 +124,7 @@ const AdminActivePolls = ({ records, setRecords }) => {
               handleTogglePollStatus={handleTogglePollStatus}
               handleViewPoll={handleViewPoll}
               handleToggleAnonymousVoting={handleToggleAnonymousVoting}
+              handleShowVotes={handleShowVotes}
             />
           ) : (
             <p>Brak aktywnego głosowania na ten miesiąc.</p>
@@ -124,6 +138,7 @@ const AdminActivePolls = ({ records, setRecords }) => {
             handleUpdatePoll={handleUpdatePoll}
           />
         )}
+        {votes.length > 0 && !loadingVotes && <VotesDisplay votes={votes} />}
       </div>
     </div>
   );

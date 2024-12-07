@@ -5,6 +5,7 @@ const ActivePoll = ({
   handleTogglePollStatus,
   handleViewPoll,
   handleToggleAnonymousVoting,
+  handleShowVotes,
 }) => (
   <div>
     <p>ID: {poll.id}</p>
@@ -29,6 +30,9 @@ const ActivePoll = ({
         {poll.anonymousVoting
           ? "Wyłącz anonimowe głosowanie"
           : "Włącz anonimowe głosowanie"}
+      </button>
+      <button onClick={() => handleShowVotes(poll)} className="btn-cyan">
+        Wyświetl głosy
       </button>
     </div>
   </div>
