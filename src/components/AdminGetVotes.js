@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
-import { getUserVotes, getSongsInfo } from "../hooks/useAdminPanel";
+import { useState, useEffect, useContext } from "react";
+import { getUserVotes, getSongsInfo, deleteVote } from "../hooks/useAdminPanel";
+import AlertContext from "../context/AlertProvider";
 const AdminGetVotes = () => {
   const [votes, setVotes] = useState([]);
   const [songs, setSongs] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { addAlert } = useContext(AlertContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +26,25 @@ const AdminGetVotes = () => {
     fetchData();
   }, []);
 
+  const handleDeleteVote = async (pollId, songId, uid) => {
+    try {
+      await deleteVote(pollId, songId, uid);
+      setVotes((prevVotes) =>
+        prevVotes.map((user) =>
+          user.uid === uid
+            ? {
+                ...user,
+                votes: user.votes.filter((vote) => vote.id !== pollId),
+              }
+            : user
+        )
+      );
+      return addAlert("Głos został usunięty.");
+    } catch (error) {
+      console.error("Nie udało się usunąć głosu: ", error);
+    }
+  };
+
   return (
     <div>
       <h2>Oddane głosy</h2>
@@ -35,14 +56,20 @@ const AdminGetVotes = () => {
         <ul>
           {votes.map((user, index) => (
             <li key={index}>
-              <strong>Użytkownik:</strong> {user.email}
+              <strong>Użytkownik:</strong> {user.email} (ID: {user.uid})
               <ul>
                 {user.votes.map((vote) => {
                   const song = songs[vote.songId] || {};
                   return (
                     <li key={vote.id}>
-                      {/* TODO: Obsługa przycisku do usuwania głosu */}
-                      <button className="btn btn-outline-danger">x</button>{" "}
+                      <button
+                        onClick={() =>
+                          handleDeleteVote(vote.id, song.id, user.uid)
+                        }
+                        className="btn btn-outline-danger"
+                      >
+                        x
+                      </button>{" "}
                       {song.artist || "Nieznany"} - {song.title || "Nieznany"} (
                       {vote.timestamp?.toDate
                         ? vote.timestamp.toDate().toLocaleString()
