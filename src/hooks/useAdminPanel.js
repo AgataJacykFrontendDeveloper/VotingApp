@@ -2,6 +2,7 @@ import {
   getDocs,
   getDoc,
   updateDoc,
+  deleteDoc,
   doc,
   collection,
   query,
@@ -133,6 +134,7 @@ export const getUserVotes = async () => {
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
       const email = userData.email;
+      const uid = userDoc.id;
 
       const votesCollection = collection(db, "users", userDoc.id, "votes");
       const votesSnapshot = await getDocs(votesCollection);
@@ -144,6 +146,7 @@ export const getUserVotes = async () => {
 
       allVotes.push({
         email: email,
+        uid: uid,
         votes: votesArray,
       });
     }
@@ -168,6 +171,7 @@ export const getSongsInfo = async () => {
 
       songsSnapshot.forEach((songDoc) => {
         allSongs[songDoc.id] = {
+          id: songDoc.id,
           artist: songDoc.data().artist,
           title: songDoc.data().title,
         };
@@ -219,6 +223,7 @@ export const getVotesForPoll = async (pollId) => {
     const songTitle = songData.title;
     const songArtist = songData.artist;
     const songVotes = songData.votes;
+    const pollId = pollDoc.id;
 
     const usersRef = collection(db, "users");
     const userVotesData = [];
@@ -263,6 +268,7 @@ export const getVotesForPoll = async (pollId) => {
         songTitle,
         songArtist,
         songVotes,
+        pollId,
         usersVoted: userVotesData.map((vote) => ({
           userId: vote.userId,
           userEmail: vote.userEmail,
@@ -274,4 +280,27 @@ export const getVotesForPoll = async (pollId) => {
     }
   }
   return votesData;
+};
+
+export const deleteVote = async (pollId, songId, uid) => {
+  try {
+    // Zmniejszanie liczby głosów o 1 w 'polls'
+    const songRef = doc(db, "polls", pollId, "songs", songId);
+    const songDoc = await getDoc(songRef);
+    if (!songDoc.exists()) {
+      throw new Error("Dokument piosenki nie istnieje w bazie danych.");
+    }
+    const songData = songDoc.data();
+    const currentVotes = songData.votes;
+    if (currentVotes > 0) {
+      await updateDoc(songRef, { votes: currentVotes - 1 });
+    } else {
+      throw new Error("Nie można zmniejszyć głosów poniżej zera.");
+    }
+    // Usuwanie głosu użytkownika w 'users'
+    const uservoteRef = doc(db, "users", uid, "votes", pollId);
+    await deleteDoc(uservoteRef);
+  } catch (error) {
+    throw new Error("Błąd podczas usuwania głosu: " + error.message);
+  }
 };

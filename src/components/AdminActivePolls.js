@@ -138,7 +138,9 @@ const AdminActivePolls = ({ records, setRecords }) => {
             handleUpdatePoll={handleUpdatePoll}
           />
         )}
-        {votes.length > 0 && !loadingVotes && <VotesDisplay votes={votes} />}
+        {votes.length > 0 && !loadingVotes && (
+          <VotesDisplay votes={votes} setVotes={setVotes} />
+        )}
       </div>
     </div>
   );
